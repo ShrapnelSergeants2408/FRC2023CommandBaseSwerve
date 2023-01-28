@@ -208,6 +208,16 @@ public final class Constants {
     public static final boolean kArmLiftMotorInverted = false;
     public static final boolean kArmExtensionMotorInverted = false;
 
+    //CAN Address - Gripper Motor 50s
+    public static final int kGripperExtension = 50;
+
+    //PCM channels
+    public static final int kGripperOpen = 0;
+    public static final int kGripperClosed = 1;
+
+    //Gripper accelerometer port
+    public static final int kGripperPosition = 0;
+
     //Address Ultrasonic DIO ports 1, 2
     public static final int kUltrasonicPingChannel = 1;
     public static final int kUltrasonicEchoChannel = 2;

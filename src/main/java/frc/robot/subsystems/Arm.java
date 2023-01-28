@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
@@ -39,6 +37,11 @@ public class Arm extends SubsystemBase {
     m_ArmExtensionDistance = new Ultrasonic(kUltrasonicPingChannel,kUltrasonicEchoChannel);
 
   }
+
+/*  speed controllers, encoders, ultrasonic sensor defined
+ * 
+ * TODO: need to write the rest of this code
+ */
 
   @Override
   public void periodic() {
