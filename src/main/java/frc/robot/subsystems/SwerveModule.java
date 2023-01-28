@@ -11,8 +11,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static frc.robot.Constants.DriveConstants.*;
+
 //import edu.wpi.first.wpilibj.Encoder;
 import static frc.robot.Constants.ModuleConstants.*;
+
+import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -62,6 +68,8 @@ public class SwerveModule {
     m_turningMotor = new VictorSPX(turningMotorChannel);
     m_driveEncoder = m_driveMotor.getEncoder(); //update with cpr and gear ratio?
     m_turningEncoder = new DutyCycleEncoder(turningEncoderChannels);
+
+    sendTelemetry(driveMotorChannel);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -158,4 +166,60 @@ public class SwerveModule {
     m_driveEncoder.setPosition(0.0);
     m_turningEncoder.reset();
   }
+
+  public void sendTelemetry(int module){
+    if (module == kFrontLeftDriveMotorPort)
+    {
+      SmartDashboard.putNumber("FL Drive Encoder Position", m_driveEncoder.getPosition());
+      SmartDashboard.putNumber("FL Drive Encoder Velocity",m_driveEncoder.getVelocity());
+      SmartDashboard.putNumber("FL Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
+      SmartDashboard.putNumber("FL Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
+
+      SmartDashboard.putNumber("FL Turning Encoder value", m_turningEncoder.get());
+      SmartDashboard.putNumber("FL Turning Encoder distance", m_turningEncoder.getDistance());
+      SmartDashboard.putNumber("FL Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("FL Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
+      SmartDashboard.putNumber("FL Turning Encoder distance per rotation", m_turningEncoder.);
+    }
+    else if (module == kRearLeftDriveMotorPort)
+    {
+      SmartDashboard.putNumber("RL Drive Encoder Position", m_driveEncoder.getPosition());
+      SmartDashboard.putNumber("RL Drive Encoder Velocity",m_driveEncoder.getVelocity());
+      SmartDashboard.putNumber("RL Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
+      SmartDashboard.putNumber("RL Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
+
+      SmartDashboard.putNumber("RL Turning Encoder value", m_turningEncoder.get());
+      SmartDashboard.putNumber("RL Turning Encoder distance", m_turningEncoder.getDistance());
+      SmartDashboard.putNumber("RL Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("RL Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
+
+    }
+    else if (module == kFrontRightDriveMotorPort)
+    {
+      SmartDashboard.putNumber("FR Drive Encoder Position", m_driveEncoder.getPosition());
+      SmartDashboard.putNumber("FR Drive Encoder Velocity",m_driveEncoder.getVelocity());
+      SmartDashboard.putNumber("FR Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
+      SmartDashboard.putNumber("FR Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
+
+      SmartDashboard.putNumber("FR Turning Encoder value", m_turningEncoder.get());
+      SmartDashboard.putNumber("FR Turning Encoder distance", m_turningEncoder.getDistance());
+      SmartDashboard.putNumber("FR Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("FR Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
+
+    }
+    else if (module == kRearRightDriveMotorPort)
+    {
+      SmartDashboard.putNumber("RR Drive Encoder Position", m_driveEncoder.getPosition());
+      SmartDashboard.putNumber("RR Drive Encoder Velocity",m_driveEncoder.getVelocity());
+      SmartDashboard.putNumber("RR Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
+      SmartDashboard.putNumber("RR Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
+
+      SmartDashboard.putNumber("RR Turning Encoder value", m_turningEncoder.get());
+      SmartDashboard.putNumber("RR Turning Encoder distance", m_turningEncoder.getDistance());
+      SmartDashboard.putNumber("RR Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
+      SmartDashboard.putNumber("RR Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
+
+    }
+  }
+  
 }

@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -71,7 +72,9 @@ public class Drivetrain extends SubsystemBase {
           });
 
   /** Creates a new DriveSubsystem. */
-  public Drivetrain() {}
+  public Drivetrain() {
+
+  }
 
   @Override
   public void periodic() {
@@ -84,6 +87,15 @@ public class Drivetrain extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
         });
+
+    // Update sensor readings
+    //SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
+    //SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
+
+
+
+
+
   }
 
   /**

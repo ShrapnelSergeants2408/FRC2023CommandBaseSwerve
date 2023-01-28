@@ -39,7 +39,7 @@ public final class Constants {
     public static final int[] kRearRightTurningEncoderPorts = new int[] {6, 7};
     */
 
-    //MA3 encoders for steering (DIO 0 - 3)
+    //MA3 encoders for steering (Analog 0 - 3)
     public static final int kFrontLeftTurningEncoderPorts = 0;
     public static final int kRearLeftTurningEncoderPorts = 1;
     public static final int kFrontRightTurningEncoderPorts = 2;
@@ -63,12 +63,15 @@ public final class Constants {
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
-    /*TODO: update to bot values */
 
-    public static final double kTrackWidth = 0.5;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    // 18.375 in = 0.467 m
+    public static final double kTrackWidth = 0.467;
+
     // Distance between front and back wheels on robot
+    // 20 in = 0.508 m
+    public static final double kWheelBase = 0.508;
+
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -109,10 +112,13 @@ public final class Constants {
 
     public static final double kTurningEncoderDistancePerPulse =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
+
         (2 * Math.PI) / (double) kTurningEncoderCPR;
 
+    // Gear ratio 48 motor gear:40 encoder gear
     public static final double kTurningEncoderDistancePerRotation =
-        (2 * Math.PI);
+        //(40/48)*(2 * Math.PI);
+        (48/40)*(2* Math.PI);
 
     public static final double kPModuleTurningController = 1;
 
