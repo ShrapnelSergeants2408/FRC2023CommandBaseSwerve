@@ -89,8 +89,9 @@ public class Drivetrain extends SubsystemBase {
         });
 
     // Update sensor readings
-    //SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
-    //SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
+    SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
+    SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
+
 
 
 

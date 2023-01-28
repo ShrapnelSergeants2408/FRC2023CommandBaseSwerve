@@ -18,7 +18,6 @@ import static frc.robot.Constants.DriveConstants.*;
 //import edu.wpi.first.wpilibj.Encoder;
 import static frc.robot.Constants.ModuleConstants.*;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -179,7 +178,7 @@ public class SwerveModule {
       SmartDashboard.putNumber("FL Turning Encoder distance", m_turningEncoder.getDistance());
       SmartDashboard.putNumber("FL Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
       SmartDashboard.putNumber("FL Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
-      SmartDashboard.putNumber("FL Turning Encoder distance per rotation", m_turningEncoder.);
+
     }
     else if (module == kRearLeftDriveMotorPort)
     {

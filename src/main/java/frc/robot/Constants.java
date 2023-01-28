@@ -199,4 +199,18 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final class ArmConstants {  
+    //CAN Address - Arm Motors 40s
+    public static final int kArmLiftMotor = 40;
+    public static final int kArmExtensionMotor = 41;
+
+    public static final boolean kArmLiftMotorInverted = false;
+    public static final boolean kArmExtensionMotorInverted = false;
+
+    //Address Ultrasonic DIO ports 1, 2
+    public static final int kUltrasonicPingChannel = 1;
+    public static final int kUltrasonicEchoChannel = 2;
+
+  }
 }
