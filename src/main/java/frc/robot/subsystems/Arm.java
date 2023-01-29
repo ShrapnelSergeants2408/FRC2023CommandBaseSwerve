@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ArmConstants.*;
@@ -46,5 +47,10 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("ArmLiftEncoder Position ", m_ArmLiftEncoder.getPosition());
+    SmartDashboard.putNumber("ArmLiftEncoder Position Conversion Factor", m_ArmLiftEncoder.getPositionConversionFactor());
+
+    SmartDashboard.putNumber("ArmExtensionDistance ", m_ArmExtensionDistance.getRangeInches());
+
   }
 }

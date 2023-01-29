@@ -211,6 +211,9 @@ public final class Constants {
     //CAN Address - Gripper Motor 50s
     public static final int kGripperExtension = 50;
 
+    public static final boolean kGripperExtensionInverted = false;
+    
+
     //PCM channels
     public static final int kGripperOpen = 0;
     public static final int kGripperClosed = 1;

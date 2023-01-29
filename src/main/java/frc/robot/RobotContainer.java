@@ -67,7 +67,8 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-        
+     
+     
     JoystickButton m_driverLeft = new JoystickButton(m_driverController, OIConstants.kD_Left);
     JoystickButton m_driverRight = new JoystickButton(m_driverController, OIConstants.kD_Right);
     JoystickButton m_driverUp = new JoystickButton(m_driverController, OIConstants.kD_Up);
@@ -90,6 +91,8 @@ public class RobotContainer {
     //JoystickButton m_operatorMidLeft = new JoystickButton(m_operatorController,OIConstants.kO_);
     JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
     JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
+    
+
 
     //button command links
     //m_operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
@@ -105,7 +108,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
+   
   public Command getAutonomousCommand() {
+
+    
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -147,6 +154,9 @@ public class RobotContainer {
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
     // Run path following command, then stop at the end.
+    
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    
   }
+  
 }
