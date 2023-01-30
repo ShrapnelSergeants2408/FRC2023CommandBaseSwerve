@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Gripper;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -35,6 +37,8 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
+  private final Arm m_robotArm = new Arm();
+  private final Gripper m_robotGripper = new Gripper();
 
   // The driver's controller
   
@@ -53,9 +57,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_driverController.getLeftY(),
-                    m_driverController.getLeftX(),
-                    m_driverController.getRightX(),
+                    m_driverController.getLeftY()*DriveConstants.kDriveSpeedMultiplier,
+                    m_driverController.getLeftX()*DriveConstants.kDriveSpeedMultiplier,
+                    m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier,
                     true),
             m_robotDrive));
   }

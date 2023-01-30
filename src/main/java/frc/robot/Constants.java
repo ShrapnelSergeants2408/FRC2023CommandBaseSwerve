@@ -63,6 +63,9 @@ public final class Constants {
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
+    //Set speed multiplier from 0-1 (0%-100%).  Set to 0 for testing opposite motor (ex 0 drive to test turn)
+    public static final int kDriveSpeedMultiplier = 1;
+    public static final int kTurnSpeedMultiplier = 1;
 
     // Distance between centers of right and left wheels on robot
     // 18.375 in = 0.467 m
@@ -93,6 +96,8 @@ public final class Constants {
   }
 
   public static final class ModuleConstants {
+
+
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
@@ -212,7 +217,7 @@ public final class Constants {
     public static final int kGripperExtension = 50;
 
     public static final boolean kGripperExtensionInverted = false;
-    
+
 
     //PCM channels
     public static final int kGripperOpen = 0;
