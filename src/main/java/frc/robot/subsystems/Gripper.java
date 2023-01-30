@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -51,4 +52,15 @@ public class Gripper extends SubsystemBase {
 
   }
 
+  public void grabPiece(){
+
+    m_Gripper.set(Value.kForward);
+
+  }
+
+  public void releasePiece(){
+
+    m_Gripper.set(Value.kReverse);
+
+  }
 }

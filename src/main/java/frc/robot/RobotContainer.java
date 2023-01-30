@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.GrabPiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
@@ -40,6 +41,9 @@ public class RobotContainer {
   private final Arm m_robotArm = new Arm();
   private final Gripper m_robotGripper = new Gripper();
 
+  // Commands
+  //private final GrabPiece m_grabPiece = new GrabPiece();
+
   // The driver's controller
   
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -62,6 +66,15 @@ public class RobotContainer {
                     m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier,
                     true),
             m_robotDrive));
+
+    m_robotGripper.setDefaultCommand(
+        // default to gripper closed
+        new RunCommand(
+            () ->
+                m_robotGripper.grabPiece(),
+        m_robotGripper)
+    );  
+          
   }
 
   /**

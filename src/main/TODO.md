@@ -62,7 +62,7 @@
 
 - [ ] code gripper pneumatics
     - [ ] gripper open
-    - [ ] gripper closed
+    - [x] gripper closed
 
 - [ ] AprilTags vision processing
 
@@ -82,4 +82,4 @@
     - [ ] Pick up from ground at staging mark
     - [ ] Reverse drive to grid
     - [ ] Drive from position to charging station
-    
+
