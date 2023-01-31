@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+//import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -192,15 +192,17 @@ public class Drivetrain extends SubsystemBase {
     return m_gyro.getRate() * (kGyroReversed ? -1.0 : 1.0);
   }
 
+  /* 
   //method commands
   public CommandBase doNothing() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
+          // one-time action goes here 
           drive(0,0,0,true);
         });
       }
+      */
 }
 

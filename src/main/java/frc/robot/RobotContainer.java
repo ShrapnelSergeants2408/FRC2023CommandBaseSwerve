@@ -132,7 +132,7 @@ public class RobotContainer {
     //button command links
     //m_operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
     //operatorUp.whenReleased(new ShootOff(shooter)); //turn off shooter motor
-    m_operatorUp.onTrue(m_robotDrive.doNothing());
+    m_operatorUp.onTrue(new DoNothing(m_robotDrive));
     
     m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
     m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));

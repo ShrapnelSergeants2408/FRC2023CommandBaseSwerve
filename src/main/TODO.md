@@ -82,4 +82,5 @@
     - [ ] Pick up from ground at staging mark
     - [ ] Reverse drive to grid
     - [ ] Drive from position to charging station
+- [ ] Add "Stop" commands for each arm/gripper motor for default commands/failsafe
 
