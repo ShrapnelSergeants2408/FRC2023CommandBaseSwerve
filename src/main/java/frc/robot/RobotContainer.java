@@ -17,6 +17,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.GrabPiece;
+import frc.robot.commands.ReleasePiece;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
@@ -74,7 +75,7 @@ public class RobotContainer {
                 m_robotGripper.grabPiece(),
         m_robotGripper)
     );  
-          
+
   }
 
   /**
@@ -104,8 +105,6 @@ public class RobotContainer {
     JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
     JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
     JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
-    JoystickButton m_operatorShoulderBottomRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Right);
-    //JoystickButton m_operatorMidLeft = new JoystickButton(m_operatorController,OIConstants.kO_);
     JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
     JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
     
@@ -115,6 +114,11 @@ public class RobotContainer {
     //m_operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
     //operatorUp.whenReleased(new ShootOff(shooter)); //turn off shooter motor
     m_operatorUp.onTrue(m_robotDrive.doNothing());
+    
+    m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
+    m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
+    
+
 
     
 
