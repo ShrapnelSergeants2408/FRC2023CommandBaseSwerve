@@ -23,7 +23,7 @@
     - [ ] test BR turning encoder values
     - [ ] Make sure SmartDashboard values are printing
 
-- [ ] Add SmartDashboard values for PDP voltages/currents
+- [x] Add SmartDashboard values for PDP voltages/currents
 
 - [ ] Code arm lift motor
     - [ ] test encoder values for lift motor
