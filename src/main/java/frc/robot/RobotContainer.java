@@ -13,11 +13,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.GrabPiece;
 import frc.robot.commands.ReleasePiece;
+import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
@@ -42,13 +45,19 @@ public class RobotContainer {
   private final Arm m_robotArm = new Arm();
   private final Gripper m_robotGripper = new Gripper();
 
-  // Commands
-  //private final GrabPiece m_grabPiece = new GrabPiece();
+  // The autonomous routines
+
+  // A simple auto routine that does nothing
+  private final Command m_doNothing = new DoNothing(m_robotDrive);
+
 
   // The driver's controller
   
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
+
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_AutoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -75,6 +84,16 @@ public class RobotContainer {
                 m_robotGripper.grabPiece(),
         m_robotGripper)
     );  
+
+    // Add commands to the autonomous command chooser
+    m_AutoChooser.setDefaultOption("Do Nothing", m_doNothing);
+    //m_AutoChooser.addOption("First Auto", Command name);
+    //m_AutoChooser.addOption("Second Auto", Command name);
+    //m_AutoChooser.addOption("Third Auto", Command name);
+
+    // Put the chooser on the dashboard
+    SmartDashboard.putData(m_AutoChooser);
+  
 
   }
 
@@ -117,7 +136,7 @@ public class RobotContainer {
     
     m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
     m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
-    
+
 
 
     

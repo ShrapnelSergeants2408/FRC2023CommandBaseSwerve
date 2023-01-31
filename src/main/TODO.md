@@ -60,8 +60,8 @@
         - [ ] gripper extension stowed 
         - [ ] gripper extenstion parallel to ground
 
-- [ ] code gripper pneumatics
-    - [ ] gripper open
+- [x] code gripper pneumatics
+    - [x] gripper open
     - [x] gripper closed
 
 - [ ] AprilTags vision processing
