@@ -226,9 +226,9 @@ public final class Constants {
     //Gripper accelerometer port
     public static final int kGripperPosition = 0;
 
-    //Address Ultrasonic DIO ports 1, 2
-    public static final int kUltrasonicPingChannel = 1;
-    public static final int kUltrasonicEchoChannel = 2;
+    //Address Ultrasonic PWM or DIO? ports 0, 1
+    public static final int kUltrasonicPingChannel = 0;
+    public static final int kUltrasonicEchoChannel = 1;
 
   }
 }
