@@ -13,6 +13,9 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import static frc.robot.Constants.DriveConstants.*;
+
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -61,7 +64,9 @@ public class Drivetrain extends SubsystemBase {
           kRearRightTurningEncoderOffset);
 
   // The gyro sensor
-  private final Gyro m_gyro = new ADXRS450_Gyro();
+  //replace FRC gyro with NavX
+  //private final Gyro m_gyro = new ADXRS450_Gyro();
+  private final AHRS m_gyro = new AHRS();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
@@ -77,7 +82,14 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
-
+    //pause gyro reset 1 sec to avoid interferring with gyro calibration
+    new Thread(() -> {
+      try {
+        Thread.sleep(1000);
+        zeroHeading();
+      } catch (Exception e) {
+      }
+    }).start();
   }
 
   @Override
@@ -95,6 +107,7 @@ public class Drivetrain extends SubsystemBase {
     // Update sensor readings
     SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
     SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
+    SmartDashboard.putNumber("Gyro Heading",getHeading());
 
 
 
@@ -208,5 +221,13 @@ public class Drivetrain extends SubsystemBase {
         });
       }
       */
+    public void stopModules() {
+      m_frontLeft.stop();
+      m_rearLeft.stop();
+      m_frontRight.stop();
+      m_rearRight.stop();
+    }
+
+    
 }
 
