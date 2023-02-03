@@ -153,6 +153,8 @@ public final class Constants {
 
     
     //slew rate 3 --> 1/3 sec from 0 to 1
+    public static final double kSlewRateLimit = 3.0; // adjust?
+
     public static final int kD_Joystick_Left_X_Speed_Limit = 3;
     public static final int kD_Joystick_Left_Y_Speed_Limit = 3;
     public static final int kD_Joystick_Right_X_Speed_Limit = 3;
@@ -162,6 +164,10 @@ public final class Constants {
     public static final int kO_Joystick_Left_Y_Speed_Limit = 3;
     public static final int kO_Joystick_Right_X_Speed_Limit = 3;
     public static final int kO_Joystick_Right_Y_Speed_Limit = 3;
+
+    //deadband  0.03 adjust?
+    public static final double kJoystick_Deadband = 0.03;
+
 
 	//Joystick button/axis maps
   public static final int kD_Joystick_Left_X_Axis = 0;
