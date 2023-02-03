@@ -27,7 +27,8 @@ public class Drivetrain extends SubsystemBase {
           kFrontLeftDriveEncoderPorts,
           kFrontLeftTurningEncoderPorts,
           kFrontLeftDriveEncoderReversed,
-          kFrontLeftTurningEncoderReversed);
+          kFrontLeftTurningEncoderReversed,
+          kFrontLeftTurningEncoderOffset);
 
   private final SwerveModule m_rearLeft =
       new SwerveModule(
@@ -36,7 +37,8 @@ public class Drivetrain extends SubsystemBase {
           kRearLeftDriveEncoderPorts,
           kRearLeftTurningEncoderPorts,
           kRearLeftDriveEncoderReversed,
-          kRearLeftTurningEncoderReversed);
+          kRearLeftTurningEncoderReversed,
+          kRearLeftTurningEncoderOffset);
 
   private final SwerveModule m_frontRight =
       new SwerveModule(
@@ -45,7 +47,8 @@ public class Drivetrain extends SubsystemBase {
           kFrontRightDriveEncoderPorts,
           kFrontRightTurningEncoderPorts,
           kFrontRightDriveEncoderReversed,
-          kFrontRightTurningEncoderReversed);
+          kFrontRightTurningEncoderReversed,
+          kFrontRightTurningEncoderOffset);
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
@@ -54,7 +57,8 @@ public class Drivetrain extends SubsystemBase {
           kRearRightDriveEncoderPorts,
           kRearRightTurningEncoderPorts,
           kRearRightDriveEncoderReversed,
-          kRearRightTurningEncoderReversed);
+          kRearRightTurningEncoderReversed,
+          kRearRightTurningEncoderOffset);
 
   // The gyro sensor
   private final Gyro m_gyro = new ADXRS450_Gyro();

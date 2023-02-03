@@ -63,6 +63,11 @@ public final class Constants {
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
+    public static final double kFrontLeftTurningEncoderOffset = 0.0;
+    public static final double kRearLeftTurningEncoderOffset = 0.0;
+    public static final double kFrontRightTurningEncoderOffset = 0.0;
+    public static final double kRearRightTurningEncoderOffset = 0.0;
+
     //Set speed multiplier from 0-1 (0%-100%).  Set to 0 for testing opposite motor (ex 0 drive to test turn)
     public static final int kDriveSpeedMultiplier = 1;
     public static final int kTurnSpeedMultiplier = 1;
@@ -102,19 +107,28 @@ public final class Constants {
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
     public static final int kTurningEncoderCPR = 1024;
+    //public static final double kTurningGearRatio = 1/.83;
+    public static final double kTurningGearRatio = 48.0/40.0;
 
     public static final int kNEOEncoderCPR = 42;
-    public static final double kDriveGearRatio = 6.67;
+    public static final double kDriveGearRatio = 1/6.67;
     public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
 
     public static final double kWheelDiameterInches = 4.0;
     public static final double kInchesToMeters = 0.0254;
     public static final double kWheelDiameterMeters = kWheelDiameterInches * kInchesToMeters;
+    public static final double kDriveEncoderRot2Meter = kDriveGearRatio * Math.PI * kWheelDiameterMeters; 
+    public static final double kTurningEncoderRot2Rad = kTurningGearRatio *2 * Math.PI;
+
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+    
+    /*
     public static final double kDriveEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         // NEO 42 cpr * 6.67 gear ratio
         (kWheelDiameterMeters * Math.PI) / (double) kDriveEncoderCPR;
-
+    
     public static final double kTurningEncoderDistancePerPulse =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
 
@@ -122,9 +136,12 @@ public final class Constants {
 
     // Gear ratio 48 motor gear:40 encoder gear
     public static final double kTurningEncoderDistancePerRotation =
-        //(40/48)*(2 * Math.PI);
-        (48/40)*(2* Math.PI);
+        //(40./48)*(2 * Math.PI);
+        (48./40)*(2* Math.PI);
+    */
 
+
+    //TODO: update P values
     public static final double kPModuleTurningController = 1;
 
     public static final double kPModuleDriveController = 1;
@@ -190,8 +207,9 @@ public final class Constants {
 
   public static final class AutoConstants {
     //TODO: tweek max speed/acceleration
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedFeetPerSecond = 12.33; //from JVN calc 
+    public static final double kMaxSpeedMetersPerSecond = 3.76;  //converted from JVN calc - possibly adjust up to 4.5
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3; //modify?
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -229,6 +247,14 @@ public final class Constants {
     //Address Ultrasonic PWM or DIO? ports 0, 1
     public static final int kUltrasonicPingChannel = 0;
     public static final int kUltrasonicEchoChannel = 1;
+
+  }
+
+  public static final class FieldConstants {
+    //Field poses for elements based on AprilTags positions
+
+
+
 
   }
 }
