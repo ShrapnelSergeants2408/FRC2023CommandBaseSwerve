@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -78,12 +79,18 @@ public class DriveWithJoysticks extends CommandBase {
       //relative to robot
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
     }
+
+    SwerveModuleState[] moduleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    
+    driveTrain.setModuleStates(moduleStates);
   } 
 
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveTrain.stopModules();
+  }
 
   // Returns true when the command should end.
   @Override
