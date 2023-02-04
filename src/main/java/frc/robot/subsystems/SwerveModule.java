@@ -40,14 +40,14 @@ public class SwerveModule {
   //TODO: update ki, kd values for drivePID and turningPID controllers
 
   private final PIDController m_drivePIDController =
-      new PIDController(kPModuleDriveController, 0, 0);
+      new PIDController(kPModuleDriveController, kIModuleDriveController, kDModuleDriveController);
 
   // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
           kPModuleTurningController,
-          0,
-          0,
+          kIModuleTurningController,
+          kDModuleTurningController,
           new TrapezoidProfile.Constraints(
               kMaxModuleAngularSpeedRadiansPerSecond,
               kMaxModuleAngularAccelerationRadiansPerSecondSquared));

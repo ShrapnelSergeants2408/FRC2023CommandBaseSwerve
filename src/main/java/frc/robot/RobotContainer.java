@@ -21,6 +21,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.GrabPiece;
 import frc.robot.commands.ReleasePiece;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -53,11 +54,13 @@ public class RobotContainer {
   private final Command m_doNothing = new DoNothing(m_robotDrive);
 
 
+
   // The driver's controller
   
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
+  
   // A chooser for autonomous commands
   SendableChooser<Command> m_AutoChooser = new SendableChooser<>();
 
@@ -117,6 +120,7 @@ public class RobotContainer {
     JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
     JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
     JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
+    //JoystickButton m_driverPOV = new JoystickButton(m_driverController, )
 
     JoystickButton m_operatorLeft = new JoystickButton(m_operatorController,OIConstants.kO_Left);
     JoystickButton m_operatorRight = new JoystickButton(m_operatorController,OIConstants.kO_Right);
@@ -137,7 +141,10 @@ public class RobotContainer {
     m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
     m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
 
-
+    // turn to angle specified by driver controller POV hat.  Currently overrides driveWithJoysticks
+    if (m_driverController.getPOV() != -1){
+      new TurnToAngle(m_driverController.getPOV(), m_robotDrive);
+    }
 
     
 

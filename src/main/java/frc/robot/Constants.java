@@ -98,6 +98,10 @@ public final class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
     public static final double kMaxSpeedMetersPerSecond = 3;
+
+    //values for TurnToAngle from example
+    public static final double kTurnToleranceDeg = 5;
+    public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
   }
 
   public static final class ModuleConstants {
@@ -140,11 +144,19 @@ public final class Constants {
         (48./40)*(2* Math.PI);
     */
 
+    // PID values
 
     //TODO: update P values
     public static final double kPModuleTurningController = 1;
-
     public static final double kPModuleDriveController = 1;
+
+    public static final double kIModuleTurningController = 0;
+    public static final double kIModuleDriveController = 0;
+
+    public static final double kDModuleTurningController = 0;
+    public static final double kDModuleDriveController = 0;
+
+
   }
 
   public static final class OIConstants {
@@ -220,6 +232,7 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
+    //TODO: do these values need to be changed?
     public static final double kPXController = 1;
     public static final double kPYController = 1;
     public static final double kPThetaController = 1;
