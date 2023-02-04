@@ -21,6 +21,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 
 public class Drivetrain extends SubsystemBase {
   // Robot swerve modules
@@ -70,6 +71,7 @@ public class Drivetrain extends SubsystemBase {
   private final AHRS m_gyro = new AHRS();
 
   // Odometry class for tracking robot pose
+  
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           kDriveKinematics,
@@ -80,6 +82,8 @@ public class Drivetrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           });
+
+
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
@@ -108,7 +112,9 @@ public class Drivetrain extends SubsystemBase {
     // Update sensor readings
     SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
     SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
-    SmartDashboard.putNumber("Gyro Heading",getHeading());
+    SmartDashboard.putNumber("Robot Heading", getHeading());
+    SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+    
 
 
 
