@@ -26,6 +26,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -85,8 +86,8 @@ public class RobotContainer {
 
     // Add commands to the autonomous command chooser
     m_AutoChooser.setDefaultOption("Do Nothing", m_doNothing);
-    //m_AutoChooser.addOption("First Auto", Command name);
-    //m_AutoChooser.addOption("Second Auto", Command name);
+    m_AutoChooser.addOption("First Auto", trajectory1Command());
+    m_AutoChooser.addOption("Second Auto", trajectory2Command());
     //m_AutoChooser.addOption("Third Auto", Command name);
 
     // Put the chooser on the dashboard
@@ -151,6 +152,11 @@ public class RobotContainer {
    
   public Command getAutonomousCommand() {
 
+    return m_AutoChooser.getSelected();
+
+  }
+  
+  public Command trajectory1Command() {
     
     // Create config for trajectory
     TrajectoryConfig config =
@@ -168,7 +174,7 @@ public class RobotContainer {
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
+            new Pose2d(3, 0, new Rotation2d(45)),
             config);
 
     var thetaController =
@@ -197,5 +203,50 @@ public class RobotContainer {
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
     
   }
-  
+
+  public Command trajectory2Command() {
+        // 1. Create trajectory settings
+        TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+                AutoConstants.kMaxSpeedMetersPerSecond,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                        .setKinematics(DriveConstants.kDriveKinematics);
+
+        // 2. Generate trajectory
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+                new Pose2d(0, 0, new Rotation2d(0)),
+                List.of(
+                        new Translation2d(3, 0),
+                        new Translation2d(3, 2),
+                        new Translation2d(0,2)),
+                new Pose2d(0, 0, Rotation2d.fromDegrees(180)),
+                trajectoryConfig);
+
+        // 3. Define PID controllers for tracking trajectory
+        PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
+        PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
+        ProfiledPIDController thetaController = new ProfiledPIDController(
+                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        // 4. Construct command to follow trajectory
+        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+                trajectory,
+                m_robotDrive::getPose,
+                DriveConstants.kDriveKinematics,
+                xController,
+                yController,
+                thetaController,
+                m_robotDrive::setModuleStates,
+                m_robotDrive);
+
+        // 5. Add some init and wrap-up, and return everything
+        //return new SequentialCommandGroup(
+        //        new InstantCommand(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
+        //        swerveControllerCommand,
+        //        new InstantCommand(() -> m_robotDrive.stopModules()));
+        return new InstantCommand(
+            ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
+            .andThen(swerveControllerCommand)
+            .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
+  }
 }
