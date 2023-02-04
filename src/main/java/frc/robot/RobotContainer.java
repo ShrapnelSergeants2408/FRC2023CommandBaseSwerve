@@ -157,7 +157,14 @@ public class RobotContainer {
   }
   
   public Command trajectory1Command() {
-    
+    /* Sample trajectory. 
+        Start at origin facing +X direction
+        Pass through (1,1) (1 meter forward, 1 meter left of start)
+        Pass through (2, -1) (2 meters forward, 1 meter right of start)
+        End at (3, 0) (3 meters forward, even with start)
+        Throughout path rotate 45 degrees left    
+    */
+
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -205,6 +212,14 @@ public class RobotContainer {
   }
 
   public Command trajectory2Command() {
+        /*Sample trajectory. 
+        Start at origin facing +X direction
+        Pass through (3,0) (3 meter forward, even with start)
+        Pass through (3,2) (3 meters forward, 2 meter left of start)
+        Pass through (0, 2) (0 meters forward, 2 meters left of start)
+        End at origin facing -X direction
+        
+         */
         // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
