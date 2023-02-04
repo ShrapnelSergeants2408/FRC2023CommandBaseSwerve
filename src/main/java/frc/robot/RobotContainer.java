@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.GrabPiece;
 import frc.robot.commands.ReleasePiece;
 import frc.robot.commands.Autonomous.DoNothing;
@@ -65,17 +66,14 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    m_driverController.getLeftY()*DriveConstants.kDriveSpeedMultiplier,
-                    m_driverController.getLeftX()*DriveConstants.kDriveSpeedMultiplier,
-                    m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier,
-                    true),
-            m_robotDrive));
+    // The left stick controls translation of the robot.
+    // Turning is controlled by the X axis of the right stick.
+    m_robotDrive.setDefaultCommand(new DriveWithJoysticks(
+      m_robotDrive, 
+      () -> -m_driverController.getLeftY()*DriveConstants.kDriveSpeedMultiplier,
+      () -> m_driverController.getLeftX()*DriveConstants.kDriveSpeedMultiplier,
+      () -> m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier, 
+      () -> !m_driverController.getRawButton(OIConstants.kD_Mid_Left)));
 
     m_robotGripper.setDefaultCommand(
         // default to gripper closed
@@ -116,6 +114,8 @@ public class RobotContainer {
     JoystickButton m_driverShoulderBottomRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Right);
     JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
     JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
+    JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
+    JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
 
     JoystickButton m_operatorLeft = new JoystickButton(m_operatorController,OIConstants.kO_Left);
     JoystickButton m_operatorRight = new JoystickButton(m_operatorController,OIConstants.kO_Right);
@@ -130,8 +130,7 @@ public class RobotContainer {
 
 
     //button command links
-    //m_operatorUp.whenPressed(new ShootHigh(shooter)); //set shooter motor to shoot to high goal
-    //operatorUp.whenReleased(new ShootOff(shooter)); //turn off shooter motor
+
     m_operatorUp.onTrue(new DoNothing(m_robotDrive));
     
     m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));

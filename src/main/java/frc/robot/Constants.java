@@ -183,15 +183,16 @@ public final class Constants {
   public static final int kD_Shoulder_Top_Right = 6;
   public static final int kD_Shoulder_Bottom_Left = 7;
   public static final int kD_Shoulder_Bottom_Right = 8;
-  //public static final int kD_Mid_Left = 9;
+  public static final int kD_Mid_Left = 9;
+  public static final int kD_Mid_Right = 10;
   /* TODO:
   I believe there is a mid left and mid right button at 9 and maybe 10
    * As a result, the left and right joystick button values may need to change
    * 
    * If so, adjust operator values as well and add bindings to RobotContainer
    */
-  public static final int kD_Left_Joystick = 10;
-  public static final int kD_Right_Joystick = 11;
+  public static final int kD_Left_Joystick = 11;
+  public static final int kD_Right_Joystick = 12;
 
   public static final int kO_Joystick_Left_X_Axis = 0;
   public static final int kO_Joystick_Left_Y_Axis = 1;

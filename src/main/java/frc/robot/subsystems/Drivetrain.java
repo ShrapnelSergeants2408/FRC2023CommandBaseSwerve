@@ -151,6 +151,10 @@ public class Drivetrain extends SubsystemBase {
    * @param rot Angular rate of the robot.
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
+
+  // Is this section necessary with the DriveWithJoystics command? 
+  // Used in autonomous example
+
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates =
           kDriveKinematics.toSwerveModuleStates(
@@ -164,6 +168,8 @@ public class Drivetrain extends SubsystemBase {
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
+  
+
 
   /**
    * Sets the swerve ModuleStates.
