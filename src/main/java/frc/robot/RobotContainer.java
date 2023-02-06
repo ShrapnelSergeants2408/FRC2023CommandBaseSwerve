@@ -91,7 +91,7 @@ public class RobotContainer {
     m_AutoChooser.setDefaultOption("Do Nothing", m_doNothing);
     m_AutoChooser.addOption("First Auto", trajectory1Command());
     m_AutoChooser.addOption("Second Auto", trajectory2Command());
-    //m_AutoChooser.addOption("Third Auto", Command name);
+    m_AutoChooser.addOption("Third Auto", trajectory3Command());
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_AutoChooser);
@@ -193,8 +193,13 @@ public class RobotContainer {
             config);
 
     var thetaController =
+    
         new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+            AutoConstants.kPThetaController,
+            AutoConstants.kIThetaController,
+            AutoConstants.kDThetaController,
+            AutoConstants.kThetaControllerConstraints);
+
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand =
@@ -204,8 +209,12 @@ public class RobotContainer {
             DriveConstants.kDriveKinematics,
 
             // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
+            new PIDController(AutoConstants.kPXController,
+                              AutoConstants.kIXController,
+                              AutoConstants.kDXController),
+            new PIDController(AutoConstants.kPYController,
+                              AutoConstants.kIYController,
+                              AutoConstants.kDYController),
             thetaController,
             m_robotDrive::setModuleStates,
             m_robotDrive);
@@ -245,11 +254,19 @@ public class RobotContainer {
                 trajectoryConfig);
 
         // 3. Define PID controllers for tracking trajectory
-        PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
-        PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
-        ProfiledPIDController thetaController = new ProfiledPIDController(
-                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+        PIDController xController = new PIDController(AutoConstants.kPXController, 
+                                                      AutoConstants.kIXController,
+                                                      AutoConstants.kDXController);
+PIDController yController = new PIDController(AutoConstants.kPYController,
+                                              AutoConstants.kIYController,
+                                              AutoConstants.kDYController);
+ProfiledPIDController thetaController = new ProfiledPIDController(
+                                        AutoConstants.kPThetaController,
+                                        AutoConstants.kIThetaController,
+                                        AutoConstants.kDThetaController,
+                                        AutoConstants.kThetaControllerConstraints);
+
+thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         // 4. Construct command to follow trajectory
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
@@ -271,5 +288,62 @@ public class RobotContainer {
             ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
             .andThen(swerveControllerCommand)
             .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
+  }
+
+  public Command trajectory3Command() {
+    /*Sample trajectory PID test
+      Drive forward 1 meter (? meters?  feet?  inches?)
+     */
+    // 1. Create trajectory settings
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+            AutoConstants.kMaxSpeedMetersPerSecond,
+            AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                    .setKinematics(DriveConstants.kDriveKinematics);
+
+    // 2. Generate trajectory
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            List.of(
+                    new Translation2d(.25, 0),
+                    new Translation2d(.50, 0),
+                    new Translation2d(.75,0)),
+            new Pose2d(1, 0, Rotation2d.fromDegrees(0)),
+            trajectoryConfig);
+
+    // 3. Define PID controllers for tracking trajectory
+    PIDController xController = new PIDController(AutoConstants.kPXController, 
+                                                  AutoConstants.kIXController,
+                                                  AutoConstants.kDXController);
+    PIDController yController = new PIDController(AutoConstants.kPYController,
+                                                  AutoConstants.kIYController,
+                                                  AutoConstants.kDYController);
+    ProfiledPIDController thetaController = new ProfiledPIDController(
+            AutoConstants.kPThetaController,
+            AutoConstants.kIThetaController,
+            AutoConstants.kDThetaController,
+            AutoConstants.kThetaControllerConstraints);
+
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    // 4. Construct command to follow trajectory
+    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+            trajectory,
+            m_robotDrive::getPose,
+            DriveConstants.kDriveKinematics,
+            xController,
+            yController,
+            thetaController,
+            m_robotDrive::setModuleStates,
+            m_robotDrive);
+
+    // 5. Add some init and wrap-up, and return everything
+    //return new SequentialCommandGroup(
+    //        new InstantCommand(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
+    //        swerveControllerCommand,
+    //        new InstantCommand(() -> m_robotDrive.stopModules()));
+    return new InstantCommand(
+        ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
+        .andThen(swerveControllerCommand)
+        .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
   }
 }
