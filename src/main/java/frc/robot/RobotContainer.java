@@ -135,11 +135,12 @@ public class RobotContainer {
 
 
     //button command links
-
-    m_operatorUp.onTrue(new DoNothing(m_robotDrive));
+ 
+    m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad
+    m_operatorDown.onTrue(m_robotArm.setArmGoalCommand(1)); //move to 1 rad
     
-    m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
-    m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
+    //m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
+    //m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
 
     // turn to angle specified by driver controller POV hat.  Currently overrides driveWithJoysticks
     if (m_driverController.getPOV() != -1){

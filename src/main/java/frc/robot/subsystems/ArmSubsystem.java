@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
 import frc.robot.Constants.ArmConstants;
 
@@ -74,5 +76,10 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem {
     m_ArmLiftMotorPID.setReference(feedForward, CANSparkMax.ControlType.kPosition);
 
 
+  }
+
+  public Command setArmGoalCommand(double kArmOffsetRads) {
+
+    return Commands.runOnce(() -> setGoal(kArmOffsetRads), this);
   }
 }
