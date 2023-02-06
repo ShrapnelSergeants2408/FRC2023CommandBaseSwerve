@@ -268,6 +268,30 @@ public final class Constants {
     public static final int kUltrasonicPingChannel = 0;
     public static final int kUltrasonicEchoChannel = 1;
 
+      //TODO: tune values
+    //ArmLift PID
+    public static final double kPArmLiftMotor = 0.1;
+    public static final double kIArmLiftMotor = 0.0;
+    public static final double kDArmLiftMotor = 0.0;
+    public static final double kIzArmLiftMotor = 0.0;
+    public static final double kFFArmLiftMotor = 0.0;
+    public static final double kMaxOutputArmLiftMotor = 1.0;
+    public static final double kMinOutputArmLiftMotor = -1.0;
+    public static final double kSVoltsArmLiftMotor = 0;
+    public static final double kGVoltsArmLiftMotor = 0;
+    public static final double kVVoltSecondPerRadArmLiftMotor = 0;
+    public static final double kAVoltSecondSquaredPerRadArmLiftMotor = 0;
+    public static final double kMaxVelocityRadPerSecondArmLiftMotor = 0;
+    public static final double kMaxAccelerationRadPerSecondSquaredArmLiftMotor = 0;
+    public static final double kArmLiftMotorOffsetRads = 0;
+
+
+    //ArmExtension PID
+    public static final double kPArmExtensionMotor = 1.0;
+    public static final double kIArmExtensionMotor = 0.0;
+    public static final double kDArmExtensionMotor = 0.0;
+
+
   }
 
   public static final class FieldConstants {

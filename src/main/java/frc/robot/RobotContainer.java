@@ -23,7 +23,7 @@ import frc.robot.commands.GrabPiece;
 import frc.robot.commands.ReleasePiece;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.Autonomous.DoNothing;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,7 +45,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
-  private final Arm m_robotArm = new Arm();
+  private final ArmSubsystem m_robotArm = new ArmSubsystem();
   private final Gripper m_robotGripper = new Gripper();
 
   // The autonomous routines
