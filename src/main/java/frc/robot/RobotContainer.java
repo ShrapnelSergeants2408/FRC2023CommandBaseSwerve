@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.GrabPiece;
@@ -257,7 +258,7 @@ public class RobotContainer {
         PIDController xController = new PIDController(AutoConstants.kPXController, 
                                                       AutoConstants.kIXController,
                                                       AutoConstants.kDXController);
-PIDController yController = new PIDController(AutoConstants.kPYController,
+        PIDController yController = new PIDController(AutoConstants.kPYController,
                                               AutoConstants.kIYController,
                                               AutoConstants.kDYController);
 ProfiledPIDController thetaController = new ProfiledPIDController(

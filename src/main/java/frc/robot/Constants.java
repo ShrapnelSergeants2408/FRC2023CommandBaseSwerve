@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -303,9 +304,83 @@ public final class Constants {
   }
 
   public static final class FieldConstants {
-    //Field poses for elements based on AprilTags positions
+    //Measurements in partial arm rotations (Lift) and inches (Extension)
+    //Heights based on field drawing heights + 8 inches with arm in extended position
+    //TODO: after testing may need to adjust heights
+    public static final double kLiftStowedPosition = 0;
+    public static final double kExtensionStowedPosition = 0; 
 
+    public static final double kLiftPickupHeight = 4;
+    public static final double kExtensionPickupHeight = 0;
+    
+    public static final double kLiftDriveHeight = 8;
+    public static final double kExtensionDriveHeight = 0;
 
+    public static final double kLiftMidCubeHeight = 0;
+    public static final double kExtensionMid = 0;
+    public static final double kLiftMidConeHeight = 0;
+
+    public static final double kLiftHighCubeHeight = 0;
+    public static final double kExtensionHigh = 0;
+    public static final double kLiftHighConeHeight = 0;
+
+    //Field positions - (x, y, z, rotation) (inches, inches, inches, degrees)
+    //Red alliance Outer, Coop, Inner
+    public static final double[] kAprilTag1 = {610.77, 42.19, 18.22, 180};
+    public static final double[] kAprilTag2 = {610.77, 108.19, 18.22, 180};
+    public static final double[] kAprilTag3 = {610.77, 174.19, 18.22, 180};
+    //Blue alliance substation
+    public static final double[] kAprilTag4 = {636.96, 265.74, 27.38, 180};
+    //Red alliance substation
+    public static final double[] kAprilTag5 = {14.25, 265.74, 27.38, 0};
+    //Blue alliance Inner, Coop, Outer
+    public static final double[] kAprilTag6 = {40.45, 174.19, 18.22, 0};
+    public static final double[] kAprilTag7 = {40.485, 108.19, 18.22, 0};
+    public static final double[] kAprilTag8 = {40.45, 42.19, 18.22, 0};
+
+    //Blue alliance scoring positions 
+    public static final double[] kBlueOuterLeft = {54.25, 20.19, 0, 180};
+    public static final double[] kBlueOuterMid = {54.25, 42.19, 0, 180};
+    public static final double[] kBlueOuterRight = {54.25, 64.19, 0 ,180};
+    
+    public static final double[] kBlueCoopLeft = {54.25, 86.19, 0, 180};
+    public static final double[] kBlueCoopMid = {54.25, 108.19, 0, 180};
+    public static final double[] kBlueCoopRight = {54.25, 130.19, 0, 180};
+
+    public static final double[] kBlueInnerLeft = {54.25, 152.19, 0, 180};
+    public static final double[] kBlueInnerMid = {54.25, 174.19, 0, 180};
+    public static final double[] kBlueInnerRight = {54.25, 196.19, 0, 180};
+
+    //Blue alliance staging positions
+    public static final double[] kBlueStagingOuterRight = {278.25, 36.19};
+    public static final double[] kBlueStagingInnerRight = {278.25, 84.19};
+    public static final double[] kBlueStagingInnerLeft = {278.25, 132.19};
+    public static final double[] kBlueStagingOuterLeft = {278.25, 180.19};
+
+    //Blue Charging station 
+    public static final double[] kBlueCharging = {292, 109.7};
+
+    //Red alliance scoring positions 
+    public static final double[] kRedOuterLeft = {596.97, 20.19, 0, 0};
+    public static final double[] kRedOuterMid = {596.97, 42.19, 0, 0};
+    public static final double[] kRedOuterRight = {596.97, 64.19, 0, 0};
+    
+    public static final double[] kRedCoopLeft = {596.97, 86.19, 0, 0};
+    public static final double[] kRedCoopMid = {596.97, 108.19, 0, 0};
+    public static final double[] kRedCoopRight = {596.97, 130.19, 0, 0};
+
+    public static final double[] kRedInnerLeft = {596.97, 152.19, 0, 0};
+    public static final double[] kRedInnerMid = {596.97, 174.19, 0, 0};
+    public static final double[] kRedInnerRight = {596.97, 196.19, 0, 0};
+
+    //Red alliance staging positions
+    public static final double[] kRedStagingOuterRight = {372.97, 180.19};
+    public static final double[] kRedStagingInnerRight = {372.97, 132.19};
+    public static final double[] kRedStagingInnerLeft = {372.97, 84.19};
+    public static final double[] kRedStagingOuterLeft = {372.97, 36.19};
+
+    //Red Charging station 
+    public static final double[] kRedCharging = {508.5, 109.7};
 
 
   }
