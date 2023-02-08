@@ -17,11 +17,13 @@ import static frc.robot.Constants.DriveConstants.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
+
 //import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.PhysicalConstants;
 
 public class Drivetrain extends SubsystemBase {
   // Robot swerve modules
@@ -74,7 +76,7 @@ public class Drivetrain extends SubsystemBase {
   
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
-          kDriveKinematics,
+          PhysicalConstants.kDriveKinematics,
           m_gyro.getRotation2d(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -163,7 +165,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates =
-          kDriveKinematics.toSwerveModuleStates(
+          PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));

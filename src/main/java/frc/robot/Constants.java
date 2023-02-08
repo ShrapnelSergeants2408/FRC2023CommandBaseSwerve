@@ -33,13 +33,6 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 32;
     public static final int kRearRightTurningMotorPort = 33;
 
-    /*
-    public static final int[] kFrontLeftTurningEncoderPorts = new int[] {0, 1};
-    public static final int[] kRearLeftTurningEncoderPorts = new int[] {2, 3};
-    public static final int[] kFrontRightTurningEncoderPorts = new int[] {4, 5};
-    public static final int[] kRearRightTurningEncoderPorts = new int[] {6, 7};
-    */
-
     //MA3 encoders for steering (Analog 0 - 3)
     public static final int kFrontLeftTurningEncoderPorts = 0;
     public static final int kRearLeftTurningEncoderPorts = 1;
@@ -73,23 +66,12 @@ public final class Constants {
     public static final int kDriveSpeedMultiplier = 1;
     public static final int kTurnSpeedMultiplier = 1;
 
-    // Distance between centers of right and left wheels on robot
-    // 18.375 in = 0.467 m
-    public static final double kTrackWidth = 0.467;
-
-    // Distance between front and back wheels on robot
-    // 20 in = 0.508 m
-    public static final double kWheelBase = 0.508;
-
-    public static final SwerveDriveKinematics kDriveKinematics =
-        new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-
+    //Gyro
     public static final boolean kGyroReversed = false;
+    //TODO: what other gyro values do I need?
 
+
+    // TODO: What are these values for?
     // TODO: These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or theoretically
     // for *your* robot's drive.
@@ -105,14 +87,30 @@ public final class Constants {
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
   }
 
+  public static final class PhysicalConstants{
+    // Distance between centers of right and left wheels on robot
+    // 18.375 in = 0.467 m
+    public static final double kTrackWidth = 0.467;
+
+    // Distance between front and back wheels on robot
+    // 20 in = 0.508 m
+    public static final double kWheelBase = 0.508;
+
+    public static final SwerveDriveKinematics kDriveKinematics =
+        new SwerveDriveKinematics(
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+  }
+
   public static final class ModuleConstants {
 
-
+    //TODO: determine this value
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
     public static final int kTurningEncoderCPR = 1024;
-    //public static final double kTurningGearRatio = 1/.83;
     public static final double kTurningGearRatio = 48.0/40.0;
 
     public static final int kNEOEncoderCPR = 42;
@@ -273,9 +271,9 @@ public final class Constants {
     //Gripper accelerometer port
     public static final int kGripperPosition = 0;
 
-    //Address Ultrasonic PWM or DIO? ports 0, 1
-    public static final int kUltrasonicPingChannel = 0;
-    public static final int kUltrasonicEchoChannel = 1;
+    //Address Ultrasonic navX analog port 
+
+    public static final int kArmExtensionRangefinderPort=0;
 
       //TODO: tune values
     //ArmLift PID
