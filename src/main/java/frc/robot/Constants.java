@@ -55,18 +55,13 @@ public final class Constants {
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kRearRightTurningEncoderReversed = true;
 
-    //relative encoders from NEO motor and SparkMAX are used.  Port values are
-    //placeholders for example code
-    public static final int kFrontLeftDriveEncoderPorts = 90;
-    public static final int kRearLeftDriveEncoderPorts = 91;
-    public static final int kFrontRightDriveEncoderPorts = 92;
-    public static final int kRearRightDriveEncoderPorts = 93;
 
     public static final boolean kFrontLeftDriveEncoderReversed = false;
     public static final boolean kRearLeftDriveEncoderReversed = true;
     public static final boolean kFrontRightDriveEncoderReversed = false;
     public static final boolean kRearRightDriveEncoderReversed = true;
 
+    //TODO: find offset values
     public static final double kFrontLeftTurningEncoderOffset = 0.0;
     public static final double kRearLeftTurningEncoderOffset = 0.0;
     public static final double kFrontRightTurningEncoderOffset = 0.0;
@@ -116,14 +111,14 @@ public final class Constants {
 
   public static final class ModuleConstants {
 
-    //TODO: determine this value
+    //TODO: determine this value  ?where is this used?
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final int kTurningEncoderCPR = 1024;
+    public static final int kTurningEncoderCPR = 1024; //TODO: is this still used
     public static final double kTurningGearRatio = 48.0/40.0;
 
-    public static final int kNEOEncoderCPR = 42;
+    public static final int kNEOEncoderCPR = 42;  //TODO: is this still used
     public static final double kDriveGearRatio = 1/6.67;
     public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
 
@@ -136,24 +131,7 @@ public final class Constants {
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     
-    /*
-    public static final double kDriveEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        // NEO 42 cpr * 6.67 gear ratio
-        (kWheelDiameterMeters * Math.PI) / (double) kDriveEncoderCPR;
-    
-    public static final double kTurningEncoderDistancePerPulse =
-        // Assumes the encoders are on a 1:1 reduction with the module shaft.
-
-        (2 * Math.PI) / (double) kTurningEncoderCPR;
-
-    // Gear ratio 48 motor gear:40 encoder gear
-    public static final double kTurningEncoderDistancePerRotation =
-        //(40./48)*(2 * Math.PI);
-        (48./40)*(2* Math.PI);
-    */
-
-    // PID values
+     // PID values TODO: do we need to send different values to each module?
 
     //TODO: update P values
     public static final double kPModuleTurningController = 1;
@@ -242,6 +220,7 @@ public final class Constants {
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
     //TODO: do these values need to be changed?
+    //Controller PID
     public static final double kPXController = 1;
     public static final double kPYController = 1;
     public static final double kPThetaController = 1;
@@ -269,23 +248,25 @@ public final class Constants {
     public static final boolean kArmExtensionMotorInverted = false;
 
     //CAN Address - Gripper Motor 50s
-    public static final int kGripperExtension = 50;
+    public static final int kWrist = 50;
+    public static final int kGripper = 51;  //TODO: if using motor for gripper
 
-    public static final boolean kGripperExtensionInverted = false;
+    public static final boolean kWristInverted = false;
+    public static final boolean kGripperInverted = false;
 
 
-    //PCM channels
+    //PCM channels //TODO: if using pneumatics for gripper
     public static final int kGripperOpen = 0;
     public static final int kGripperClosed = 1;
 
-    //Gripper accelerometer port
-    public static final int kGripperPosition = 0;
+    //Wrist Gyro navX analog port //TODO: determine actual port number
+    public static final int kWristPositionPort = 1;
 
-    //Address Ultrasonic navX analog port 
+    //Address Ultrasonic navX analog port //TODO: determine actual port number 
 
     public static final int kArmExtensionRangefinderPort=0;
 
-      //TODO: tune values
+      //TODO: tune values;  offload ArmLift PID to SparkMax?
     //ArmLift PID
     public static final double kPArmLiftMotor = 0.1;
     public static final double kIArmLiftMotor = 0.0;
