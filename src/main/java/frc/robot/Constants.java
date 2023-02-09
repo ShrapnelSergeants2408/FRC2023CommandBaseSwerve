@@ -27,11 +27,21 @@ public final class Constants {
     public static final int kFrontRightDriveMotorPort = 22;
     public static final int kRearRightDriveMotorPort = 23;
 
-    //CAN Address - steer motors - CAN port 30s
+    public static final boolean kFrontLeftDriveMotorReversed = false;
+    public static final boolean kRearLeftDriveMotorReversed = false;
+    public static final boolean kFrontRightDriveMotorReversed = false;
+    public static final boolean kRearRightDriveMotorReversed = false;
+
+    //CAN Address - turning motors - CAN port 30s
     public static final int kFrontLeftTurningMotorPort = 30;
     public static final int kRearLeftTurningMotorPort = 31;
     public static final int kFrontRightTurningMotorPort = 32;
     public static final int kRearRightTurningMotorPort = 33;
+    
+    public static final boolean kFrontLeftTurningMotorReversed = false;
+    public static final boolean kRearLeftTurningMotorReversed = false;
+    public static final boolean kFrontRightTurningMotorReversed = false;
+    public static final boolean kRearRightTurningMotorReversed = false;
 
     //MA3 encoders for steering (Analog 0 - 3)
     public static final int kFrontLeftTurningEncoderPorts = 0;

@@ -27,49 +27,58 @@ import frc.robot.Constants.PhysicalConstants;
 
 public class Drivetrain extends SubsystemBase {
   // Robot swerve modules
+    /**
+   * Constructs a SwerveModule.
+   *
+   * @param driveMotorChannel The channel of the drive motor SparkMax
+   * @param turningMotorChannel The channel of the turning motor VictorSPX
+   * @param driveMotorReversed Is the drive motor reversed
+   * @param turningMotorReversed Is the turning motor reversed
+   * @param turningEncoderChannel ANA port of MA3 turning encoder
+   * @param turningEncoderOffset calculated value for offset
+   * @param turningEncoderReversed is the turning encoder reversed
+   */
   private final SwerveModule m_frontLeft =
       new SwerveModule(
           kFrontLeftDriveMotorPort,
           kFrontLeftTurningMotorPort,
-          kFrontLeftDriveEncoderPorts,
+          kFrontLeftDriveMotorReversed,
+          kFrontLeftTurningMotorReversed,
           kFrontLeftTurningEncoderPorts,
-          kFrontLeftDriveEncoderReversed,
-          kFrontLeftTurningEncoderReversed,
-          kFrontLeftTurningEncoderOffset);
+          kFrontLeftTurningEncoderOffset
+          );
 
   private final SwerveModule m_rearLeft =
       new SwerveModule(
           kRearLeftDriveMotorPort,
           kRearLeftTurningMotorPort,
-          kRearLeftDriveEncoderPorts,
+          kRearLeftDriveMotorReversed,
+          kRearLeftTurningMotorReversed,
           kRearLeftTurningEncoderPorts,
-          kRearLeftDriveEncoderReversed,
-          kRearLeftTurningEncoderReversed,
-          kRearLeftTurningEncoderOffset);
+          kRearLeftTurningEncoderOffset
+          );
 
   private final SwerveModule m_frontRight =
       new SwerveModule(
           kFrontRightDriveMotorPort,
           kFrontRightTurningMotorPort,
-          kFrontRightDriveEncoderPorts,
+          kFrontRightDriveMotorReversed,
+          kFrontRightTurningMotorReversed,
           kFrontRightTurningEncoderPorts,
-          kFrontRightDriveEncoderReversed,
-          kFrontRightTurningEncoderReversed,
-          kFrontRightTurningEncoderOffset);
+          kFrontRightTurningEncoderOffset
+          );
 
   private final SwerveModule m_rearRight =
       new SwerveModule(
           kRearRightDriveMotorPort,
           kRearRightTurningMotorPort,
-          kRearRightDriveEncoderPorts,
+          kRearRightDriveMotorReversed,
+          kRearRightTurningMotorReversed,
           kRearRightTurningEncoderPorts,
-          kRearRightDriveEncoderReversed,
-          kRearRightTurningEncoderReversed,
-          kRearRightTurningEncoderOffset);
+          kRearRightTurningEncoderOffset
+          );
 
-  // The gyro sensor
-  //replace FRC gyro with NavX
-  //private final Gyro m_gyro = new ADXRS450_Gyro();
+  // The navX MXP gyro sensor
   private final AHRS m_gyro = new AHRS();
 
   // Odometry class for tracking robot pose
