@@ -19,6 +19,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.GrabPiece;
 import frc.robot.commands.ReleasePiece;
@@ -180,7 +181,7 @@ public class RobotContainer {
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics);
+            .setKinematics(PhysicalConstants.kDriveKinematics);
 
     // An example trajectory to follow.  All units in meters.
     Trajectory exampleTrajectory =
@@ -207,7 +208,7 @@ public class RobotContainer {
         new SwerveControllerCommand(
             exampleTrajectory,
             m_robotDrive::getPose, // Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
+            PhysicalConstants.kDriveKinematics,
 
             // Position controllers
             new PIDController(AutoConstants.kPXController,
@@ -242,7 +243,7 @@ public class RobotContainer {
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                        .setKinematics(DriveConstants.kDriveKinematics);
+                        .setKinematics(PhysicalConstants.kDriveKinematics);
 
         // 2. Generate trajectory
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -273,7 +274,7 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
         SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
                 trajectory,
                 m_robotDrive::getPose,
-                DriveConstants.kDriveKinematics,
+                PhysicalConstants.kDriveKinematics,
                 xController,
                 yController,
                 thetaController,
@@ -299,7 +300,7 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
             AutoConstants.kMaxSpeedMetersPerSecond,
             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                    .setKinematics(DriveConstants.kDriveKinematics);
+                    .setKinematics(PhysicalConstants.kDriveKinematics);
 
     // 2. Generate trajectory
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
@@ -330,7 +331,7 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
             trajectory,
             m_robotDrive::getPose,
-            DriveConstants.kDriveKinematics,
+            PhysicalConstants.kDriveKinematics,
             xController,
             yController,
             thetaController,
