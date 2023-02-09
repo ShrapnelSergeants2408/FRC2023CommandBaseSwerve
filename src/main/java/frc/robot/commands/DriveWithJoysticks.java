@@ -22,8 +22,6 @@ public class DriveWithJoysticks extends CommandBase {
   private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
 
 
-
-
   /** Creates a new DriveWithJoysticks. */
   public DriveWithJoysticks(
       Drivetrain driveTrain, 
@@ -42,7 +40,6 @@ public class DriveWithJoysticks extends CommandBase {
 
     addRequirements(driveTrain);
 
-
   }
 
   // Called when the command is initially scheduled.
@@ -52,33 +49,33 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xSpeedFunction.get();
-    double ySpeed = ySpeedFunction.get();
-    double turningSpeed = turningSpeedFunction.get();
+    double m_xSpeed = xSpeedFunction.get();
+    double m_ySpeed = ySpeedFunction.get();
+    double m_turningSpeed = turningSpeedFunction.get();
 
     //apply deadband
-    xSpeed = Math.abs(xSpeed) > OIConstants.kJoystick_Deadband ? xSpeed : 0;
-    ySpeed = Math.abs(ySpeed) > OIConstants.kJoystick_Deadband ? ySpeed : 0;
-    turningSpeed = Math.abs(turningSpeed) > OIConstants.kJoystick_Deadband ? turningSpeed : 0;
+    m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
+    m_ySpeed = Math.abs(m_ySpeed) > OIConstants.kJoystick_Deadband ? m_ySpeed : 0;
+    m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
 
     //apply slew rate limiter
     //TODO:may add speed scaling multiplier to slow max speed for control purposes
-    xSpeed = xLimiter.calculate(xSpeed);
-    ySpeed = yLimiter.calculate(ySpeed);
-    turningSpeed = turnLimiter.calculate(turningSpeed);
+    m_xSpeed = xLimiter.calculate(m_xSpeed);
+    m_ySpeed = yLimiter.calculate(m_ySpeed);
+    m_turningSpeed = turnLimiter.calculate(m_turningSpeed);
 
     //set chassis speeds
     ChassisSpeeds chassisSpeeds;
     if(fieldOriented.get()){
       //relative to field
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        xSpeed,
-        ySpeed,
-        turningSpeed,
+        m_xSpeed,
+        m_ySpeed,
+        m_turningSpeed,
         driveTrain.getRotation2d());
     } else {
       //relative to robot
-      chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
+      chassisSpeeds = new ChassisSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed);
     }
 
     SwerveModuleState[] moduleStates = PhysicalConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
