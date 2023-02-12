@@ -29,7 +29,7 @@ public class ArmSubsystem extends TrapezoidProfileSubsystem {
                      ArmConstants.kVVoltSecondPerRadArmLiftMotor,
                      ArmConstants.kAVoltSecondSquaredPerRadArmLiftMotor);
 
-  private final VictorSPX m_ArmExtensionMotor;
+  //private final VictorSPX m_ArmExtensionMotor;
   private final AnalogInput m_ArmExtensionRangefinder;
   
 

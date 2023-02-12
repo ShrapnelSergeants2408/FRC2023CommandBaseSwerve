@@ -12,13 +12,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   private final CANSparkMax m_ArmLiftMotor;
-  private final SparkMaxPIDController m_ArmLiftMotorPID;
+  private final PIDController m_ArmLiftMotorPID;
   private final RelativeEncoder m_ArmLiftEncoder;
 
   private final VictorSPX m_ArmExtensionMotor;
@@ -28,10 +29,11 @@ public class Arm extends SubsystemBase {
 
   
   public Arm() {
-    //m_ArmLiftMotor = new CANSparkMax(ArmConstants.kArmLiftMotor, MotorType.kBrushless);
     m_ArmLiftMotor = new CANSparkMax(ArmConstants.kArmLiftMotor, MotorType.kBrushless);
-    m_ArmLiftMotor.restoreFactoryDefaults();
-    m_ArmLiftMotorPID = m_ArmLiftMotor.getPIDController();
+    m_ArmLiftMotor.restoreFactoryDefaults();  //set initial arm position
+    m_ArmLiftMotorPID = new PIDController(ArmConstants.kPArmLiftMotor,
+                                          ArmConstants.kIArmLiftMotor,
+                                          ArmConstants.kDArmLiftMotor);
     m_ArmLiftEncoder = m_ArmLiftMotor.getEncoder();
     m_ArmLiftMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);  
 
@@ -42,7 +44,21 @@ public class Arm extends SubsystemBase {
                                                ArmConstants.kDArmExtensionMotor);
     m_ArmExtensionRangefinder = new AnalogInput(ArmConstants.kArmExtensionRangefinderPort);
 
+    SmartDashboard.putNumber("P Gain Arm Lift", ArmConstants.kPArmLiftMotor);
+    SmartDashboard.putNumber("I Gain Arm Lift", ArmConstants.kIArmLiftMotor);
+    SmartDashboard.putNumber("D Gain Arm Lift", ArmConstants.kDArmLiftMotor);
+    //SmartDashboard.putNumber("I Zone Arm Lift", ArmConstants.kIzArmLiftMotor);
+    //SmartDashboard.putNumber("Feed Forward Arm Lift", ArmConstants.kFFArmLiftMotor);
+    SmartDashboard.putNumber("Min Output Arm Lift", ArmConstants.kMinOutputArmLiftMotor);
+    SmartDashboard.putNumber("Max Output Arm Lift", ArmConstants.kMaxOutputArmLiftMotor);
 
+    SmartDashboard.putNumber("P Gain Arm Extension", ArmConstants.kPArmExtensionMotor);
+    SmartDashboard.putNumber("I Gain Arm Extension", ArmConstants.kIArmExtensionMotor);
+    SmartDashboard.putNumber("D Gain Arm Extension", ArmConstants.kDArmExtensionMotor);
+    //SmartDashboard.putNumber("I Zone Arm Extension", ArmConstants.kIzArmExtensionMotor);
+    //SmartDashboard.putNumber("Feed Forward Arm Extension", ArmConstants.kFFArmExtensionMotor);
+    SmartDashboard.putNumber("Min Output Arm Extension", ArmConstants.kMinOutputArmExtensionMotor);
+    SmartDashboard.putNumber("Max Output Arm Extension", ArmConstants.kMaxOutputArmExtensionMotor);
   }
 
   @Override

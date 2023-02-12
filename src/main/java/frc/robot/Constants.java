@@ -282,12 +282,16 @@ public final class Constants {
     public static final double kMaxVelocityRadPerSecondArmLiftMotor = 0;
     public static final double kMaxAccelerationRadPerSecondSquaredArmLiftMotor = 0;
     public static final double kArmLiftMotorOffsetRads = 0;
+    //need max/min encoder limits 
 
 
     //ArmExtension PID
     public static final double kPArmExtensionMotor = 1.0;
     public static final double kIArmExtensionMotor = 0.0;
     public static final double kDArmExtensionMotor = 0.0;
+    public static final double kMaxOutputArmExtensionMotor = 1.0;
+    public static final double kMinOutputArmExtensionMotor = -1.0;
+    //need max/min rangefinder limits
 
     //Arm Conversions
     public static final double kArmGearRatio = 100.0/1.0;
@@ -295,8 +299,8 @@ public final class Constants {
     public static final double kArmCPR = 42.0 * kArmGearRatio;
     public static final double kArmRadPerTick = kRadPerRotation / kArmCPR;
     public static final double kArmDegPerTick = 360/kArmCPR;
-    public static final double kArmEncoderRot2Deg = 0.0;
-    public static final double kArmEncoderRot2Rad = 
+    public static final double kArmEncoderRot2Deg = 1.0/360.0;
+    public static final double kArmEncoderRot2Rad = 1.0/kRadPerRotation;
   }
 
   public static final class FieldConstants {
