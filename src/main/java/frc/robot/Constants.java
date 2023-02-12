@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.RobotController;
 
 
 /**
@@ -282,7 +283,10 @@ public final class Constants {
     public static final double kMaxVelocityRadPerSecondArmLiftMotor = 0;
     public static final double kMaxAccelerationRadPerSecondSquaredArmLiftMotor = 0;
     public static final double kArmLiftMotorOffsetRads = 0;
-    //need max/min encoder limits 
+    public static final double kArmLiftMotorSpeed = 0.5; //TODO:  adjust constant arm speed
+    //need max/min encoder limits
+    public static final double kArmLiftMaxHeight = Math.PI;
+    public static final double kArmLiftMinHeight = 0; 
 
 
     //ArmExtension PID
@@ -291,6 +295,12 @@ public final class Constants {
     public static final double kDArmExtensionMotor = 0.0;
     public static final double kMaxOutputArmExtensionMotor = 1.0;
     public static final double kMinOutputArmExtensionMotor = -1.0;
+    public static final double kArmExtensionSpeed = 0.5; //TODO: adjust constant extension speed
+    //max/min rangefinder limits
+    public static final double kArmExtensionMinDistance = 30;
+    public static final double kArmExtensionMaxDistance = 50;
+
+
     //need max/min rangefinder limits
 
     //Arm Conversions

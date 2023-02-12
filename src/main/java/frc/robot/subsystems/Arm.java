@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -12,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;;
@@ -25,6 +27,10 @@ public class Arm extends SubsystemBase {
   private final VictorSPX m_ArmExtensionMotor;
   private final PIDController m_ArmExtensionMotorPID;
   private final AnalogInput m_ArmExtensionRangefinder;
+
+  private double m_ArmExtensionDistance;
+  private double m_ArmLiftPosition;
+  private double m_ArmExtensionVoltageScaleFactor;
 
 
   
@@ -43,6 +49,7 @@ public class Arm extends SubsystemBase {
                                                ArmConstants.kIArmExtensionMotor, 
                                                ArmConstants.kDArmExtensionMotor);
     m_ArmExtensionRangefinder = new AnalogInput(ArmConstants.kArmExtensionRangefinderPort);
+    
 
     SmartDashboard.putNumber("P Gain Arm Lift", ArmConstants.kPArmLiftMotor);
     SmartDashboard.putNumber("I Gain Arm Lift", ArmConstants.kIArmLiftMotor);
@@ -64,5 +71,18 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    m_ArmLiftPosition = m_ArmLiftEncoder.getPosition();
+
+    m_ArmExtensionVoltageScaleFactor = RobotController.getVoltage5V(); //compensate for supply volage differences
+    m_ArmExtensionDistance = m_ArmExtensionRangefinder.getValue()*m_ArmExtensionVoltageScaleFactor*0.0492;
+
+    SmartDashboard.putNumber("Arm Lift Position ", m_ArmLiftPosition);
+    SmartDashboard.putNumber("Arm Extension",m_ArmExtensionDistance);
+
+  }
+
+  public void armMovement(double armLift, double armExtend){
+    m_ArmLiftMotor.set(armLift);
+    m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput, armExtend);
   }
 }
