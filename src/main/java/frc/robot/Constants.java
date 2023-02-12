@@ -248,11 +248,11 @@ public final class Constants {
     public static final boolean kArmExtensionMotorInverted = false;
 
     //CAN Address - Gripper Motor 50s
-    public static final int kWrist = 50;
+    public static final int kWristMotor = 50;
     public static final int kGripper = 51;  //TODO: if using motor for gripper
 
-    public static final boolean kWristInverted = false;
-    public static final boolean kGripperInverted = false;
+    public static final boolean kWristMotorInverted = false;
+    public static final boolean kGripperMotorInverted = false;
 
 
     //PCM channels //TODO: if using pneumatics for gripper
@@ -289,7 +289,14 @@ public final class Constants {
     public static final double kIArmExtensionMotor = 0.0;
     public static final double kDArmExtensionMotor = 0.0;
 
-
+    //Arm Conversions
+    public static final double kArmGearRatio = 100.0/1.0;
+    public static final double kRadPerRotation = 2 * Math.PI;
+    public static final double kArmCPR = 42.0 * kArmGearRatio;
+    public static final double kArmRadPerTick = kRadPerRotation / kArmCPR;
+    public static final double kArmDegPerTick = 360/kArmCPR;
+    public static final double kArmEncoderRot2Deg = 0.0;
+    public static final double kArmEncoderRot2Rad = 
   }
 
   public static final class FieldConstants {

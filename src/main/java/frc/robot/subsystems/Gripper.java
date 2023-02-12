@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 
 import static frc.robot.Constants.ArmConstants.*;
 
@@ -27,8 +28,8 @@ public class Gripper extends SubsystemBase {
   
   public Gripper() {
 
-    m_GripperExtensionMotor = new VictorSPX(kGripperExtension);
-    m_GripperExtensionMotor.setInverted(kGripperExtensionInverted);
+    m_GripperExtensionMotor = new VictorSPX(ArmConstants.kWristMotor);
+    m_GripperExtensionMotor.setInverted(ArmConstants.kWristMotorInverted);
 
     m_Gripper = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,kGripperOpen, kGripperClosed);
     

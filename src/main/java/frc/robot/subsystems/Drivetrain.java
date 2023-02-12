@@ -125,12 +125,6 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
-    
-
-
-
-
-
 
   }
 
