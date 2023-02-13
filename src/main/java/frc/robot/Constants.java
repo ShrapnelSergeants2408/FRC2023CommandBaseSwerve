@@ -267,7 +267,7 @@ public final class Constants {
     public static final int kGripperOpen = 0;
     public static final int kGripperClosed = 1;
 
-    //Wrist Gyro navX analog port //TODO: determine actual port number
+    //Wrist Gyro navx analog port //TODO: determine actual port number
     public static final int kWristPositionPort = 1;
 
     //Address Ultrasonic navX analog port //TODO: determine actual port number 
@@ -309,9 +309,16 @@ public final class Constants {
     public static final double kArmExtensionMinDistance = 30;
     public static final double kArmExtensionMaxDistance = 50;
 
-
+    //WristMotor PID
+    public static final double kPWristMotor = 1.0;
+    public static final double kIWristMotor = 0.0;
+    public static final double kDWristMotor = 0.0;
+    public static final double kMaxOutputWristMotor = 1.0;
+    public static final double kMinOutputWristMotor = -1.0;
+    public static final double kWristMotorSpeed = 0.5; //TODO: adjust constant extension speed
     //need max/min rangefinder limits
-
+    public static final double kWristMotorMinDistance = 0;
+    public static final double kWristMotorMaxDistance = 90;
 
 
   }

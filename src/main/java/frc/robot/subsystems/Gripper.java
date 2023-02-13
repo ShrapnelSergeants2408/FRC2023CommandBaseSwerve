@@ -5,10 +5,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,37 +22,49 @@ import static frc.robot.Constants.ArmConstants.*;
 
 public class Gripper extends SubsystemBase {
   /** Creates a new Gripper. */
-  private final VictorSPX m_GripperExtensionMotor;
-  private final DoubleSolenoid m_Gripper;
+  private final VictorSPX m_WristMotor;
+  private final PIDController m_WristMotorPID;
   
-  private final AHRS m_GripperPosition;
-  //private final Accelerometer m_GripperPosition;
+  private final AnalogGyro m_WristPosition;
+  private final double m_WristPositionOffset;
+
+  private final DoubleSolenoid m_Gripper;
+
 
   
   public Gripper() {
 
-    m_GripperExtensionMotor = new VictorSPX(ArmConstants.kWristMotor);
-    m_GripperExtensionMotor.setInverted(ArmConstants.kWristMotorInverted);
+    m_WristMotor = new VictorSPX(ArmConstants.kWristMotor);
+    m_WristMotor.setInverted(ArmConstants.kWristMotorInverted);
+    m_WristMotorPID = new PIDController(
+                    kPWristMotor,
+                    kIWristMotor, 
+                    kDWristMotor);
+
+    m_WristPosition = new AnalogGyro(ArmConstants.kWristPositionPort);
+    m_WristPosition.reset();
+    m_WristPositionOffset = m_WristPosition.getAngle();
+
 
     m_Gripper = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,kGripperOpen, kGripperClosed);
     
 
-    m_GripperPosition = new AHRS();
+
   }  
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("GripperYaw", m_GripperPosition.getYaw());
-    SmartDashboard.putNumber("GripperPitch",m_GripperPosition.getPitch());
-    SmartDashboard.putNumber("GripperRoll", m_GripperPosition.getRoll());
-    SmartDashboard.putNumber("Gripper Angle", m_GripperPosition.getAngle());
-    SmartDashboard.putNumber("Gripper RawX", m_GripperPosition.getRawAccelX());
-    SmartDashboard.putNumber("Gripper RawY", m_GripperPosition.getRawAccelY());
-    SmartDashboard.putNumber("Gripper RawZ", m_GripperPosition.getRawAccelZ());
-    SmartDashboard.putNumber("Gripper RawMagX", m_GripperPosition.getRawMagX());
-    SmartDashboard.putNumber("Gripper RawMagY", m_GripperPosition.getRawMagY());
-    SmartDashboard.putNumber("Gripper RawMagZ", m_GripperPosition.getRawMagZ());
+    //SmartDashboard.putNumber("GripperYaw", m_WristPosition.getYaw());
+    //SmartDashboard.putNumber("GripperPitch",m_WristPosition.getPitch());
+    //SmartDashboard.putNumber("GripperRoll", m_WristPosition.getRoll());
+    //SmartDashboard.putNumber("Gripper Angle", m_WristPosition.getAngle());
+    //SmartDashboard.putNumber("Gripper RawX", m_WristPosition.getRawAccelX());
+    //SmartDashboard.putNumber("Gripper RawY", m_WristPosition.getRawAccelY());
+    //SmartDashboard.putNumber("Gripper RawZ", m_WristPosition.getRawAccelZ());
+    //SmartDashboard.putNumber("Gripper RawMagX", m_WristPosition.getRawMagX());
+    //SmartDashboard.putNumber("Gripper RawMagY", m_WristPosition.getRawMagY());
+    //SmartDashboard.putNumber("Gripper RawMagZ", m_WristPosition.getRawMagZ());
 
   }
 
