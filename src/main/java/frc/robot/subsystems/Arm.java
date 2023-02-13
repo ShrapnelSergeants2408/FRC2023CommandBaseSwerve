@@ -101,4 +101,9 @@ public class Arm extends SubsystemBase {
   public void useArmExtensionOutput(){
     //do something PID here
   }
+
+  public void stopArm() {
+    m_ArmLiftMotor.set(0);
+    m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput,0);
+  }
 }
