@@ -8,8 +8,6 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.RobotController;
-
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -241,6 +239,15 @@ public final class Constants {
   }
 
   public static final class ArmConstants {  
+
+    //Arm Conversions
+    public static final double kArmLiftGearRatio = 100.0/1.0;
+    public static final double kArmLiftRadPerRotation = 2 * Math.PI / kArmLiftGearRatio;
+    public static final double kArmLiftCPR = 42.0 * kArmLiftGearRatio;
+    public static final double kArmLiftRadPerTick = kArmLiftRadPerRotation / kArmLiftCPR;
+    public static final double kArmLiftDegPerRotation = 360 / kArmLiftGearRatio;
+    public static final double kArmLiftDegPerTick = kArmLiftDegPerRotation/kArmLiftCPR;
+
     //CAN Address - Arm Motors 40s
     public static final int kArmLiftMotor = 40;
     public static final int kArmExtensionMotor = 41;
@@ -285,7 +292,9 @@ public final class Constants {
     public static final double kArmLiftMotorOffsetRads = 0;
     public static final double kArmLiftMotorSpeed = 0.5; //TODO:  adjust constant arm speed
     //need max/min encoder limits
-    public static final double kArmLiftMaxHeight = Math.PI;
+    public static final double kArmLiftMaxHeightDeg = 75;
+    public static final double kArmLiftMaxHeight = kArmLiftMaxHeightDeg / kArmLiftDegPerRotation;
+    public static final double kArmLiftMaxHeightRad = 1.309;
     public static final double kArmLiftMinHeight = 0; 
 
 
@@ -303,15 +312,10 @@ public final class Constants {
 
     //need max/min rangefinder limits
 
-    //Arm Conversions
-    public static final double kArmGearRatio = 100.0/1.0;
-    public static final double kRadPerRotation = 2 * Math.PI;
-    public static final double kArmCPR = 42.0 * kArmGearRatio;
-    public static final double kArmRadPerTick = kRadPerRotation / kArmCPR;
-    public static final double kArmDegPerTick = 360/kArmCPR;
-    public static final double kArmEncoderRot2Deg = 1.0/360.0;
-    public static final double kArmEncoderRot2Rad = 1.0/kRadPerRotation;
+
+
   }
+
 
   public static final class FieldConstants {
     //Measurements in partial arm rotations (Lift) and inches (Extension)

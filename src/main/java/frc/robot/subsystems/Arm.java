@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+//import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -84,5 +84,21 @@ public class Arm extends SubsystemBase {
   public void armMovement(double armLift, double armExtend){
     m_ArmLiftMotor.set(armLift);
     m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput, armExtend);
+  }
+
+  public double getArmLiftMeasurement(){
+    return m_ArmLiftPosition;
+  }
+  
+  public double getArmExtensionMeasurement(){
+    return m_ArmExtensionDistance;
+  }
+
+  public void useArmLiftOutput(){
+    //do something PID here
+  }
+
+  public void useArmExtensionOutput(){
+    //do something PID here
   }
 }
