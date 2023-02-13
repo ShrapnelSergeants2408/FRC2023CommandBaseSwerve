@@ -19,23 +19,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.FieldConstants;
+//import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
-
+import frc.robot.commands.ArmWithJoysticks;
 import frc.robot.commands.DriveWithJoysticks;
-import frc.robot.commands.GrabPiece;
-import frc.robot.commands.ReleasePiece;
+//import frc.robot.commands.GrabPiece;
+//import frc.robot.commands.ReleasePiece;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.Autonomous.DoNothing;
-
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Arm;
+//import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Gripper;
+//import frc.robot.subsystems.Gripper;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+//import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -50,8 +50,8 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
-  private final ArmSubsystem m_robotArm = new ArmSubsystem();
-  private final Gripper m_robotGripper = new Gripper();
+  private final Arm m_robotArm = new Arm();
+  //private final Gripper m_robotGripper = new Gripper();
 
   // The autonomous routines
 
@@ -60,8 +60,7 @@ public class RobotContainer {
 
 
 
-  // The driver's controller
-  
+  // The controllers
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
@@ -75,6 +74,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
+
     // The left stick controls translation of the robot.
     // Turning is controlled by the X axis of the right stick.
     m_robotDrive.setDefaultCommand(new DriveWithJoysticks(
@@ -84,13 +84,25 @@ public class RobotContainer {
       () -> m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier, 
       () -> !m_driverController.getRawButton(OIConstants.kD_Mid_Left)));
 
+
+    // Operator left stick Y raises/lowers arm
+    // Operator right stick Y extends/retracts arm
+    //  TODO: after testing (and recoding) change default to ArmToHeight
+    m_robotArm.setDefaultCommand(new ArmWithJoysticks(
+        m_robotArm,
+        () -> m_operatorController.getLeftY(),
+        () -> m_operatorController.getRightY()));
+    /*
     m_robotGripper.setDefaultCommand(
         // default to gripper closed
         new RunCommand(
             () ->
                 m_robotGripper.grabPiece(),
         m_robotGripper)
+        
     );  
+*/
+
 
     // Add commands to the autonomous command chooser
     m_AutoChooser.setDefaultOption("Do Nothing", m_doNothing);
@@ -113,36 +125,36 @@ public class RobotContainer {
   private void configureButtonBindings() {
      
      
-    JoystickButton m_driverLeft = new JoystickButton(m_driverController, OIConstants.kD_Left);
-    JoystickButton m_driverRight = new JoystickButton(m_driverController, OIConstants.kD_Right);
-    JoystickButton m_driverUp = new JoystickButton(m_driverController, OIConstants.kD_Up);
-    JoystickButton m_driverDown = new JoystickButton(m_driverController, OIConstants.kD_Down);
-    JoystickButton m_driverShoulderTopLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Left);
-    JoystickButton m_driverShoulderTopRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Right);
-    JoystickButton m_driverShoulderBottomLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Left);
-    JoystickButton m_driverShoulderBottomRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Right);
-    JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
-    JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
-    JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
-    JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
+    //JoystickButton m_driverLeft = new JoystickButton(m_driverController, OIConstants.kD_Left);
+    //JoystickButton m_driverRight = new JoystickButton(m_driverController, OIConstants.kD_Right);
+    //JoystickButton m_driverUp = new JoystickButton(m_driverController, OIConstants.kD_Up);
+    //JoystickButton m_driverDown = new JoystickButton(m_driverController, OIConstants.kD_Down);
+    //JoystickButton m_driverShoulderTopLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Left);
+    //JoystickButton m_driverShoulderTopRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Right);
+    //JoystickButton m_driverShoulderBottomLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Left);
+    //JoystickButton m_driverShoulderBottomRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Right);
+    //JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
+    //JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
+    //JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
+    //JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
     //JoystickButton m_driverPOV = new JoystickButton(m_driverController, )
 
-    JoystickButton m_operatorLeft = new JoystickButton(m_operatorController,OIConstants.kO_Left);
-    JoystickButton m_operatorRight = new JoystickButton(m_operatorController,OIConstants.kO_Right);
-    JoystickButton m_operatorUp = new JoystickButton(m_operatorController,OIConstants.kO_Up);
-    JoystickButton m_operatorDown = new JoystickButton(m_operatorController,OIConstants.kO_Down);
-    JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
-    JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
-    JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
-    JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
-    JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
+    //JoystickButton m_operatorLeft = new JoystickButton(m_operatorController,OIConstants.kO_Left);
+    //JoystickButton m_operatorRight = new JoystickButton(m_operatorController,OIConstants.kO_Right);
+    //JoystickButton m_operatorUp = new JoystickButton(m_operatorController,OIConstants.kO_Up);
+    //JoystickButton m_operatorDown = new JoystickButton(m_operatorController,OIConstants.kO_Down);
+    //JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
+    //JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
+    //JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
+    //JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
+    //JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
     
 
 
     //button command links
  
-    m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad
-    m_operatorDown.onTrue(m_robotArm.setArmGoalCommand(1)); //move to 1 rad
+    //m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad
+    //m_operatorDown.onTrue(m_robotArm.setArmGoalCommand(1)); //move to 1 rad
     
     //m_operatorShoulderTopRight.onTrue(new GrabPiece(m_robotGripper));
     //m_operatorShoulderTopLeft.onTrue(new ReleasePiece(m_robotGripper));
