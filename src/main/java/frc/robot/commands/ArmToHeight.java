@@ -4,39 +4,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.subsystems.ArmSubsystem;
-
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.subsystems.Arm;
 
 public class ArmToHeight extends CommandBase {
   /** Creates a new ArmToHeight. */
-  private final ArmSubsystem m_armSubsystem;
-  private final SparkMaxPIDController m_ArmLiftMotorPIDController;
-  private final RelativeEncoder m_ArmLiftMotorEncoder;
+  private final Arm m_armSubsystem;
+  
+  private final PIDController m_ArmLiftMotorPIDController;
+  private final PIDController m_ArmExtensionMotorPIDController;
 
-  public ArmToHeight(ArmSubsystem armSubsystem, SparkMaxPIDController armLiftMotorPID, RelativeEncoder armLiftMotorEncoder, double armSetpointInches) {
+  public ArmToHeight(Arm armSubsystem, 
+                     PIDController armLiftMotorPID, 
+                     PIDController armExtensionPID,
+                     double armHeightSetpointDegrees,
+                     double armExtensionSetpointInches) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
 
-    m_ArmLiftMotorPIDController = armLiftMotorPID;
-    m_ArmLiftMotorEncoder = armLiftMotorEncoder;
-    double m_armSetpointInches = armSetpointInches;
+    m_ArmLiftMotorPIDController = m_armSubsystem.setArmLiftPID();
+    m_ArmLiftMotorPIDController.setSetpoint(armHeightSetpointDegrees);
 
-    
+    m_ArmExtensionMotorPIDController = m_armSubsystem.setArmExtensionPID();
+    m_ArmExtensionMotorPIDController.setSetpoint(armExtensionSetpointInches);
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-
+    m_ArmLiftMotorPIDController.reset();
+    m_ArmExtensionMotorPIDController.reset();
 
   }
 
@@ -44,46 +45,17 @@ public class ArmToHeight extends CommandBase {
   @Override
   public void execute() {
 
-      // PID coefficients
-      double kP = ArmConstants.kPArmLiftMotor; 
-      double kI = ArmConstants.kIArmLiftMotor;
-      double kD = ArmConstants.kDArmLiftMotor;
-      double kIz = ArmConstants.kIzArmLiftMotor;
-      double kFF = ArmConstants.kFFArmLiftMotor;
-      double kMaxOutput = ArmConstants.kMaxOutputArmLiftMotor; 
-      double kMinOutput = ArmConstants.kMinOutputArmLiftMotor;
-      
-      // read PID coefficients from SmartDashboard
-       double p = SmartDashboard.getNumber("P Gain Arm Lift", 0);
-       double i = SmartDashboard.getNumber("I Gain Arm Lift", 0);
-       double d = SmartDashboard.getNumber("D Gain Arm Lift", 0);
-       double iz = SmartDashboard.getNumber("I Zone Arm Lift", 0);
-       double ff = SmartDashboard.getNumber("Feed Forward Arm Lift", 0);
-       double max = SmartDashboard.getNumber("Max Output Arm Lift", 0);
-       double min = SmartDashboard.getNumber("Min Output Arm Lift", 0);
-       double rotations = SmartDashboard.getNumber("Set Rotations Arm Lift", 0);
-   
-       // if PID coefficients on SmartDashboard have changed, write new values to controller
-       if((p != kP)) { m_ArmLiftMotorPIDController.setP(p); kP = p; }
-       if((i != kI)) { m_ArmLiftMotorPIDController.setI(i); kI = i; }
-       if((d != kD)) { m_ArmLiftMotorPIDController.setD(d); kD = d; }
-       if((iz != kIz)) { m_ArmLiftMotorPIDController.setIZone(iz); kIz = iz; }
-       if((ff != kFF)) { m_ArmLiftMotorPIDController.setFF(ff); kFF = ff; }
-       if((max != kMaxOutput) || (min != kMinOutput)) { 
-        m_ArmLiftMotorPIDController.setOutputRange(min, max); 
-        kMaxOutput = max; 
-        kMinOutput = min;
-       }
+    double armLiftSpeed = m_ArmLiftMotorPIDController.calculate(m_armSubsystem.getArmLiftMeasurement());
+    double armExtensionSpeed = m_ArmExtensionMotorPIDController.calculate(m_armSubsystem.getArmExtensionMeasurement());
 
-       m_ArmLiftMotorPIDController.setReference(rotations, CANSparkMax.ControlType.kPosition);
-    
-       SmartDashboard.putNumber("SetPoint", rotations);
-       SmartDashboard.putNumber("ProcessVariable", m_ArmLiftMotorEncoder.getPosition());
-      }
+    m_armSubsystem.armMovement(armLiftSpeed, armExtensionSpeed);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_armSubsystem.armMovement(0,0);
+  }
 
   // Returns true when the command should end.
   @Override
