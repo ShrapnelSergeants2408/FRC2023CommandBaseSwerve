@@ -24,6 +24,11 @@ public class Wrist extends SubsystemBase {
   private final AnalogGyro m_WristPosition;
   //private final double m_WristPositionOffset;
 
+  public enum wristMode {
+      STOW,
+      DEPLOY,
+  };  
+
  
   public Wrist() {
 
@@ -55,20 +60,22 @@ public class Wrist extends SubsystemBase {
 
   }
 
+  public PIDController setWristPID(){
+    return m_WristMotorPID;
+  }
 
   public double getWristPosition(){
     return m_WristPosition.getAngle();
   }
 
-  public void useWristPositionOutput(){  //TODO: change setpoint value to variable?
-    m_WristMotor.set(VictorSPXControlMode.PercentOutput, m_WristMotorPID.calculate(getWristPosition(),90 ));
+  public void setWristMotor(double speed){  //TODO: change setpoint value to variable?
+    m_WristMotor.set(VictorSPXControlMode.PercentOutput, speed);
     //do something PID here
   }
 
   public void stopWrist() {
     m_WristMotor.set(VictorSPXControlMode.PercentOutput,0);
   }
-
 
 
   //navX expansion stuff

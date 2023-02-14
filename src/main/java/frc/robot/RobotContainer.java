@@ -19,23 +19,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-//import frc.robot.Constants.FieldConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.ArmWithJoysticks;
 import frc.robot.commands.DriveWithJoysticks;
-//import frc.robot.commands.GrabPiece;
-//import frc.robot.commands.ReleasePiece;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.WristLevel;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.subsystems.Arm;
-//import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Drivetrain;
-//import frc.robot.subsystems.Gripper;
-
+import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-//import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -51,9 +46,12 @@ public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
   private final Arm m_robotArm = new Arm();
+  private final Wrist m_robotWrist = new Wrist();
   //private final Gripper m_robotGripper = new Gripper();
 
-  // The autonomous routines
+  private final Command m_WristDeploy = new WristLevel(m_robotWrist, 90.0);
+  private final Command m_WristStow = new WristLevel(m_robotWrist,0.0);
+  //private final StartEndCommand m_WristLevel = new StartEndCommand(m_WristDeploy, m_WristStow); 
 
   // A simple auto routine that does nothing
   private final Command m_doNothing = new DoNothing(m_robotDrive);
@@ -146,13 +144,15 @@ public class RobotContainer {
     //JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
     //JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
     //JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
-    //JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
-    //JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
+    JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
+    JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
     
 
 
     //button command links
  
+    m_operatorLeftJoystick.onTrue(m_WristDeploy);
+    m_operatorRightJoystick.onTrue(m_WristStow);
     //m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad
     //m_operatorDown.onTrue(m_robotArm.setArmGoalCommand(1)); //move to 1 rad
     

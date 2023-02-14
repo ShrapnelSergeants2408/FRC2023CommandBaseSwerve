@@ -320,6 +320,9 @@ public final class Constants {
     public static final double kWristMotorMinDistance = 0;
     public static final double kWristMotorMaxDistance = 90;
 
+    public static final double kWristStowed = 0; //TODO: update to correct angle
+    public static final double kWristDeployed = 90;
+
 
   }
 
