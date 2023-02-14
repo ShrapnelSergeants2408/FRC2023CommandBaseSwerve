@@ -11,14 +11,14 @@ import frc.robot.subsystems.Wrist;
 
 public class WristLevel extends CommandBase {
   /** Creates a new WristLevel. */
-  private final Wrist wristSubsystem;
+  private final Wrist m_wristSubsystem;
   private final PIDController wristPID;
 
 
   
   public WristLevel(Wrist wristSubsystem, double setpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.wristSubsystem = wristSubsystem;
+    m_wristSubsystem = wristSubsystem;
 
     wristPID = wristSubsystem.setWristPID();
     wristPID.setSetpoint(setpoint);
@@ -36,14 +36,14 @@ public class WristLevel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = wristPID.calculate(wristSubsystem.getWristPosition());
-    wristSubsystem.setWristMotor(speed);
+    double speed = wristPID.calculate(m_wristSubsystem.getWristPosition());
+    m_wristSubsystem.setWristMotor(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    wristSubsystem.setWristMotor(0);
+    m_wristSubsystem.setWristMotor(0);
   }
 
   // Returns true when the command should end.

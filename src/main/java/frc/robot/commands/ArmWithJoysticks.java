@@ -12,7 +12,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Arm;
 
 public class ArmWithJoysticks extends CommandBase {
-  private final Arm armSubsystem;
+  private final Arm m_armSubsystem;
   private final Supplier<Double> armLift, armExtend;
 
   /** Creates a new ArmWithJoysticks. */
@@ -21,7 +21,7 @@ public class ArmWithJoysticks extends CommandBase {
     Supplier<Double> armLift, 
     Supplier<Double> armExtend)  
   {
-    this.armSubsystem = armSubsystem;
+    m_armSubsystem = armSubsystem;
     this.armLift = armLift;
     this.armExtend = armExtend;
 
@@ -46,30 +46,30 @@ public class ArmWithJoysticks extends CommandBase {
     m_armExtend = Math.abs(m_armExtend) > OIConstants.kJoystick_Deadband ? m_armExtend : 0;
 
     //Apply soft limits
-    if ((armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeight) &&
+    if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeight) &&
         (m_armLift > 0) ||
-        (armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeight) &&
+        (m_armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeight) &&
         (m_armLift <0))
         {
           m_armLift = 0;
         }
 
-    if ((armSubsystem.getArmExtensionMeasurement()>= ArmConstants.kArmExtensionMaxDistance) &&
+    if ((m_armSubsystem.getArmExtensionMeasurement()>= ArmConstants.kArmExtensionMaxDistance) &&
         (m_armExtend > 0) ||
-        (armSubsystem.getArmExtensionMeasurement()<= ArmConstants.kArmExtensionMinDistance) &&
+        (m_armSubsystem.getArmExtensionMeasurement()<= ArmConstants.kArmExtensionMinDistance) &&
         (m_armExtend <0))
         {
           m_armExtend = 0;
         }
 
         
-    armSubsystem.armMovement(m_armLift, m_armExtend);
+    m_armSubsystem.armMovement(m_armLift, m_armExtend);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.stopArm();
+    m_armSubsystem.stopArm();
   }
 
   // Returns true when the command should end.

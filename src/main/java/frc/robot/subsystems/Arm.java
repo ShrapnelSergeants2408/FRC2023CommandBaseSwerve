@@ -80,6 +80,14 @@ public class Arm extends SubsystemBase {
 
   }
 
+  public PIDController setArmLiftPID(){
+    return m_ArmLiftMotorPID;
+  }
+
+  public PIDController setArmExtensionPID(){
+    return m_ArmExtensionMotorPID;
+  }
+
   public void armMovement(double armLift, double armExtend){
     m_ArmLiftMotor.set(armLift);
     m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput, armExtend);
