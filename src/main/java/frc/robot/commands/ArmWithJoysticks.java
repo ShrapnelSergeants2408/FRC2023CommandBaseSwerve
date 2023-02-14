@@ -45,7 +45,7 @@ public class ArmWithJoysticks extends CommandBase {
     m_armLift = Math.abs(m_armLift) > OIConstants.kJoystick_Deadband ? m_armLift : 0;
     m_armExtend = Math.abs(m_armExtend) > OIConstants.kJoystick_Deadband ? m_armExtend : 0;
 
-    //Apply soft limit
+    //Apply soft limits
     if ((armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeight) &&
         (m_armLift > 0) ||
         (armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeight) &&

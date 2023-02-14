@@ -12,17 +12,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-//import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import static frc.robot.Constants.DriveConstants.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
-
-//import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-//import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 public class Drivetrain extends SubsystemBase {
@@ -125,6 +120,11 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
     SmartDashboard.putNumber("Robot Heading", getHeading());
     SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+    //new additions - useful?
+    SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Robot Rotation",
+        m_odometry.getPoseMeters().getRotation().getDegrees());
 
   }
 
@@ -180,8 +180,6 @@ public class Drivetrain extends SubsystemBase {
     m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
   
-
-
   /**
    * Sets the swerve ModuleStates.
    *
@@ -231,24 +229,22 @@ public class Drivetrain extends SubsystemBase {
     return m_gyro.getRate() * (kGyroReversed ? -1.0 : 1.0);
   }
 
-  /* 
-  //method commands
-  public CommandBase doNothing() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          // one-time action goes here 
-          drive(0,0,0,true);
-        });
-      }
-      */
-    public void stopModules() {
-      m_frontLeft.stop();
-      m_rearLeft.stop();
-      m_frontRight.stop();
-      m_rearRight.stop();
-    }
+
+  public void stopModules() {
+    m_frontLeft.stop();
+    m_rearLeft.stop();
+    m_frontRight.stop();
+    m_rearRight.stop();
+  }
+
+  public void wheelsIn() {
+    m_frontLeft.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(45)));
+    m_rearLeft.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(135)));
+    m_frontRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-45)));
+    m_rearRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-135)));
+    this.stopModules();
+    //TODO: set drive controllers to brake?
+  }
 
 
 }
