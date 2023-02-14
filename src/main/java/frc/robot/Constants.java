@@ -330,23 +330,17 @@ public final class Constants {
   public static final class FieldConstants {
     //Measurements in partial arm rotations (Lift) and inches (Extension)
     //Heights based on field drawing heights + 8 inches with arm in extended position
-    //TODO: after testing may need to adjust heights
-    public static final double kLiftStowedPosition = 0;
-    public static final double kExtensionStowedPosition = 0; 
-
-    public static final double kLiftPickupHeight = 4;
-    public static final double kExtensionPickupHeight = 0;
-    
-    public static final double kLiftDriveHeight = 8;
-    public static final double kExtensionDriveHeight = 0;
-
-    public static final double kLiftMidCubeHeight = 0;
-    public static final double kExtensionMid = 0;
-    public static final double kLiftMidConeHeight = 0;
-
-    public static final double kLiftHighCubeHeight = 0;
-    public static final double kExtensionHigh = 0;
-    public static final double kLiftHighConeHeight = 0;
+    //TODO: after testing need to adjust heights
+    // scoring positions as double[] xxx = {lift angle, extension distance}
+    // lift angle in degrees on rotated axis - stowed = 0, high cone = 100?
+    // extension in inches beginning at 12 - stowed = 12, high cone = 32?
+    public static double[] kArmStowed = {0,12};
+    public static double[] kGroundPickup = {15, 14};
+    public static double[] kDriveHeight = {30, 14};
+    public static double[] kMidCube = {60, 25};
+    public static double[] kMidCone = {65, 25};
+    public static double[] kHighCube = {90, 32};
+    public static double[] kHighCone = {110, 32};
 
     //Field positions - (x, y, z, rotation) (inches, inches, inches, degrees)
     //Red alliance Outer, Coop, Inner

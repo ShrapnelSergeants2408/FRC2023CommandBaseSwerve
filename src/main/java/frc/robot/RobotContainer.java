@@ -21,15 +21,20 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
+import static frc.robot.Constants.FieldConstants.*;
+
 import frc.robot.commands.ArmWithJoysticks;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.WristLevel;
 import frc.robot.commands.Autonomous.DoNothing;
+import frc.robot.commands.ArmToHeight;
+
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -52,6 +57,16 @@ public class RobotContainer {
   private final Command m_WristDeploy = new WristLevel(m_robotWrist, 90.0);
   private final Command m_WristStow = new WristLevel(m_robotWrist,0.0);
   //private final StartEndCommand m_WristLevel = new StartEndCommand(m_WristDeploy, m_WristStow); 
+
+  private final Command m_ArmStow = new ArmToHeight(m_robotArm, kArmStowed[0],kArmStowed[1] );
+  private final Command m_GroundPickup = new ArmToHeight(m_robotArm, kGroundPickup[0], kGroundPickup[1]);
+  private final Command m_DriveHeight = new ArmToHeight(m_robotArm, kDriveHeight[0], kDriveHeight[1]);
+  private final Command m_MidCube = new ArmToHeight(m_robotArm, kMidCube[0], kMidCube[1]);
+  private final Command m_MidCone = new ArmToHeight(m_robotArm, kMidCone[0], kMidCone[1]);
+  private final Command m_HighCube = new ArmToHeight(m_robotArm, kHighCube[0], kHighCube[1]);
+  private final Command m_HighCone = new ArmToHeight(m_robotArm, kHighCone[0], kHighCone[1]);
+
+
 
   // A simple auto routine that does nothing
   private final Command m_doNothing = new DoNothing(m_robotDrive);
@@ -151,8 +166,19 @@ public class RobotContainer {
 
     //button command links
  
-    m_operatorLeftJoystick.onTrue(m_WristDeploy);
-    m_operatorRightJoystick.onTrue(m_WristStow);
+    m_operatorLeftJoystick.onTrue(
+        Commands.parallel(
+                m_WristDeploy,
+                m_DriveHeight)
+        );
+
+    m_operatorRightJoystick.onTrue(
+        Commands.parallel(
+                m_WristStow,
+                m_ArmStow)); 
+
+
+    
     //m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad
     //m_operatorDown.onTrue(m_robotArm.setArmGoalCommand(1)); //move to 1 rad
     
