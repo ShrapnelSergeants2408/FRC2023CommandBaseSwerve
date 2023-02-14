@@ -17,8 +17,8 @@ public class ArmToHeight extends CommandBase {
   private final PIDController m_ArmExtensionMotorPIDController;
 
   public ArmToHeight(Arm armSubsystem, 
-                     PIDController armLiftMotorPID, 
-                     PIDController armExtensionPID,
+                     //PIDController armLiftMotorPID, 
+                    // PIDController armExtensionPID,
                      double armHeightSetpointDegrees,
                      double armExtensionSetpointInches) {
     // Use addRequirements() here to declare subsystem dependencies.
