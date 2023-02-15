@@ -28,18 +28,26 @@ import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.WristLevel;
 import frc.robot.commands.Autonomous.DoNothing;
+import frc.robot.lib.CycleCommands;
 import frc.robot.commands.ArmToHeight;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import java.util.List;
+
+import javax.lang.model.util.ElementScanner14;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -65,6 +73,11 @@ public class RobotContainer {
   private final Command m_MidCone = new ArmToHeight(m_robotArm, kMidCone[0], kMidCone[1]);
   private final Command m_HighCube = new ArmToHeight(m_robotArm, kHighCube[0], kHighCube[1]);
   private final Command m_HighCone = new ArmToHeight(m_robotArm, kHighCone[0], kHighCone[1]);
+
+
+  private int cubeCommandCounter = 0;
+  private int coneCommandCounter = 0;
+
 
 
 
@@ -136,8 +149,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-     
-     
+  
     //JoystickButton m_driverLeft = new JoystickButton(m_driverController, OIConstants.kD_Left);
     //JoystickButton m_driverRight = new JoystickButton(m_driverController, OIConstants.kD_Right);
     //JoystickButton m_driverUp = new JoystickButton(m_driverController, OIConstants.kD_Up);
@@ -156,9 +168,10 @@ public class RobotContainer {
     //JoystickButton m_operatorRight = new JoystickButton(m_operatorController,OIConstants.kO_Right);
     //JoystickButton m_operatorUp = new JoystickButton(m_operatorController,OIConstants.kO_Up);
     //JoystickButton m_operatorDown = new JoystickButton(m_operatorController,OIConstants.kO_Down);
-    //JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
-    //JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
-    //JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
+    JoystickButton m_operatorShoulderTopLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Left);
+    JoystickButton m_operatorShoulderTopRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Top_Right);
+    JoystickButton m_operatorShoulderBottomLeft = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Left);
+    JoystickButton m_operatorShoulderBottomRight = new JoystickButton(m_operatorController,OIConstants.kO_Shoulder_Bottom_Right);
     JoystickButton m_operatorLeftJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Left_Joystick);
     JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
     
@@ -176,6 +189,29 @@ public class RobotContainer {
         Commands.parallel(
                 m_WristStow,
                 m_ArmStow)); 
+
+    new CycleCommands( 
+                "Cube Position",
+                new CommandBase[] {
+                           new ArmToHeight(m_robotArm, kGroundPickup[0], kGroundPickup[1]), //ground pickup
+                           new ArmToHeight(m_robotArm, kDriveHeight[0], kDriveHeight[1]),   //drive height
+                           new ArmToHeight(m_robotArm, kMidCube[0], kMidCube[1]),           //mid cube
+                           new ArmToHeight(m_robotArm, kHighCube[0], kHighCube[1])},        //high cube
+                m_operatorShoulderTopLeft,
+                m_operatorShoulderBottomLeft);
+
+    new CycleCommands( 
+                "Cone Position",
+                new CommandBase[] {
+                           new ArmToHeight(m_robotArm, kGroundPickup[0], kGroundPickup[1]), //ground pickup
+                           new ArmToHeight(m_robotArm, kDriveHeight[0], kDriveHeight[1]),   //drive height
+                           new ArmToHeight(m_robotArm, kMidCone[0], kMidCone[1]),           //mid cone
+                           new ArmToHeight(m_robotArm, kHighCone[0], kHighCone[1])},        //high cone
+                m_operatorShoulderTopRight,
+                m_operatorShoulderBottomRight);
+
+
+                         
 
 
     
