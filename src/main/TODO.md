@@ -37,7 +37,7 @@
         - [ ] deliver cube high
         - [ ] deliver cone high
         - [ ] pickup from substation
-    - [ ] up/down button toggles through positions
+    - [x] up/down button toggles through positions
 
 - [ ] Code arm extension motor
     - [ ] test ultrasonic rangefinder values for extension motor
@@ -51,7 +51,7 @@
         - [ ] deliver cube high
         - [ ] deliver cone high
         - [ ] pickup from substation
-    - [ ] add extension positions to arm lift command positions
+    - [x] add extension positions to arm lift command positions
 
 - [ ] code gripper extension motor
     - [ ] test accelerometer values for gripper extension
