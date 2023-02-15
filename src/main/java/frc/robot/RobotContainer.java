@@ -26,6 +26,7 @@ import static frc.robot.Constants.FieldConstants.*;
 import frc.robot.commands.ArmWithJoysticks;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.WheelsIn;
 import frc.robot.commands.WristLevel;
 import frc.robot.commands.Autonomous.DoNothing;
 import frc.robot.lib.CycleCommands;
@@ -69,6 +70,8 @@ public class RobotContainer {
   //private final Command m_MidCone = new ArmToHeight(m_robotArm, kMidCone[0], kMidCone[1]);
   //private final Command m_HighCube = new ArmToHeight(m_robotArm, kHighCube[0], kHighCube[1]);
   //private final Command m_HighCone = new ArmToHeight(m_robotArm, kHighCone[0], kHighCone[1]);
+
+  private final Command m_WheelsIn = new WheelsIn(m_robotDrive);
 
 
 
@@ -152,7 +155,7 @@ public class RobotContainer {
     //JoystickButton m_driverShoulderTopRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Right);
     //JoystickButton m_driverShoulderBottomLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Left);
     //JoystickButton m_driverShoulderBottomRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Right);
-    //JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
+    JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
     //JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
     //JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
     //JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
@@ -172,7 +175,10 @@ public class RobotContainer {
 
 
     //button command links
- 
+    m_driverLeftJoystick.onTrue(
+        m_WheelsIn  
+    );
+
     m_operatorLeftJoystick.onTrue(
         Commands.parallel(
                 m_WristDeploy,
