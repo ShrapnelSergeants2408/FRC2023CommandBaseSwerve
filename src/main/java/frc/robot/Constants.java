@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -401,5 +402,10 @@ public final class Constants {
     public static final double[] kRedCharging = {508.5, 109.7};
 
 
+  }
+
+  public static final class VisionConstants {
+    public static final String kCameraName = "tempCamera";
+    public static final Transform3d robotToCam = (0,0,0);
   }
 }
