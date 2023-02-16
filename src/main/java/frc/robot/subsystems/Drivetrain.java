@@ -84,22 +84,25 @@ public class Drivetrain extends SubsystemBase {
   private final SwerveDriveKinematics m_kinematics =
       PhysicalConstants.kDriveKinematics;
 
+  //vision stuff
   public PhotonCameraWrapper pcw;
+
+
 
 /*
 * Here we use SwerveDrivePoseEstimator so that we can fuse odometry
 * readings. The
 * numbers used below are robot specific, and should be tuned.
 */
-private final SwerveDrivePoseEstimator m_poseEstimator =
-    new SwerveDrivePoseEstimator(m_kinematics, 
-                                 getRotation2d(), 
-                                 new SwerveModulePosition[] {
-                                    m_frontLeft.getPosition(),
-                                    m_frontRight.getPosition(),
-                                    m_rearLeft.getPosition(),
-                                    m_rearRight.getPosition()}, 
-                                  getPose());
+  private final SwerveDrivePoseEstimator m_poseEstimator =
+      new SwerveDrivePoseEstimator(m_kinematics, 
+                                   getRotation2d(), 
+                                   new SwerveModulePosition[] {
+                                      m_frontLeft.getPosition(),
+                                      m_frontRight.getPosition(),
+                                      m_rearLeft.getPosition(),
+                                      m_rearRight.getPosition()}, 
+                                    getPose());
 
 
   // Odometry class for tracking robot pose
@@ -135,6 +138,11 @@ private final SwerveDrivePoseEstimator m_poseEstimator =
   public void periodic() {
     // Update the odometry in the periodic block
     updateOdometry();
+
+    //vision
+
+
+
 
 
     // Update sensor readings

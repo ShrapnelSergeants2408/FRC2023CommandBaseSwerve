@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -92,6 +93,10 @@ public final class Constants {
     //values for TurnToAngle from example
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
+
+    //vision processing 
+    //scoring distance - distance from AprilTag to location of robot for scoring
+    public static final double kScoringDistance = Units.inchesToMeters(14);
   }
 
   public static final class PhysicalConstants{
