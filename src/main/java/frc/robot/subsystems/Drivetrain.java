@@ -14,12 +14,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.util.Optional;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PhysicalConstants;
-
+import frc.robot.lib.PhotonCameraWrapper;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import org.photonvision.EstimatedRobotPose;
 
@@ -79,6 +81,27 @@ public class Drivetrain extends SubsystemBase {
   // The navX MXP gyro sensor
   private final AHRS m_gyro = new AHRS();
 
+  private final SwerveDriveKinematics m_kinematics =
+      PhysicalConstants.kDriveKinematics;
+
+  public PhotonCameraWrapper pcw;
+
+/*
+* Here we use SwerveDrivePoseEstimator so that we can fuse odometry
+* readings. The
+* numbers used below are robot specific, and should be tuned.
+*/
+private final SwerveDrivePoseEstimator m_poseEstimator =
+    new SwerveDrivePoseEstimator(m_kinematics, 
+                                 getRotation2d(), 
+                                 new SwerveModulePosition[] {
+                                    m_frontLeft.getPosition(),
+                                    m_frontRight.getPosition(),
+                                    m_rearLeft.getPosition(),
+                                    m_rearRight.getPosition()}, 
+                                  getPose());
+
+
   // Odometry class for tracking robot pose
   
   SwerveDriveOdometry m_odometry =
@@ -96,6 +119,8 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
+    pcw = new PhotonCameraWrapper();
+
     //pause gyro reset 1 sec to avoid interferring with gyro calibration
     new Thread(() -> {
       try {
@@ -109,14 +134,8 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    m_odometry.update(
-        m_gyro.getRotation2d(),
-        new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_rearLeft.getPosition(),
-          m_rearRight.getPosition()
-        });
+    updateOdometry();
+
 
     // Update sensor readings
     SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
@@ -249,6 +268,32 @@ public class Drivetrain extends SubsystemBase {
     //TODO: set drive controllers to brake?
   }
 
+/** Updates the field-relative position. */
+    public void updateOdometry() {
+        m_poseEstimator.update(
+                m_gyro.getRotation2d(), 
+                new SwerveModulePosition[] {
+                  m_frontLeft.getPosition(),
+                  m_frontRight.getPosition(),
+                  m_rearLeft.getPosition(),
+                  m_rearRight.getPosition()
+        });
 
+        Optional<EstimatedRobotPose> result =
+                pcw.getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            m_poseEstimator.addVisionMeasurement(
+                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            //m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
+        } else {
+            // move it way off the screen to make it disappear
+            //m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
+        }
+        // do i need the simulations?
+        //m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
+        //m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    }
 }
 
