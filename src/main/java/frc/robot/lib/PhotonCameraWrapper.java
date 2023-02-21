@@ -27,16 +27,17 @@
  import edu.wpi.first.apriltag.AprilTagFieldLayout;
  import edu.wpi.first.apriltag.AprilTagFields;
  import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.VisionConstants;
+ import edu.wpi.first.math.geometry.Transform3d;
+ import edu.wpi.first.wpilibj.DriverStation;
+ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+ import frc.robot.Constants.VisionConstants;
  import java.io.IOException;
-import java.util.Optional;
+ import java.util.Optional;
  import org.photonvision.EstimatedRobotPose;
  import org.photonvision.PhotonCamera;
  import org.photonvision.PhotonPoseEstimator;
  import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonTrackedTarget;
+ import org.photonvision.targeting.PhotonTrackedTarget;
 
  
  public class PhotonCameraWrapper {
@@ -75,7 +76,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
             // Get the current best target.
             PhotonTrackedTarget target = result.getBestTarget();
+
             
+           
             // Get information from target. 
             SmartDashboard.putNumber("April Tag #", target.getFiducialId());
             SmartDashboard.putNumber("Pose Ambiguity", target.getPoseAmbiguity());
@@ -85,7 +88,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
             SmartDashboard.putNumber("Target Skew", target.getSkew());
             
 
-            //Transform2d pose = target.getCameraToTarget();
+            //Transform3d pose = target.getBestCameraToTarget();
             //List<TargetCorner> corners = target.getCorners();
         }
 
@@ -104,4 +107,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
          photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
          return photonPoseEstimator.update();
      }
+
+
  }

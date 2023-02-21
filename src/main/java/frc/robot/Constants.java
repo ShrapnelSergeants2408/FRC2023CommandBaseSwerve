@@ -361,7 +361,7 @@ public final class Constants {
     public static final double[] kAprilTag5 = {14.25, 265.74, 27.38, 0};
     //Blue alliance Inner, Coop, Outer
     public static final double[] kAprilTag6 = {40.45, 174.19, 18.22, 0};
-    public static final double[] kAprilTag7 = {40.485, 108.19, 18.22, 0};
+    public static final double[] kAprilTag7 = {40.45, 108.19, 18.22, 0};
     public static final double[] kAprilTag8 = {40.45, 42.19, 18.22, 0};
 
     //Blue alliance scoring positions 
@@ -413,6 +413,12 @@ public final class Constants {
 
   public static final class VisionConstants {
     public static final String kCameraName = "tempCamera";
+    public static final double kCameraHeightMeters = Units.inchesToMeters(36); //TODO: measure this value
+    public static final double kCameraPitchRadians = Units.degreesToRadians(0);
+    
+    public static final double kAutoTargetRange = 2.0; //only auto target within 2 meters
+    public static final double kAprilTagHeightMeters = Units.inchesToMeters(FieldConstants.kAprilTag1[2]);
+
     public static final Transform3d kRobotToCam =
     new Transform3d(
             new Translation3d(0.5, 0.0, 0.5),
@@ -421,6 +427,14 @@ public final class Constants {
                     0,
                     0));  // Cam mounted facing forward, half a meter forward of center, half a meter up
                               // from center.
+    
+    //auto drive distance from april tag in meters
+    //tag to line = 13.8"
+    //position 24" behind line
+    public static final double kGoalDistanceToTarget = Units.inchesToMeters(37.8);
+
+    //cone scoring positions are 20" to either side of the aprilTag
+    public static final double kConeStrafeDistance = Units.inchesToMeters(20);
 
   }
 }
