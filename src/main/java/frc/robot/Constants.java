@@ -141,8 +141,8 @@ public final class Constants {
      // PID values TODO: do we need to send different values to each module?
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 0.5;
-    public static final double kPModuleDriveController = 0.5;
+    public static final double kPModuleTurningController = 1.0;
+    public static final double kPModuleDriveController = 1.0;
 
     public static final double kIModuleTurningController = 0;
     public static final double kIModuleDriveController = 0;
@@ -229,9 +229,9 @@ public final class Constants {
 
     //TODO: do these values need to be changed?
     //Controller PID
-    public static final double kPXController = 0.1;
-    public static final double kPYController = 0.1;
-    public static final double kPThetaController = 0.1;
+    public static final double kPXController = 1.0;
+    public static final double kPYController = 1.0;
+    public static final double kPThetaController = 1.0;
 
     public static final double kIXController = 0;
     public static final double kIYController = 0;

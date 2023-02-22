@@ -156,7 +156,7 @@ public class RobotContainer {
     //JoystickButton m_driverShoulderTopRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Top_Right);
     //JoystickButton m_driverShoulderBottomLeft = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Left);
     //JoystickButton m_driverShoulderBottomRight = new JoystickButton(m_driverController, OIConstants.kD_Shoulder_Bottom_Right);
-    JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
+  //  JoystickButton m_driverLeftJoystick = new JoystickButton(m_driverController, OIConstants.kD_Left_Joystick);
     //JoystickButton m_driverRightJoystick = new JoystickButton(m_driverController, OIConstants.kD_Right_Joystick);
     //JoystickButton m_driverMidLeft = new JoystickButton(m_driverController,OIConstants.kD_Mid_Left);
     //JoystickButton m_driverMidRight = new JoystickButton(m_driverController, OIConstants.kD_Mid_Right);
@@ -174,12 +174,12 @@ public class RobotContainer {
     JoystickButton m_operatorRightJoystick = new JoystickButton(m_operatorController,OIConstants.kO_Right_Joystick);
     
 
-
+/* 
     //button command links
     m_driverLeftJoystick.onTrue(
         m_WheelsIn  
     );
-/* 
+
     m_operatorLeftJoystick.onTrue(
         Commands.parallel(
                 m_WristDeploy,
