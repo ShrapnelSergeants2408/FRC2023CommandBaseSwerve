@@ -16,6 +16,7 @@ import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -101,7 +102,8 @@ public class Drivetrain extends SubsystemBase {
   private PhotonCamera photonCamera;
   private PhotonPoseEstimator photonPoseEstimator;
 
-  private Pose2d targetPose;
+  private Pose2d targetPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
+  private Pose2d defaultPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
 
   /*
   * Here we use SwerveDrivePoseEstimator so that we can fuse odometry
@@ -135,6 +137,8 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
+    resetOdometry(defaultPose);
+    resetEncoders();
     //Camera setup
     //pcw = new PhotonCameraWrapper();
     photonCamera = new PhotonCamera(VisionConstants.kCameraName);
@@ -155,6 +159,7 @@ public class Drivetrain extends SubsystemBase {
       // where the tags are.
       DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
       photonPoseEstimator = null;
+      defaultPose = new Pose2d(0.0,0.0, new Rotation2d());
     }
 
 
@@ -162,6 +167,8 @@ public class Drivetrain extends SubsystemBase {
     var result = photonCamera.getLatestResult();
 
     boolean hasTargets = result.hasTargets();
+
+
 
     SmartDashboard.putBoolean("Has Targets", hasTargets);
       if (hasTargets){
@@ -240,6 +247,9 @@ public class Drivetrain extends SubsystemBase {
       } catch (Exception e) {
       }
     }).start();
+
+
+    zeroHeading();
   }
 
 @Override

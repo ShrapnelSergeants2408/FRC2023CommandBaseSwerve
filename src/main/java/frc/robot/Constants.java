@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -219,6 +221,10 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
+
+    //default setting
+    //public static final Pose2d START_POSE2D = (0, 0, 0);
+
     //TODO: tweek max speed/acceleration
     public static final double kMaxSpeedFeetPerSecond = 12.33; //from JVN calc 
     public static final double kMaxSpeedMetersPerSecond = 3.76;  //converted from JVN calc - possibly adjust up to 4.5
