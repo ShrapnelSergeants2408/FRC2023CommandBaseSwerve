@@ -73,14 +73,8 @@ public class RobotContainer {
 
   private final Command m_WheelsIn = new WheelsIn(m_robotDrive);
 
-
-
-
-
-
   // A simple auto routine that does nothing
   private final Command m_doNothing = new DoNothing(m_robotDrive);
-
 
 
   // The controllers
@@ -383,11 +377,8 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
     // 2. Generate trajectory
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(
-                    new Translation2d(.25, 0),
-                    new Translation2d(.50, 0),
-                    new Translation2d(.75,0)),
-            new Pose2d(1, 0, Rotation2d.fromDegrees(0)),
+            List.of(),
+            new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
             trajectoryConfig);
 
     // 3. Define PID controllers for tracking trajectory
