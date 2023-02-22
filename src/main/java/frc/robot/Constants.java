@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -124,17 +121,18 @@ public final class Constants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final int kTurningEncoderCPR = 1024; //TODO: is this still used
-    public static final double kTurningGearRatio = 48.0/40.0;
+    public static final int kTurningEncoderPreCPR = 1024; //TODO: is this still used
+    public static final double kTurningGearRatio = 48.0/40.0; //reverse?
+    public static final double kTurningEncoderCPR = kTurningEncoderPreCPR * kTurningGearRatio;
 
     public static final int kNEOEncoderCPR = 42;  //TODO: is this still used
-    public static final double kDriveGearRatio = 1/6.67;
+    public static final double kDriveGearRatio = 6.67;
     public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
 
     public static final double kWheelDiameterInches = 4.0;
-    public static final double kInchesToMeters = 0.0254;
-    public static final double kWheelDiameterMeters = kWheelDiameterInches * kInchesToMeters;
-    public static final double kDriveEncoderRot2Meter = kDriveGearRatio * Math.PI * kWheelDiameterMeters; 
+    //public static final double kInchesToMeters = 0.0254;
+    //public static final double kWheelDiameterMeters = kWheelDiameterInches * kInchesToMeters;
+    public static final double kDriveEncoderRot2Meter = kDriveGearRatio * Math.PI * Units.inchesToMeters(kWheelDiameterInches);//kWheelDiameterMeters; 
     public static final double kTurningEncoderRot2Rad = kTurningGearRatio *2 * Math.PI;
 
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
@@ -221,9 +219,6 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-
-    //default setting
-    //public static final Pose2d START_POSE2D = (0, 0, 0);
 
     //TODO: tweek max speed/acceleration
     public static final double kMaxSpeedFeetPerSecond = 12.33; //from JVN calc 
