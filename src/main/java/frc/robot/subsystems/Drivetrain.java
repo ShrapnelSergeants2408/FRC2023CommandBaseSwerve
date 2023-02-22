@@ -16,7 +16,6 @@ import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.DriveConstants.*;
 
-import java.io.Console;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -98,7 +97,6 @@ public class Drivetrain extends SubsystemBase {
       PhysicalConstants.kDriveKinematics;
 
   //vision stuff
-  //public PhotonCameraWrapper pcw;
   private PhotonCamera photonCamera;
   private PhotonPoseEstimator photonPoseEstimator;
 
@@ -134,13 +132,12 @@ public class Drivetrain extends SubsystemBase {
           });
 
 
-
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
     resetOdometry(defaultPose);
     resetEncoders();
+
     //Camera setup
-    //pcw = new PhotonCameraWrapper();
     photonCamera = new PhotonCamera(VisionConstants.kCameraName);
     try {
       // Attempt to load the AprilTagFieldLayout that will tell us where the tags are on the field.
@@ -159,86 +156,9 @@ public class Drivetrain extends SubsystemBase {
       // where the tags are.
       DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
       photonPoseEstimator = null;
-      defaultPose = new Pose2d(0.0,0.0, new Rotation2d());
+      //defaultPose = new Pose2d(0.0,0.0, new Rotation2d());
     }
-
-
-    // Query the latest result from PhotonVision
-    var result = photonCamera.getLatestResult();
-
-    boolean hasTargets = result.hasTargets();
-
-
-
-    SmartDashboard.putBoolean("Has Targets", hasTargets);
-      if (hasTargets){
-        // Get a list of currently tracked targets.
-        //List<PhotonTrackedTarget> targets = result.getTargets();
-
-        // Get the current best target.
-        PhotonTrackedTarget target = result.getBestTarget();
-           
-        // Get information from target. 
-        SmartDashboard.putNumber("April Tag #", target.getFiducialId());
-        SmartDashboard.putNumber("Pose Ambiguity", target.getPoseAmbiguity());
-        SmartDashboard.putNumber("Target Yaw", target.getYaw());
-        SmartDashboard.putNumber("Target Pitch", target.getPitch());
-        SmartDashboard.putNumber("Target Area",target.getArea());
-        SmartDashboard.putNumber("Target Skew", target.getSkew());
-        
-        int targetID = target.getFiducialId();
-
-        switch (targetID) {
-
-          case 1: //AprilTag1
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag1[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag1[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag1[4])
-                                            );
-            break;
-
-          case 2: //AprilTag2
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag2[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag2[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag2[4])
-                                           );
-            break;
-
-          case 3: //AprilTag3
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag3[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag3[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag3[4])
-                                            );
-            break;
-
-          case 6: //AprilTag6
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag6[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag6[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag6[4])
-                                           );
-            break;
-
-          case 7: //AprilTag7
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag7[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag7[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag7[4])
-                                            );
-            break;
-
-          case 8: //AprilTag8
-            targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag8[1]),
-                                           Units.inchesToMeters(FieldConstants.kAprilTag8[2]),
-                                           new Rotation2d(FieldConstants.kAprilTag8[4])
-                                           );
-            break;
-
-          
-        }
-        //Transform3d pose = target.getBestCameraToTarget();
-        //List<TargetCorner> corners = target.getCorners();
-      }
-
-
+  
     //pause gyro reset 1 sec to avoid interferring with gyro calibration
     new Thread(() -> {
       try {
@@ -254,12 +174,79 @@ public class Drivetrain extends SubsystemBase {
 
 @Override
 public void periodic() {
+  // Query the latest result from PhotonVision
+  var result = photonCamera.getLatestResult();
+
+  boolean hasTargets = result.hasTargets();
+
+  SmartDashboard.putBoolean("Has Targets", hasTargets);
+    if (hasTargets){
+      // Get a list of currently tracked targets.
+      //List<PhotonTrackedTarget> targets = result.getTargets();
+
+      // Get the current best target.
+      PhotonTrackedTarget target = result.getBestTarget();
+         
+      // Get information from target. 
+      SmartDashboard.putNumber("April Tag #", target.getFiducialId());
+      SmartDashboard.putNumber("Pose Ambiguity", target.getPoseAmbiguity());
+      SmartDashboard.putNumber("Target Yaw", target.getYaw());
+      SmartDashboard.putNumber("Target Pitch", target.getPitch());
+      SmartDashboard.putNumber("Target Area",target.getArea());
+      SmartDashboard.putNumber("Target Skew", target.getSkew());
+      
+      int targetID = target.getFiducialId();
+
+      switch (targetID) {
+
+        case 1: //AprilTag1
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag1[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag1[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag1[4])
+                                          );
+          break;
+
+        case 2: //AprilTag2
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag2[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag2[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag2[4])
+                                         );
+          break;
+
+        case 3: //AprilTag3
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag3[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag3[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag3[4])
+                                          );
+          break;
+
+        case 6: //AprilTag6
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag6[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag6[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag6[4])
+                                         );
+          break;
+
+        case 7: //AprilTag7
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag7[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag7[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag7[4])
+                                          );
+          break;
+
+        case 8: //AprilTag8
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag8[1]),
+                                         Units.inchesToMeters(FieldConstants.kAprilTag8[2]),
+                                         new Rotation2d(FieldConstants.kAprilTag8[4])
+                                         );
+          break;
+
+        
+      }
+    }
+
   // Update the odometry in the periodic block
   updateOdometry();
-
-  //vision
-
-
 
   // Update sensor readings
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
@@ -386,12 +373,6 @@ public double getTurnRate() {
   return m_gyro.getRate() * (kGyroReversed ? -1.0 : 1.0);
 }
 
-/**
- * Returns the pose of the current target
- */
-//public Pose2d getTargetPose(){
-//  return null;
-//}
 
 public void stopModules() {
   m_frontLeft.stop();
