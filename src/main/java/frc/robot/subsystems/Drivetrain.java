@@ -103,6 +103,19 @@ public class Drivetrain extends SubsystemBase {
   private Pose2d targetPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
   private Pose2d defaultPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
 
+
+  // Odometry class for tracking robot pose
+  
+  SwerveDriveOdometry m_odometry =
+      new SwerveDriveOdometry(
+          PhysicalConstants.kDriveKinematics,
+          m_gyro.getRotation2d(),
+          new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_rearLeft.getPosition(),
+            m_rearRight.getPosition()
+          });
   /*
   * Here we use SwerveDrivePoseEstimator so that we can fuse odometry
   * readings. 
@@ -117,19 +130,6 @@ public class Drivetrain extends SubsystemBase {
                                       m_rearRight.getPosition()}, 
                                     getPose());
 
-
-  // Odometry class for tracking robot pose
-  
-  SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(
-          PhysicalConstants.kDriveKinematics,
-          m_gyro.getRotation2d(),
-          new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
-          });
 
 
   /** Creates a new DriveSubsystem. */

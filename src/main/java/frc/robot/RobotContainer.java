@@ -55,17 +55,17 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
-  private final Arm m_robotArm = new Arm();
-  private final Wrist m_robotWrist = new Wrist();
-  //private final Gripper m_robotGripper = new Gripper();
+//  private final Arm m_robotArm = new Arm();
+//  private final Wrist m_robotWrist = new Wrist();
+//  private final Gripper m_robotGripper = new Gripper();
 
-  private final Command m_WristDeploy = new WristLevel(m_robotWrist, 90.0);
-  private final Command m_WristStow = new WristLevel(m_robotWrist,0.0);
+//  private final Command m_WristDeploy = new WristLevel(m_robotWrist, 90.0);
+//  private final Command m_WristStow = new WristLevel(m_robotWrist,0.0);
   //private final StartEndCommand m_WristLevel = new StartEndCommand(m_WristDeploy, m_WristStow); 
 
-  private final Command m_ArmStow = new ArmToHeight(m_robotArm, kArmStowed[0],kArmStowed[1] );
+//  private final Command m_ArmStow = new ArmToHeight(m_robotArm, kArmStowed[0],kArmStowed[1] );
   //private final Command m_GroundPickup = new ArmToHeight(m_robotArm, kGroundPickup[0], kGroundPickup[1]);
-  private final Command m_DriveHeight = new ArmToHeight(m_robotArm, kDriveHeight[0], kDriveHeight[1]);
+//  private final Command m_DriveHeight = new ArmToHeight(m_robotArm, kDriveHeight[0], kDriveHeight[1]);
   //private final Command m_MidCube = new ArmToHeight(m_robotArm, kMidCube[0], kMidCube[1]);
   //private final Command m_MidCone = new ArmToHeight(m_robotArm, kMidCone[0], kMidCone[1]);
   //private final Command m_HighCube = new ArmToHeight(m_robotArm, kHighCube[0], kHighCube[1]);
@@ -107,7 +107,7 @@ public class RobotContainer {
       () -> m_driverController.getRightX()*DriveConstants.kTurnSpeedMultiplier, 
       () -> !m_driverController.getRawButton(OIConstants.kD_Mid_Left)));
 
-
+/*
     // Operator left stick Y raises/lowers arm
     // Operator right stick Y extends/retracts arm
     //  TODO: after testing (and recoding) change default to ArmToHeight
@@ -115,6 +115,7 @@ public class RobotContainer {
         m_robotArm,
         () -> m_operatorController.getLeftY(),
         () -> m_operatorController.getRightY()));
+*/
     /*
     m_robotGripper.setDefaultCommand(
         // default to gripper closed
@@ -178,7 +179,7 @@ public class RobotContainer {
     m_driverLeftJoystick.onTrue(
         m_WheelsIn  
     );
-
+/* 
     m_operatorLeftJoystick.onTrue(
         Commands.parallel(
                 m_WristDeploy,
@@ -212,7 +213,7 @@ public class RobotContainer {
 
 
                          
-
+*/
 
     
     //m_operatorUp.onTrue(m_robotArm.setArmGoalCommand(2)); //move to 2 rad

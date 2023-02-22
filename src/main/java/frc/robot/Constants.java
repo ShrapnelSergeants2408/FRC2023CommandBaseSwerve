@@ -29,8 +29,8 @@ public final class Constants {
     public static final int kFrontRightDriveMotorPort = 22;
     public static final int kRearRightDriveMotorPort = 23;
 
-    public static final boolean kFrontLeftDriveMotorReversed = false;
-    public static final boolean kRearLeftDriveMotorReversed = false;
+    public static final boolean kFrontLeftDriveMotorReversed = true;
+    public static final boolean kRearLeftDriveMotorReversed =  true;
     public static final boolean kFrontRightDriveMotorReversed = false;
     public static final boolean kRearRightDriveMotorReversed = false;
 
@@ -87,7 +87,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 4;
 
     //values for TurnToAngle from example
     public static final double kTurnToleranceDeg = 5;
@@ -135,14 +135,14 @@ public final class Constants {
     public static final double kDriveEncoderRot2Meter = kDriveGearRatio * Math.PI * Units.inchesToMeters(kWheelDiameterInches);//kWheelDiameterMeters; 
     public static final double kTurningEncoderRot2Rad = kTurningGearRatio *2 * Math.PI;
 
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter; //kDriveEncoderRot2Meter / 60;
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad;//kTurningEncoderRot2Rad / 60;
     
      // PID values TODO: do we need to send different values to each module?
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 0.1;
-    public static final double kPModuleDriveController = 0.1;
+    public static final double kPModuleTurningController = 0.5;
+    public static final double kPModuleDriveController = 0.5;
 
     public static final double kIModuleTurningController = 0;
     public static final double kIModuleDriveController = 0;
@@ -159,17 +159,17 @@ public final class Constants {
 
     
     //slew rate 3 --> 1/3 sec from 0 to 1
-    public static final double kSlewRateLimit = 3.0; // adjust?
+    public static final double kSlewRateLimit = 1.0; // adjust?
 
-    public static final int kD_Joystick_Left_X_Speed_Limit = 3;
-    public static final int kD_Joystick_Left_Y_Speed_Limit = 3;
-    public static final int kD_Joystick_Right_X_Speed_Limit = 3;
-    public static final int kD_Joystick_Right_Y_Speed_Limit = 3;
+    public static final int kD_Joystick_Left_X_Speed_Limit = 1;
+    public static final int kD_Joystick_Left_Y_Speed_Limit = 1;
+    public static final int kD_Joystick_Right_X_Speed_Limit = 1;
+    public static final int kD_Joystick_Right_Y_Speed_Limit = 1;
     
-    public static final int kO_Joystick_Left_X_Speed_Limit = 3;
-    public static final int kO_Joystick_Left_Y_Speed_Limit = 3;
-    public static final int kO_Joystick_Right_X_Speed_Limit = 3;
-    public static final int kO_Joystick_Right_Y_Speed_Limit = 3;
+    public static final int kO_Joystick_Left_X_Speed_Limit = 1;
+    public static final int kO_Joystick_Left_Y_Speed_Limit = 1;
+    public static final int kO_Joystick_Right_X_Speed_Limit = 1;
+    public static final int kO_Joystick_Right_Y_Speed_Limit = 1;
 
     //deadband  0.03 adjust?
     public static final double kJoystick_Deadband = 0.03;
@@ -197,8 +197,8 @@ public final class Constants {
    * 
    * If so, adjust operator values as well and add bindings to RobotContainer
    */
-  public static final int kD_Left_Joystick = 11;
-  public static final int kD_Right_Joystick = 12;
+  //public static final int kD_Left_Joystick = 11;
+  //public static final int kD_Right_Joystick = 12;
 
   public static final int kO_Joystick_Left_X_Axis = 0;
   public static final int kO_Joystick_Left_Y_Axis = 1;
