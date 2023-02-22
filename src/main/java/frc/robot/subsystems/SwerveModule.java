@@ -25,8 +25,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class SwerveModule {
   private final CANSparkMax m_driveMotor;
   private final VictorSPX m_turningMotor;
-  private final RelativeEncoder m_driveEncoder;
 
+  private final RelativeEncoder m_driveEncoder;
   private final DutyCycleEncoder m_turningEncoder;
   private final double m_turningEncoderOffsetRad;
   //private final boolean m_turningEncoderReversed;  is this needed?
@@ -93,7 +93,7 @@ public class SwerveModule {
     
 
     resetEncoders();
-    sendTelemetry(driveMotorChannel);
+    //sendTelemetry(driveMotorChannel);
   }
 
   /*  
@@ -208,7 +208,7 @@ public class SwerveModule {
     m_driveMotor.set(0);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput, 0);
   }
-
+/*
   public void sendTelemetry(int module){
     if (module == kFrontLeftDriveMotorPort)
     {
@@ -263,5 +263,5 @@ public class SwerveModule {
 
     }
    
-  }
+  } */
 }
