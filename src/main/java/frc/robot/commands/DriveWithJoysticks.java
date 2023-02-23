@@ -19,7 +19,7 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveWithJoysticks extends CommandBase {
   private final Drivetrain driveTrain;
   private final Supplier<Double> xSpeedFunction, ySpeedFunction, turningSpeedFunction;
-  private final Supplier<Boolean> fieldOriented;
+  private final boolean fieldOriented;
   //private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
 
 
@@ -29,7 +29,7 @@ public class DriveWithJoysticks extends CommandBase {
       Supplier<Double> xSpeedFunction, 
       Supplier<Double> ySpeedFunction,
       Supplier<Double> turningSpeedFunction,
-      Supplier<Boolean> fieldOriented) {
+      boolean fieldOriented) {
     this.driveTrain = driveTrain;
     this.xSpeedFunction = xSpeedFunction;
     this.ySpeedFunction = ySpeedFunction;
@@ -69,7 +69,7 @@ public class DriveWithJoysticks extends CommandBase {
 
     //set chassis speeds
     ChassisSpeeds chassisSpeeds;
-    if(fieldOriented.get()){
+    if(fieldOriented){
       //relative to field
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
         m_xSpeed,

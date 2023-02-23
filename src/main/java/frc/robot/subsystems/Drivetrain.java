@@ -169,7 +169,7 @@ public class Drivetrain extends SubsystemBase {
       }
     }).start();
 
-
+  
     zeroHeading();
   }
 
@@ -267,6 +267,10 @@ public void periodic() {
 
 }
 
+public boolean getFieldRelative(){
+  return m_gyro.isConnected();
+}
+
 /**
  * Returns the currently-estimated pose of the robot.
  *
@@ -302,9 +306,6 @@ public void resetOdometry(Pose2d pose) {
  * @param rot Angular rate of the robot.
  * @param fieldRelative Whether the provided x and y speeds are relative to the field.
  */
-
-// Is this section necessary with the DriveWithJoystics command? 
-// Used in autonomous example
 
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
