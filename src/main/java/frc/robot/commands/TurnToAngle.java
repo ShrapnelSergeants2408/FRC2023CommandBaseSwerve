@@ -22,32 +22,33 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TurnToAngle extends PIDCommand {
   /** Creates a new TurnToAngle. */
-  public TurnToAngle(double targetAngleDegree, Drivetrain dt) {
+  public TurnToAngle(double targetAngleDegree, Drivetrain driveTrain) {
     super(
-        // The controller that the command will use
-        new PIDController(ModuleConstants.kPModuleTurningController, 
-                          ModuleConstants.kIModuleTurningController, 
-                          ModuleConstants.kDModuleTurningController),
-        // This should return the measurement
-        dt::getHeading,
-        //dt.getHeading(),
-        //() -> 0,
-        // This should return the setpoint (can also be a constant)
-        targetAngleDegree,
-        // This uses the output
-        output -> 
-          dt.drive(0, 0, output, true),
-        // subsystem
-        dt);
+      // The controller that the command will use
+      new PIDController(ModuleConstants.kPModuleTurningController, 
+                        ModuleConstants.kIModuleTurningController, 
+                        ModuleConstants.kDModuleTurningController),
+      // This should return the measurement
+      driveTrain::getHeading,
+      // This should return the setpoint (can also be a constant)
+      targetAngleDegree,
+      // This uses the output
+      //TODO: update xSpeed/ySpeed to take joystick inputs
+      output -> 
+        driveTrain.drive(0, 0, output, true),
+      // subsystem
+      driveTrain
+    );
 
-        // Set the controller to be continuous (because it is an angle controller)
-        getController().enableContinuousInput(-180, 180);
-        // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
-        // setpoint before it is considered as having reached the reference
-        getController()
-        .setTolerance(DriveConstants.kTurnToleranceDeg, DriveConstants.kTurnRateToleranceDegPerS);
-    // Use addRequirements() here to declare subsystem dependencies.
-    // Configure additional PID options by calling `getController` here.
+    // Set the controller to be continuous (because it is an angle controller)
+    getController().enableContinuousInput(-180, 180);
+    // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
+    // setpoint before it is considered as having reached the reference)
+    getController()
+      .setTolerance(DriveConstants.kTurnToleranceDeg, 
+                    DriveConstants.kTurnRateToleranceDegPerS);
+      
+    addRequirements(driveTrain);
   }
 
   // Returns true when the command should end.

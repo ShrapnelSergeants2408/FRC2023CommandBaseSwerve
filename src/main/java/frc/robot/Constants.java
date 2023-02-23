@@ -77,7 +77,7 @@ public final class Constants {
     public static final boolean kGyroReversed = true;
     //TODO: double check that navx gyro needs to be reversed
 
-
+/*
     // TODO: What are these values for?
     // TODO: These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or theoretically
@@ -86,10 +86,10 @@ public final class Constants {
     public static final double ksVolts = 1;
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
+*/
+    public static final double kMaxSpeedMetersPerSecond = 3.2;
 
-    public static final double kMaxSpeedMetersPerSecond = 4;
-
-    //values for TurnToAngle from example
+    //values for TurnToAngle from example -- sets when turn to angle is complete (stationary)
     public static final double kTurnToleranceDeg = 5;
     public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
@@ -130,13 +130,12 @@ public final class Constants {
     public static final double kTurningGearRatio = 48.0/40.0; //reverse?
 
     public static final double kDriveGearRatio = 6.67;
-    //public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
 
     public static final double kWheelDiameterInches = 4.0;
 
     public static final double kDriveEncoderRot2Meter = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))/kDriveGearRatio; 
     public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
-    //public static final double kTurningEncoderDegPerRot = kTurningGearRatio*360;
+
 
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
