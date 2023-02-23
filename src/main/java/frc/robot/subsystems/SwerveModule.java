@@ -8,17 +8,17 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.ModuleConstants;
-import static frc.robot.Constants.DriveConstants.*;
-import static frc.robot.Constants.ModuleConstants.*;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -82,10 +82,10 @@ public class SwerveModule {
     m_driveEncoder = m_driveMotor.getEncoder(); 
     //m_turningEncoder.getAbsolutePosition();
 
-    m_driveEncoder.setPositionConversionFactor(kDriveEncoderRot2Meter); 
-    m_driveEncoder.setVelocityConversionFactor(kDriveEncoderRPM2MeterPerSec); 
+    m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 
+    m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); 
 
-    m_turningEncoder.setDistancePerRotation(kTurningEncoderRot2Rad); 
+    m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Rad); 
     //example sets VelocityConversion but code does not use this value
    
     // Limit the PID Controller's input range between -pi and pi and set the input
@@ -140,16 +140,23 @@ public class SwerveModule {
 
   }
 
+
+
   /**
    * Returns the current state of the module.
    *
    * @return The current state of the module.
    */
+  /* 
   public SwerveModuleState getState() {
     return new SwerveModuleState(
         //(m_driveEncoder.getVelocity()), new Rotation2d(getTurnPosition())); //may need to divide velocity by 60
         (m_driveEncoder.getVelocity()), new Rotation2d(getAbsoluteEncoderRad())); //may need to divide velocity by 60
   }
+*/
+
+
+
 
   /**
    * Sets the desired state for the module.
@@ -160,7 +167,8 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState,getState().angle);
+        //SwerveModuleState.optimize(desiredState,getState().angle);
+        SwerveModuleState.optimize(desiredState,getPosition().angle);
 
     //don't reset wheels to 0 if not in motion
     if (Math.abs(state.speedMetersPerSecond)< 0.001) {

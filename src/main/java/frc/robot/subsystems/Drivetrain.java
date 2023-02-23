@@ -157,7 +157,7 @@ public class Drivetrain extends SubsystemBase {
       // where the tags are.
       DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
       photonPoseEstimator = null;
-      //defaultPose = new Pose2d(0.0,0.0, new Rotation2d());
+
     }
   
     //pause gyro reset 1 sec to avoid interferring with gyro calibration
@@ -175,6 +175,7 @@ public class Drivetrain extends SubsystemBase {
 
 @Override
 public void periodic() {
+
   // Query the latest result from PhotonVision
    
   var result = photonCamera.getLatestResult();
@@ -243,24 +244,27 @@ public void periodic() {
                                          );
           break;
 
+
         
       } 
     }
 
   // Update the odometry in the periodic block
   updateOdometry();
-/* 
+ 
   // Update sensor readings
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
   SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
   SmartDashboard.putNumber("Robot Heading", getHeading());
   SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
-  //new additions - useful?
+
   SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
   SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
   SmartDashboard.putNumber("Robot Rotation",
     m_odometry.getPoseMeters().getRotation().getDegrees());
-*/
+  
+  SmartDashboard.putString("Target Location", targetPose.getTranslation().toString());
+
 }
 
 /**
@@ -389,7 +393,7 @@ public void wheelsIn() {
   m_frontRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-45)));
   m_rearRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-135)));
   this.stopModules();
-  //TODO: set drive controllers to brake?
+
 }
 
 /** Updates the field-relative position. */
