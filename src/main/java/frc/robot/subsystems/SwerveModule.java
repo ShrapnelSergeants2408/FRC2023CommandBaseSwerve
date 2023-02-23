@@ -30,10 +30,10 @@ public class SwerveModule {
   private final VictorSPX m_turningMotor;
 
   private final RelativeEncoder m_driveEncoder;
-  //private final DutyCycleEncoder m_turningEncoder;
+
   private final AnalogEncoder m_turningEncoder;
   private final double m_turningEncoderOffsetRad;
-  //private final boolean m_turningEncoderReversed;  is this needed?
+  private final boolean m_turningEncoderReversed; 
 
   //TODO: update ki, kd values for drivePID and turningPID controllers
 
@@ -58,18 +58,17 @@ public class SwerveModule {
       boolean driveMotorReversed,
       boolean turningMotorReversed,
       int turningEncoderChannel,
-      double turningEncoderOffset)
-      //,boolean turningEncoderReversed) 
+      double turningEncoderOffset,
+      boolean turningEncoderReversed) 
   {
 
     m_turningEncoderOffsetRad = turningEncoderOffset;
-    //m_turningEncoderReversed = turningEncoderReversed;
-   // m_turningEncoder = new DutyCycleEncoder(turningEncoderChannel);
+    m_turningEncoderReversed = turningEncoderReversed;
     m_turningEncoder = new AnalogEncoder(turningEncoderChannel);
-    SmartDashboard.putNumber("turning encoder position"+ turningMotorChannel, m_turningEncoder.getAbsolutePosition());
-    //SmartDashboard.putBoolean("turning encoder connected"+ turningMotorChannel, m_turningEncoder.isConnected());
 
+    //SmartDashboard.putNumber("turning encoder position"+ turningMotorChannel, m_turningEncoder.getAbsolutePosition());
 
+    //motor setup
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new VictorSPX(turningMotorChannel);
 
@@ -79,19 +78,16 @@ public class SwerveModule {
     m_driveMotor.setIdleMode(IdleMode.kBrake);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
 
+    //encoder setup
     m_driveEncoder = m_driveMotor.getEncoder(); 
-    SmartDashboard.putNumber("drive encoder position"+ driveMotorChannel, m_driveEncoder.getPosition());
-    SmartDashboard.putNumber("drive encoder velocity"+ driveMotorChannel, m_driveEncoder.getVelocity());
+    //m_turningEncoder.getAbsolutePosition();
 
+    m_driveEncoder.setPositionConversionFactor(kDriveEncoderRot2Meter); 
+    m_driveEncoder.setVelocityConversionFactor(kDriveEncoderRPM2MeterPerSec); 
 
-    m_turningEncoder.getAbsolutePosition();
-
-    m_driveEncoder.setPositionConversionFactor(kDriveEncoderRot2Meter); //check this value
-    m_driveEncoder.setVelocityConversionFactor(kDriveEncoderRPM2MeterPerSec); //check this value
-
-    //TODO: verify encoder voltage ranges
-    //m_turningEncoder.setDuty(min, max); //may need to send voltages if MA3 encoders are not 
-    
+    m_turningEncoder.setDistancePerRotation(kTurningEncoderRot2Rad); 
+    //example sets VelocityConversion but code does not use this value
+   
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     m_turningPIDController = new PIDController(
@@ -104,8 +100,6 @@ public class SwerveModule {
         ModuleConstants.kPModuleDriveController,
         ModuleConstants.kIModuleDriveController,
         ModuleConstants.kDModuleDriveController);
-    
-    
 
     resetEncoders();
     //sendTelemetry(driveMotorChannel);
@@ -121,7 +115,7 @@ public class SwerveModule {
   }
 
   public double getTurnPosition() {
-    return m_turningEncoder.get();
+    return m_turningEncoder.get(); //should this be getAbsolutePosition()
   }
 
   public double getDriveVelocity() {
@@ -129,29 +123,21 @@ public class SwerveModule {
   }
 
 
-/* is turn velocity necessary?
-  public double getTurnVelocity() {
-    return 
-  }
-*/
-
-/* not needed for DutyCycleEncoder.  Offset included in resetEncoders.
-
   public double getAbsoluteEncoderRad() {
     double angle = m_turningEncoder.getAbsolutePosition();
-    angle *= 2.0 * Math.PI;
+    angle *= 2.0 * Math.PI; //TODO: should this include gear ratio
     angle -= m_turningEncoderOffsetRad; //adjust for wheel offset
     return angle*(m_turningEncoderReversed ? -1.0:1.0);
   }
-*/
+
 
   /** Zeroes all the SwerveModule encoders. */
   public void resetEncoders() {
-    //m_driveEncoder.reset();
     m_driveEncoder.setPosition(0.0);
     //m_turningEncoder.setPosition(getAbsoluteEncoderRad());
-    m_turningEncoder.reset();
     m_turningEncoder.setPositionOffset(m_turningEncoderOffsetRad);
+    m_turningEncoder.reset();
+
   }
 
   /**
@@ -161,11 +147,8 @@ public class SwerveModule {
    */
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-        //
-        // .getVelocity() is divided by 60 to convert from revolutions per minute to 
-        //  revolutions per second
-        //
-        (m_driveEncoder.getVelocity()/60), new Rotation2d(getTurnPosition()));
+        //(m_driveEncoder.getVelocity()), new Rotation2d(getTurnPosition())); //may need to divide velocity by 60
+        (m_driveEncoder.getVelocity()), new Rotation2d(getAbsoluteEncoderRad())); //may need to divide velocity by 60
   }
 
   /**
@@ -185,27 +168,22 @@ public class SwerveModule {
       return;
     }
 
-
-
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
-        // .getVelocity() is divided by 60 to convert from revolutions per minute to 
-        //  revolutions per second
-        m_drivePIDController.calculate((m_driveEncoder.getVelocity()/60), state.speedMetersPerSecond);
+        m_drivePIDController.calculate((m_driveEncoder.getVelocity()), state.speedMetersPerSecond); //may need to divide velocity by 60
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
-        m_turningPIDController.calculate(m_turningEncoder.getDistance(), state.angle.getRadians());
+        //m_turningPIDController.calculate(m_turningEncoder.getDistance(), state.angle.getRadians());
+        m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
 
-    // Calculate the turning motor output from the turning PID controller.
     m_driveMotor.set(driveOutput);
     //m_turningMotor.set(turnOutput);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput,turnOutput);
 
-    //SmartDashboard.putString("Swerve["+ m_turningEncoder.getSourceChannel()+"] state", state.toString());
     SmartDashboard.putString("Swerve["+ m_turningEncoder.getChannel()+"] state", state.toString());
-    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive vel", m_driveEncoder.getVelocity());
-    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn dist", m_turningEncoder.getDistance());    
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive output", driveOutput);
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn angle", getAbsoluteEncoderRad()*(180/Math.PI));    
   }
   
 
@@ -219,7 +197,6 @@ public class SwerveModule {
     return new SwerveModulePosition(
         //m_driveEncoder.getDistance(), new Rotation2d(m_turningEncoder.getDistance()));
 
-        // if m_turningEncoder needs to be reversed add - here or include conditional in Rotation2d
         m_driveEncoder.getPosition(), new Rotation2d(m_turningEncoder.getDistance()));
   }
 
@@ -228,60 +205,5 @@ public class SwerveModule {
     m_driveMotor.set(0);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput, 0);
   }
-/*
-  public void sendTelemetry(int module){
-    if (module == kFrontLeftDriveMotorPort)
-    {
-      SmartDashboard.putNumber("FL Drive Encoder Position", m_driveEncoder.getPosition());
-      SmartDashboard.putNumber("FL Drive Encoder Velocity",m_driveEncoder.getVelocity());
-      SmartDashboard.putNumber("FL Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
-      SmartDashboard.putNumber("FL Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
 
-      SmartDashboard.putNumber("FL Turning Encoder value", m_turningEncoder.get());
-      SmartDashboard.putNumber("FL Turning Encoder distance", m_turningEncoder.getDistance());
-      SmartDashboard.putNumber("FL Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("FL Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
-
-    }
-    else if (module == kRearLeftDriveMotorPort)
-    {
-      SmartDashboard.putNumber("RL Drive Encoder Position", m_driveEncoder.getPosition());
-      SmartDashboard.putNumber("RL Drive Encoder Velocity",m_driveEncoder.getVelocity());
-      SmartDashboard.putNumber("RL Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
-      SmartDashboard.putNumber("RL Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
-
-      SmartDashboard.putNumber("RL Turning Encoder value", m_turningEncoder.get());
-      SmartDashboard.putNumber("RL Turning Encoder distance", m_turningEncoder.getDistance());
-      SmartDashboard.putNumber("RL Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("RL Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
-
-    }
-    else if (module == kFrontRightDriveMotorPort)
-    {
-      SmartDashboard.putNumber("FR Drive Encoder Position", m_driveEncoder.getPosition());
-      SmartDashboard.putNumber("FR Drive Encoder Velocity",m_driveEncoder.getVelocity());
-      SmartDashboard.putNumber("FR Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
-      SmartDashboard.putNumber("FR Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
-
-      SmartDashboard.putNumber("FR Turning Encoder value", m_turningEncoder.get());
-      SmartDashboard.putNumber("FR Turning Encoder distance", m_turningEncoder.getDistance());
-      SmartDashboard.putNumber("FR Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("FR Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
-
-    }
-    else if (module == kRearRightDriveMotorPort)
-    {
-      SmartDashboard.putNumber("RR Drive Encoder Position", m_driveEncoder.getPosition());
-      SmartDashboard.putNumber("RR Drive Encoder Velocity",m_driveEncoder.getVelocity());
-      SmartDashboard.putNumber("RR Drive Encoder Pos Conversion Factor", m_driveEncoder.getPositionConversionFactor());
-      SmartDashboard.putNumber("RR Drive Encoder Vel Conversion Factor", m_driveEncoder.getVelocityConversionFactor());
-
-      SmartDashboard.putNumber("RR Turning Encoder value", m_turningEncoder.get());
-      SmartDashboard.putNumber("RR Turning Encoder distance", m_turningEncoder.getDistance());
-      SmartDashboard.putNumber("RR Turning Encoder absolute position", m_turningEncoder.getAbsolutePosition());
-      SmartDashboard.putNumber("RR Turning Encoder distance per rotation", m_turningEncoder.getDistancePerRotation());
-
-    }
-   
-  } */
 }

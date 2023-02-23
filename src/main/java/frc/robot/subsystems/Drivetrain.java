@@ -57,7 +57,8 @@ public class Drivetrain extends SubsystemBase {
           kFrontLeftDriveMotorReversed,
           kFrontLeftTurningMotorReversed,
           kFrontLeftTurningEncoderPorts,
-          kFrontLeftTurningEncoderOffset
+          kFrontLeftTurningEncoderOffset,
+          kFrontLeftTurningEncoderReversed
           );
 
   private final SwerveModule m_rearLeft =
@@ -67,7 +68,8 @@ public class Drivetrain extends SubsystemBase {
           kRearLeftDriveMotorReversed,
           kRearLeftTurningMotorReversed,
           kRearLeftTurningEncoderPorts,
-          kRearLeftTurningEncoderOffset
+          kRearLeftTurningEncoderOffset,
+          kRearLeftTurningEncoderReversed
           );
 
   private final SwerveModule m_frontRight =
@@ -77,7 +79,8 @@ public class Drivetrain extends SubsystemBase {
           kFrontRightDriveMotorReversed,
           kFrontRightTurningMotorReversed,
           kFrontRightTurningEncoderPorts,
-          kFrontRightTurningEncoderOffset
+          kFrontRightTurningEncoderOffset,
+          kFrontRightTurningEncoderReversed
           );
 
   private final SwerveModule m_rearRight =
@@ -87,14 +90,12 @@ public class Drivetrain extends SubsystemBase {
           kRearRightDriveMotorReversed,
           kRearRightTurningMotorReversed,
           kRearRightTurningEncoderPorts,
-          kRearRightTurningEncoderOffset
+          kRearRightTurningEncoderOffset,
+          kRearRightTurningEncoderReversed
           );
 
   // The navX MXP gyro sensor
   private final AHRS m_gyro = new AHRS();
-
-  private final SwerveDriveKinematics m_kinematics =
-      PhysicalConstants.kDriveKinematics;
 
   //vision stuff
   private PhotonCamera photonCamera;
@@ -121,8 +122,8 @@ public class Drivetrain extends SubsystemBase {
   * readings. 
   */
   private final SwerveDrivePoseEstimator m_poseEstimator =
-      new SwerveDrivePoseEstimator(m_kinematics, 
-                                   getRotation2d(), 
+      new SwerveDrivePoseEstimator(PhysicalConstants.kDriveKinematics, 
+                                   m_gyro.getRotation2d(), 
                                    new SwerveModulePosition[] {
                                       m_frontLeft.getPosition(),
                                       m_frontRight.getPosition(),

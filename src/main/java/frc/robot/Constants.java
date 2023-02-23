@@ -45,23 +45,23 @@ public final class Constants {
     public static final boolean kFrontRightTurningMotorReversed = false;
     public static final boolean kRearRightTurningMotorReversed = false;
 
-    //MA3 encoders for steering (Analog 0 - 3)
-    public static final int kFrontLeftTurningEncoderPorts = 0;
+    //MA3 encoders for steering (Analog 0 - 3) //TODO: double check ports
+    public static final int kFrontLeftTurningEncoderPorts = 2;
     public static final int kRearLeftTurningEncoderPorts = 1;
-    public static final int kFrontRightTurningEncoderPorts = 2;
+    public static final int kFrontRightTurningEncoderPorts = 0;
     public static final int kRearRightTurningEncoderPorts = 3;
 
     //TODO:  verify if any of these values need to be changed
     public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kRearLeftTurningEncoderReversed = true;
+    public static final boolean kRearLeftTurningEncoderReversed = false;
     public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kRearRightTurningEncoderReversed = true;
+    public static final boolean kRearRightTurningEncoderReversed = false;
 
 
     public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kRearLeftDriveEncoderReversed = true;
+    public static final boolean kRearLeftDriveEncoderReversed = false;
     public static final boolean kFrontRightDriveEncoderReversed = false;
-    public static final boolean kRearRightDriveEncoderReversed = true;
+    public static final boolean kRearRightDriveEncoderReversed = false;
 
     //TODO: find offset values
     public static final double kFrontLeftTurningEncoderOffset = 0.696093;
@@ -74,8 +74,8 @@ public final class Constants {
     public static final int kTurnSpeedMultiplier = 0; //TODO: currently turned off
 
     //Gyro
-    public static final boolean kGyroReversed = false;
-    //TODO: what other gyro values do I need?
+    public static final boolean kGyroReversed = true;
+    //TODO: double check that navx gyro needs to be reversed
 
 
     // TODO: What are these values for?
@@ -127,22 +127,19 @@ public final class Constants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final int kTurningEncoderPreCPR = 1024; //TODO: is this still used
     public static final double kTurningGearRatio = 48.0/40.0; //reverse?
-    public static final double kTurningEncoderCPR = kTurningEncoderPreCPR * kTurningGearRatio;
 
-    public static final int kNEOEncoderCPR = 42;  //TODO: is this still used
     public static final double kDriveGearRatio = 6.67;
-    public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
+    //public static final double kDriveEncoderCPR = kNEOEncoderCPR * kDriveGearRatio;
 
     public static final double kWheelDiameterInches = 4.0;
-    //public static final double kInchesToMeters = 0.0254;
-    //public static final double kWheelDiameterMeters = kWheelDiameterInches * kInchesToMeters;
-    public static final double kDriveEncoderRot2Meter = kDriveGearRatio * Math.PI * Units.inchesToMeters(kWheelDiameterInches);//kWheelDiameterMeters; 
-    public static final double kTurningEncoderRot2Rad = kTurningGearRatio *2 * Math.PI;
 
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter; //kDriveEncoderRot2Meter / 60;
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad;//kTurningEncoderRot2Rad / 60;
+    public static final double kDriveEncoderRot2Meter = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))/kDriveGearRatio; 
+    public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
+    //public static final double kTurningEncoderDegPerRot = kTurningGearRatio*360;
+
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     
      // PID values TODO: do we need to send different values to each module?
 
