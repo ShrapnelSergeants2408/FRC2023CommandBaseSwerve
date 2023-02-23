@@ -64,14 +64,14 @@ public final class Constants {
     public static final boolean kRearRightDriveEncoderReversed = true;
 
     //TODO: find offset values
-    public static final double kFrontLeftTurningEncoderOffset = 0.0;
-    public static final double kRearLeftTurningEncoderOffset = 0.0;
-    public static final double kFrontRightTurningEncoderOffset = 0.0;
-    public static final double kRearRightTurningEncoderOffset = 0.0;
+    public static final double kFrontLeftTurningEncoderOffset = 0.696093;
+    public static final double kRearLeftTurningEncoderOffset = 0.587064;
+    public static final double kFrontRightTurningEncoderOffset = 0.679514;
+    public static final double kRearRightTurningEncoderOffset = 0.167231;
 
     //Set speed multiplier from 0-1 (0%-100%).  Set to 0 for testing opposite motor (ex 0 drive to test turn)
     public static final int kDriveSpeedMultiplier = 1;
-    public static final int kTurnSpeedMultiplier = 1;
+    public static final int kTurnSpeedMultiplier = 0; //TODO: currently turned off
 
     //Gyro
     public static final boolean kGyroReversed = false;
@@ -147,8 +147,8 @@ public final class Constants {
      // PID values TODO: do we need to send different values to each module?
 
     //TODO: update P values
-    public static final double kPModuleTurningController = .1;
-    public static final double kPModuleDriveController = .1;
+    public static final double kPModuleTurningController = 0;
+    public static final double kPModuleDriveController = .02;
 
     public static final double kIModuleTurningController = 0;
     public static final double kIModuleDriveController = 0;

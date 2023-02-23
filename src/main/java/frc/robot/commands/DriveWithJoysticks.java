@@ -55,15 +55,15 @@ public class DriveWithJoysticks extends CommandBase {
     double m_turningSpeed = turningSpeedFunction.get();
 
     //apply deadband
-    m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
-    m_ySpeed = Math.abs(m_ySpeed) > OIConstants.kJoystick_Deadband ? m_ySpeed : 0;
-    m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
+    //m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
+    //m_ySpeed = Math.abs(m_ySpeed) > OIConstants.kJoystick_Deadband ? m_ySpeed : 0;
+    //m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
 
     //apply slew rate limiter
     //TODO:may add speed scaling multiplier to slow max speed for control purposes
-    m_xSpeed = xLimiter.calculate(m_xSpeed);
-    m_ySpeed = yLimiter.calculate(m_ySpeed);
-    m_turningSpeed = turnLimiter.calculate(m_turningSpeed);
+    //m_xSpeed = xLimiter.calculate(m_xSpeed);
+    //m_ySpeed = yLimiter.calculate(m_ySpeed);
+    //m_turningSpeed = turnLimiter.calculate(m_turningSpeed);
 
     //set chassis speeds
     ChassisSpeeds chassisSpeeds;

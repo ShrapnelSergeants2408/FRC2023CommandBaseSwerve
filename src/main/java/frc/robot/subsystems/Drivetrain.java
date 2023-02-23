@@ -175,18 +175,19 @@ public class Drivetrain extends SubsystemBase {
 @Override
 public void periodic() {
   // Query the latest result from PhotonVision
+   
   var result = photonCamera.getLatestResult();
 
   boolean hasTargets = result.hasTargets();
 
-  SmartDashboard.putBoolean("Has Targets", hasTargets);
+ // SmartDashboard.putBoolean("Has Targets", hasTargets);
     if (hasTargets){
       // Get a list of currently tracked targets.
       //List<PhotonTrackedTarget> targets = result.getTargets();
 
       // Get the current best target.
       PhotonTrackedTarget target = result.getBestTarget();
-         
+       /* 
       // Get information from target. 
       SmartDashboard.putNumber("April Tag #", target.getFiducialId());
       SmartDashboard.putNumber("Pose Ambiguity", target.getPoseAmbiguity());
@@ -194,7 +195,7 @@ public void periodic() {
       SmartDashboard.putNumber("Target Pitch", target.getPitch());
       SmartDashboard.putNumber("Target Area",target.getArea());
       SmartDashboard.putNumber("Target Skew", target.getSkew());
-      
+      */
       int targetID = target.getFiducialId();
 
       switch (targetID) {
@@ -242,12 +243,12 @@ public void periodic() {
           break;
 
         
-      }
+      } 
     }
 
   // Update the odometry in the periodic block
   updateOdometry();
-
+/* 
   // Update sensor readings
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
   SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
@@ -258,7 +259,7 @@ public void periodic() {
   SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
   SmartDashboard.putNumber("Robot Rotation",
     m_odometry.getPoseMeters().getRotation().getDegrees());
-
+*/
 }
 
 /**

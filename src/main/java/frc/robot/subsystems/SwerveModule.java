@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,10 +16,12 @@ import frc.robot.Constants.ModuleConstants;
 import static frc.robot.Constants.DriveConstants.*;
 import static frc.robot.Constants.ModuleConstants.*;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
@@ -27,7 +30,8 @@ public class SwerveModule {
   private final VictorSPX m_turningMotor;
 
   private final RelativeEncoder m_driveEncoder;
-  private final DutyCycleEncoder m_turningEncoder;
+  //private final DutyCycleEncoder m_turningEncoder;
+  private final AnalogEncoder m_turningEncoder;
   private final double m_turningEncoderOffsetRad;
   //private final boolean m_turningEncoderReversed;  is this needed?
 
@@ -60,7 +64,11 @@ public class SwerveModule {
 
     m_turningEncoderOffsetRad = turningEncoderOffset;
     //m_turningEncoderReversed = turningEncoderReversed;
-    m_turningEncoder = new DutyCycleEncoder(turningEncoderChannel);
+   // m_turningEncoder = new DutyCycleEncoder(turningEncoderChannel);
+    m_turningEncoder = new AnalogEncoder(turningEncoderChannel);
+    SmartDashboard.putNumber("turning encoder position"+ turningMotorChannel, m_turningEncoder.getAbsolutePosition());
+    //SmartDashboard.putBoolean("turning encoder connected"+ turningMotorChannel, m_turningEncoder.isConnected());
+
 
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new VictorSPX(turningMotorChannel);
@@ -68,7 +76,14 @@ public class SwerveModule {
     m_driveMotor.setInverted(driveMotorReversed);
     m_turningMotor.setInverted(turningMotorReversed);
 
+    m_driveMotor.setIdleMode(IdleMode.kBrake);
+    m_turningMotor.setNeutralMode(NeutralMode.Brake);
+
     m_driveEncoder = m_driveMotor.getEncoder(); 
+    SmartDashboard.putNumber("drive encoder position"+ driveMotorChannel, m_driveEncoder.getPosition());
+    SmartDashboard.putNumber("drive encoder velocity"+ driveMotorChannel, m_driveEncoder.getVelocity());
+
+
     m_turningEncoder.getAbsolutePosition();
 
     m_driveEncoder.setPositionConversionFactor(kDriveEncoderRot2Meter); //check this value
@@ -170,6 +185,8 @@ public class SwerveModule {
       return;
     }
 
+
+
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         // .getVelocity() is divided by 60 to convert from revolutions per minute to 
@@ -185,7 +202,10 @@ public class SwerveModule {
     //m_turningMotor.set(turnOutput);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput,turnOutput);
 
-    SmartDashboard.putString("Swerve["+ m_turningEncoder.getSourceChannel()+"] state", state.toString());
+    //SmartDashboard.putString("Swerve["+ m_turningEncoder.getSourceChannel()+"] state", state.toString());
+    SmartDashboard.putString("Swerve["+ m_turningEncoder.getChannel()+"] state", state.toString());
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive vel", m_driveEncoder.getVelocity());
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn dist", m_turningEncoder.getDistance());    
   }
   
 
