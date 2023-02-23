@@ -21,6 +21,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.Constants.VisionConstants;
+
 import static frc.robot.Constants.FieldConstants.*;
 
 import frc.robot.commands.ArmWithJoysticks;
@@ -44,6 +46,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import java.util.List;
+
+import org.photonvision.PhotonUtils;
 
 
 /*
@@ -253,8 +257,8 @@ public class RobotContainer {
     // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                PhysicalConstants.kMaxSpeedMetersPerSecond,
+                PhysicalConstants.kMaxAccelerationMetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(PhysicalConstants.kDriveKinematics);
 
@@ -316,8 +320,8 @@ public class RobotContainer {
          */
         // 1. Create trajectory settings
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                PhysicalConstants.kMaxSpeedMetersPerSecond,
+                PhysicalConstants.kMaxAccelerationMetersPerSecondSquared)
                         .setKinematics(PhysicalConstants.kDriveKinematics);
 
         // 2. Generate trajectory
@@ -373,8 +377,8 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
      */
     // 1. Create trajectory settings
     TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-            AutoConstants.kMaxSpeedMetersPerSecond,
-            AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            PhysicalConstants.kMaxSpeedMetersPerSecond,
+            PhysicalConstants.kMaxAccelerationMetersPerSecondSquared)
                     .setKinematics(PhysicalConstants.kDriveKinematics);
 
     // 2. Generate trajectory
@@ -420,4 +424,68 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
         .andThen(swerveControllerCommand)
         .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
   }
+/*
+  public Command TargetPositionWithVision(){
+        //calculate distance to best target
+        double range = PhotonUtils
+        .getDistanceToPose(
+        m_robotDrive.getPose(),
+        m_robotDrive.getTargetPose()
+        );
+
+      //only engage auto target within 2 meters
+      if(range < VisionConstants.kAutoTargetRange) { 
+        // 1. Create trajectory settings
+        TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
+                PhysicalConstants.kMaxSpeedMetersPerSecond,
+                PhysicalConstants.kMaxAccelerationMetersPerSecondSquared)
+                        .setKinematics(PhysicalConstants.kDriveKinematics);
+
+        // 2. Generate trajectory -- all units in meters
+        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
+                m_robotDrive.getPose(),
+                List.of(),
+                m_robotDrive.getTargetPose(), //TODO: add/subtract 38" to x value
+                trajectoryConfig);
+
+        // 3. Define PID controllers for tracking trajectory
+        PIDController xController = new PIDController(AutoConstants.kPXController, 
+                                                      AutoConstants.kIXController,
+                                                      AutoConstants.kDXController);
+
+        PIDController yController = new PIDController(AutoConstants.kPYController,
+                                                      AutoConstants.kIYController,
+                                                      AutoConstants.kDYController);
+
+        ProfiledPIDController thetaController = new ProfiledPIDController(
+                                                      AutoConstants.kPThetaController,
+                                                      AutoConstants.kIThetaController,
+                                                      AutoConstants.kDThetaController,
+                                                      AutoConstants.kThetaControllerConstraints);
+
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        // 4. Construct command to follow trajectory
+        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+                trajectory,
+                m_robotDrive::getPose,
+                PhysicalConstants.kDriveKinematics,
+                xController,
+                yController,
+                thetaController,
+                m_robotDrive::setModuleStates,
+                m_robotDrive);
+
+        
+        // Reset starting pose of the trajectory
+        //m_robotDrive.resetOdometry(trajectory.getInitialPose());
+
+        // 5. Add some init and wrap-up, and return everything
+
+        return new InstantCommand(
+          ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
+          .andThen(swerveControllerCommand)
+          .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
+      }
+  } */
 }

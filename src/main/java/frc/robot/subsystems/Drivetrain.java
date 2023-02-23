@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 
 import static frc.robot.Constants.DriveConstants.*;
+import frc.robot.Constants.PhysicalConstants;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,7 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.PhysicalConstants;
+//import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.VisionConstants;
 //import frc.robot.lib.PhotonCameraWrapper;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -223,6 +224,20 @@ public void periodic() {
                                           );
           break;
 
+        case 4:  //AprilTag4 - substation
+           targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag4[1]),
+                                   Units.inchesToMeters(FieldConstants.kAprilTag4[2]),
+                                   new Rotation2d(FieldConstants.kAprilTag4[4])
+                                  );
+          break;
+          
+        case 5:  //AprilTag5 - substation
+          targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag5[1]),
+                                  Units.inchesToMeters(FieldConstants.kAprilTag5[2]),
+                                  new Rotation2d(FieldConstants.kAprilTag5[4])
+                                 );
+         break;
+
         case 6: //AprilTag6
           targetPose = new Pose2d(Units.inchesToMeters(FieldConstants.kAprilTag6[1]),
                                          Units.inchesToMeters(FieldConstants.kAprilTag6[2]),
@@ -317,7 +332,7 @@ public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelativ
     
   SwerveDriveKinematics.desaturateWheelSpeeds(
     swerveModuleStates, 
-    kMaxSpeedMetersPerSecond
+    PhysicalConstants.kMaxSpeedMetersPerSecond
   );
   
   m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -334,7 +349,7 @@ public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelativ
 public void setModuleStates(SwerveModuleState[] desiredStates) {
   SwerveDriveKinematics.desaturateWheelSpeeds(
       desiredStates, 
-      kMaxSpeedMetersPerSecond);
+      PhysicalConstants.kMaxSpeedMetersPerSecond);
   m_frontLeft.setDesiredState(desiredStates[0]);
   m_frontRight.setDesiredState(desiredStates[1]);
   m_rearLeft.setDesiredState(desiredStates[2]);

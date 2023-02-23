@@ -46,9 +46,9 @@ public final class Constants {
     public static final boolean kRearRightTurningMotorReversed = false;
 
     //MA3 encoders for steering (Analog 0 - 3) //TODO: double check ports
-    public static final int kFrontLeftTurningEncoderPorts = 2;
+    public static final int kFrontLeftTurningEncoderPorts = 0;
     public static final int kRearLeftTurningEncoderPorts = 1;
-    public static final int kFrontRightTurningEncoderPorts = 0;
+    public static final int kFrontRightTurningEncoderPorts = 2;
     public static final int kRearRightTurningEncoderPorts = 3;
 
     //TODO:  verify if any of these values need to be changed
@@ -69,10 +69,6 @@ public final class Constants {
     public static final double kFrontRightTurningEncoderOffset = 0.679514;
     public static final double kRearRightTurningEncoderOffset = 0.167231;
 
-    //Set speed multiplier from 0-1 (0%-100%).  Set to 0 for testing opposite motor (ex 0 drive to test turn)
-    public static final int kDriveSpeedMultiplier = 1;
-    public static final int kTurnSpeedMultiplier = 0; //TODO: currently turned off
-
     //Gyro
     public static final boolean kGyroReversed = true;
     //TODO: double check that navx gyro needs to be reversed
@@ -87,7 +83,7 @@ public final class Constants {
     public static final double kvVoltSecondsPerMeter = 0.8;
     public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 */
-    public static final double kMaxSpeedMetersPerSecond = 3.2;
+
 
     //values for TurnToAngle from example -- sets when turn to angle is complete (stationary)
     public static final double kTurnToleranceDeg = 5;
@@ -116,6 +112,17 @@ public final class Constants {
             new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+
+    //Max Drive speed (calculated).  May be able to adjust.
+
+    //TODO: tweek max speed/acceleration
+    public static final double kMaxSpeedFeetPerSecond = 12.33; //from JVN calc (maybe adjust up to 14.5)
+    public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(kMaxSpeedFeetPerSecond);
+    public static final double kMaxAccelerationMetersPerSecondSquared = kMaxSpeedMetersPerSecond * 0.75; //modify?
+
+    public static final double kMaxSteerSpeedRPM = 90.0; //from andymark
+    public static final double kMaxAngularSpeedRadiansPerSecond = (kMaxSteerSpeedRPM * 2 * Math.PI) / 60.0;
+    public static final double kMaxAngularSpeedRadiansPerSecondSquared = kMaxAngularSpeedRadiansPerSecond * 0.75; //modify?
   }
 
 
@@ -225,12 +232,7 @@ public final class Constants {
   
   public static final class AutoConstants {
 
-    //TODO: tweek max speed/acceleration
-    public static final double kMaxSpeedFeetPerSecond = 12.33; //from JVN calc 
-    public static final double kMaxSpeedMetersPerSecond = 3.76;  //converted from JVN calc - possibly adjust up to 4.5
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3; //modify?
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+
 
     //TODO: do these values need to be changed?
     //Controller PID
@@ -249,7 +251,8 @@ public final class Constants {
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(
-            kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+            PhysicalConstants.kMaxAngularSpeedRadiansPerSecond, 
+            PhysicalConstants.kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
 

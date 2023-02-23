@@ -9,9 +9,9 @@ import java.util.function.Supplier;
 //import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-//import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 import frc.robot.subsystems.Drivetrain;
@@ -57,9 +57,9 @@ public class DriveWithJoysticks extends CommandBase {
     double m_turningSpeed = turningSpeedFunction.get();
 
     //apply deadband
-    //m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
-    //m_ySpeed = Math.abs(m_ySpeed) > OIConstants.kJoystick_Deadband ? m_ySpeed : 0;
-    //m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
+    m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
+    m_ySpeed = Math.abs(m_ySpeed) > OIConstants.kJoystick_Deadband ? m_ySpeed : 0;
+    m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
 
     //apply slew rate limiter
     //TODO:may add speed scaling multiplier to slow max speed for control purposes
@@ -72,18 +72,24 @@ public class DriveWithJoysticks extends CommandBase {
     if(fieldOriented){
       //relative to field
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        m_xSpeed,
-        m_ySpeed,
-        m_turningSpeed,
+        m_xSpeed * PhysicalConstants.kMaxSpeedMetersPerSecond,
+        m_ySpeed * PhysicalConstants.kMaxSpeedMetersPerSecond,
+        m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond,
         driveTrain.getRotation2d());
     } else {
       //relative to robot
-      chassisSpeeds = new ChassisSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed);
+      chassisSpeeds = new ChassisSpeeds(m_xSpeed * PhysicalConstants.kMaxSpeedMetersPerSecond,
+                                        m_ySpeed * PhysicalConstants.kMaxSpeedMetersPerSecond, 
+                                        m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond);
     }
-
+    SmartDashboard.putBoolean("Field Relative", fieldOriented);
+    SmartDashboard.putNumber("Joystick 1 X", m_xSpeed * PhysicalConstants.kMaxSpeedMetersPerSecond);
+    SmartDashboard.putNumber("Joystick 1 Y", m_ySpeed * PhysicalConstants.kMaxSpeedMetersPerSecond);
+    SmartDashboard.putNumber("Joystick 2 X", m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond);
     SwerveModuleState[] moduleStates = PhysicalConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
     
     driveTrain.setModuleStates(moduleStates);
+
   } 
 
 
