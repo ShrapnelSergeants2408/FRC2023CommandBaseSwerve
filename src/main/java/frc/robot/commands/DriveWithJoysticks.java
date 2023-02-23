@@ -6,12 +6,12 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+//import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.Constants.OIConstants;
+//import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PhysicalConstants;
 
 import frc.robot.subsystems.Drivetrain;
@@ -20,7 +20,7 @@ public class DriveWithJoysticks extends CommandBase {
   private final Drivetrain driveTrain;
   private final Supplier<Double> xSpeedFunction, ySpeedFunction, turningSpeedFunction;
   private final Supplier<Boolean> fieldOriented;
-  private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
+  //private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
 
 
   /** Creates a new DriveWithJoysticks. */
@@ -35,9 +35,11 @@ public class DriveWithJoysticks extends CommandBase {
     this.ySpeedFunction = ySpeedFunction;
     this.turningSpeedFunction = turningSpeedFunction;
     this.fieldOriented = fieldOriented;
+    /*
     this.xLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
     this.yLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
     this.turnLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
+    */
 
     addRequirements(driveTrain);
 
