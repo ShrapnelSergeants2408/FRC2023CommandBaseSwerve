@@ -326,8 +326,8 @@ public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelativ
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
       fieldRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
-          : new ChassisSpeeds(xSpeed, ySpeed, rot)
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed*100, ySpeed*100, rot*100, m_gyro.getRotation2d())
+          : new ChassisSpeeds(xSpeed*100, ySpeed*100, rot*100)
     );
     
   SwerveDriveKinematics.desaturateWheelSpeeds(

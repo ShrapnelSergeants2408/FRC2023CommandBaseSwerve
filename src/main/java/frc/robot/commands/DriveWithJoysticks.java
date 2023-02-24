@@ -72,9 +72,9 @@ public class DriveWithJoysticks extends CommandBase {
     if(fieldOriented){
       //relative to field
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        m_xSpeed * PhysicalConstants.kMaxSpeedMetersPerSecond,
-        m_ySpeed * PhysicalConstants.kMaxSpeedMetersPerSecond,
-        m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond,
+        m_xSpeed  *PhysicalConstants.kMaxSpeedMetersPerSecond,
+        m_ySpeed *PhysicalConstants.kMaxSpeedMetersPerSecond,
+        m_turningSpeed *PhysicalConstants.kMaxAngularSpeedRadiansPerSecond,
         driveTrain.getRotation2d());
     } else {
       //relative to robot
@@ -83,8 +83,8 @@ public class DriveWithJoysticks extends CommandBase {
                                         m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond);
     }
     SmartDashboard.putBoolean("Field Relative", fieldOriented);
-    SmartDashboard.putNumber("Joystick 1 X", m_xSpeed * PhysicalConstants.kMaxSpeedMetersPerSecond);
-    SmartDashboard.putNumber("Joystick 1 Y", m_ySpeed * PhysicalConstants.kMaxSpeedMetersPerSecond);
+    SmartDashboard.putNumber("Joystick 1 X", m_xSpeed *PhysicalConstants.kMaxSpeedMetersPerSecond);
+    SmartDashboard.putNumber("Joystick 1 Y", m_ySpeed  *PhysicalConstants.kMaxSpeedMetersPerSecond);
     SmartDashboard.putNumber("Joystick 2 X", m_turningSpeed * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond);
     SwerveModuleState[] moduleStates = PhysicalConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
     
