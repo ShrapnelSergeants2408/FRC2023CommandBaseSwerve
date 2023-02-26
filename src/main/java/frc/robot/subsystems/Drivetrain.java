@@ -414,6 +414,15 @@ public void wheelsIn() {
 
 /** Updates the field-relative position. */
 public void updateOdometry() {
+  m_odometry.update(m_gyro.getRotation2d(),
+    new SwerveModulePosition[] {
+      m_frontLeft.getPosition(),
+      m_frontRight.getPosition(),
+      m_rearLeft.getPosition(),
+      m_rearRight.getPosition()});
+
+/* 
+
   m_poseEstimator.update(
     m_gyro.getRotation2d(), 
     new SwerveModulePosition[] {
@@ -440,6 +449,8 @@ public void updateOdometry() {
     // do i need the simulations?
     //m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
     //m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
+
+    */
   }
 
     

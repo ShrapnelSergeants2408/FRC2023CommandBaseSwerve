@@ -137,6 +137,7 @@ public final class Constants {
     public static final double kTurningGearRatio = 48.0/40.0; //reverse?
 
     public static final double kDriveGearRatio = 6.67;
+    public static final int kDriveCPR = (int)(42 * kDriveGearRatio);
 
     public static final double kWheelDiameterInches = 4.0;
 

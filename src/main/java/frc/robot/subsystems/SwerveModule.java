@@ -23,6 +23,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
 
 public class SwerveModule {
@@ -79,7 +80,8 @@ public class SwerveModule {
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
 
     //encoder setup
-    m_driveEncoder = m_driveMotor.getEncoder(); 
+    //m_driveEncoder = m_driveMotor.getEncoder(); 
+    m_driveEncoder = m_driveMotor.getEncoder(Type.kHallSensor,ModuleConstants.kDriveCPR);
     //m_turningEncoder.getAbsolutePosition();
 
     m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 

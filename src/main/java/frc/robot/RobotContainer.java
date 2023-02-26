@@ -39,7 +39,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -137,6 +137,10 @@ public class RobotContainer {
 
     // Put the chooser on the dashboard
     SmartDashboard.putData(m_AutoChooser);
+
+    //Dashboard subsystems and commands
+    SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putData(m_robotDrive);
   
 
   }
