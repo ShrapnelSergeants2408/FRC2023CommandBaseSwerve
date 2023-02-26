@@ -21,7 +21,7 @@ public class DoNothing extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drivetrain.drive(0,0,0,true);
+    m_drivetrain.stopModules();;
   }
 
 

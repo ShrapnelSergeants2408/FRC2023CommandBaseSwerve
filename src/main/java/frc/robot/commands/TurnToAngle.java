@@ -35,7 +35,7 @@ public class TurnToAngle extends PIDCommand {
       // This uses the output
       //TODO: update xSpeed/ySpeed to take joystick inputs
       output -> 
-        driveTrain.drive(0, 0, output, true),
+        driveTrain.stopModules(),
       // subsystem
       driveTrain
     );

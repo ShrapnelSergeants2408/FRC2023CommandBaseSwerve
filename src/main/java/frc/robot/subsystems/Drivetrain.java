@@ -51,6 +51,7 @@ public class Drivetrain extends SubsystemBase {
    * @param turningEncoderOffset calculated value for offset
    * @param turningEncoderReversed is the turning encoder reversed
    */
+//+
   private final SwerveModule m_frontLeft =
       new SwerveModule(
           kFrontLeftDriveMotorPort,
@@ -61,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
           kFrontLeftTurningEncoderOffset,
           kFrontLeftTurningEncoderReversed
           );
-
+//+
   private final SwerveModule m_rearLeft =
       new SwerveModule(
           kRearLeftDriveMotorPort,
@@ -72,7 +73,7 @@ public class Drivetrain extends SubsystemBase {
           kRearLeftTurningEncoderOffset,
           kRearLeftTurningEncoderReversed
           );
-
+//+
   private final SwerveModule m_frontRight =
       new SwerveModule(
           kFrontRightDriveMotorPort,
@@ -83,7 +84,7 @@ public class Drivetrain extends SubsystemBase {
           kFrontRightTurningEncoderOffset,
           kFrontRightTurningEncoderReversed
           );
-
+//+
   private final SwerveModule m_rearRight =
       new SwerveModule(
           kRearRightDriveMotorPort,
@@ -94,10 +95,11 @@ public class Drivetrain extends SubsystemBase {
           kRearRightTurningEncoderOffset,
           kRearRightTurningEncoderReversed
           );
-
+//+
   // The navX MXP gyro sensor
   private final AHRS m_gyro = new AHRS();
 
+//-
   //vision stuff
   private PhotonCamera photonCamera;
   private PhotonPoseEstimator photonPoseEstimator;
@@ -105,9 +107,8 @@ public class Drivetrain extends SubsystemBase {
   private Pose2d targetPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
   private Pose2d defaultPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
 
-
+//+
   // Odometry class for tracking robot pose
-  
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           PhysicalConstants.kDriveKinematics,
@@ -118,6 +119,8 @@ public class Drivetrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           });
+
+//-          
   /*
   * Here we use SwerveDrivePoseEstimator so that we can fuse odometry
   * readings. 
@@ -136,9 +139,11 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public Drivetrain() {
+//-  
     resetOdometry(defaultPose);
     resetEncoders();
 
+//-
     //Camera setup
     photonCamera = new PhotonCamera(VisionConstants.kCameraName);
     try {
@@ -160,29 +165,31 @@ public class Drivetrain extends SubsystemBase {
       photonPoseEstimator = null;
 
     }
-  
+
+//+    
     //pause gyro reset 1 sec to avoid interferring with gyro calibration
     new Thread(() -> {
       try {
         Thread.sleep(1000);
         zeroHeading();
       } catch (Exception e) {
-      }
+
+        }
     }).start();
 
-  
-    zeroHeading();
   }
+
+
+
 
 @Override
 public void periodic() {
-
-  // Query the latest result from PhotonVision
-   
+//-
+  // Query the latest result from PhotonVision   
   var result = photonCamera.getLatestResult();
 
   boolean hasTargets = result.hasTargets();
-
+//-
  // SmartDashboard.putBoolean("Has Targets", hasTargets);
     if (hasTargets){
       // Get a list of currently tracked targets.
@@ -263,15 +270,14 @@ public void periodic() {
         
       } 
     }
-
+//+
   // Update the odometry in the periodic block
   updateOdometry();
- 
+
+//- 
   // Update sensor readings
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
   SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
-  SmartDashboard.putNumber("Robot Heading", getHeading());
-  SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
 
   SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
   SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
@@ -282,10 +288,13 @@ public void periodic() {
 
 }
 
+//-
 public boolean getFieldRelative(){
   return m_gyro.isConnected();
 }
 
+
+//+
 /**
  * Returns the currently-estimated pose of the robot.
  *
@@ -295,6 +304,8 @@ public Pose2d getPose() {
   return m_odometry.getPoseMeters();
 }
 
+
+//+
 /**
  * Resets the odometry to the specified pose.
  *
@@ -313,6 +324,8 @@ public void resetOdometry(Pose2d pose) {
   );
 }
 
+
+
 /**
  * Method to drive the robot using joystick info.
  *
@@ -322,6 +335,8 @@ public void resetOdometry(Pose2d pose) {
  * @param fieldRelative Whether the provided x and y speeds are relative to the field.
  */
 
+
+/* 
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
@@ -340,6 +355,8 @@ public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelativ
   m_rearLeft.setDesiredState(swerveModuleStates[2]);
   m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
+  */
+
   
 /**
  * Sets the swerve ModuleStates.
@@ -420,6 +437,9 @@ public void updateOdometry() {
       m_frontRight.getPosition(),
       m_rearLeft.getPosition(),
       m_rearRight.getPosition()});
+
+  SmartDashboard.putNumber("Robot Heading", getHeading());
+  SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
 
 /* 
 

@@ -42,6 +42,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -91,8 +92,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the button bindings
-    configureButtonBindings();
+
 
     // Configure default commands
 
@@ -104,8 +104,10 @@ public class RobotContainer {
         () -> -m_driverController.getLeftY(),
         () -> m_driverController.getLeftX(),
         () -> m_driverController.getRightX(), 
-        //() -> !m_driverController.getRawButton(OIConstants.kD_Mid_Left)));
         m_robotDrive.getFieldRelative())
+
+
+
     );
 
 /*
@@ -142,7 +144,8 @@ public class RobotContainer {
     SmartDashboard.putData(CommandScheduler.getInstance());
     SmartDashboard.putData(m_robotDrive);
   
-
+    // Configure the button bindings
+    configureButtonBindings();
   }
 
   /**
@@ -267,19 +270,18 @@ public class RobotContainer {
             .setKinematics(PhysicalConstants.kDriveKinematics);
 
     // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
+    Trajectory trajectory =
         TrajectoryGenerator.generateTrajectory(
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
             // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(45)),
+            new Pose2d(3, 0, Rotation2d.fromDegrees(45)),
             config);
 
     var thetaController =
-    
-        new ProfiledPIDController(
+            new ProfiledPIDController(
             AutoConstants.kPThetaController,
             AutoConstants.kIThetaController,
             AutoConstants.kDThetaController,
@@ -289,7 +291,7 @@ public class RobotContainer {
 
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
-            exampleTrajectory,
+            trajectory,
             m_robotDrive::getPose, // Functional interface to feed supplier
             PhysicalConstants.kDriveKinematics,
 
@@ -304,13 +306,11 @@ public class RobotContainer {
             m_robotDrive::setModuleStates,
             m_robotDrive);
 
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
-    // Run path following command, then stop at the end.
-    
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-    
+    return new SequentialCommandGroup(
+      new InstantCommand(()->m_robotDrive.resetOdometry(trajectory.getInitialPose())),
+      swerveControllerCommand,
+      new InstantCommand(()->m_robotDrive.stopModules()));
   }
 
   public Command trajectory2Command() {
@@ -365,14 +365,13 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
                 m_robotDrive);
 
         // 5. Add some init and wrap-up, and return everything
-        //return new SequentialCommandGroup(
-        //        new InstantCommand(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
-        //        swerveControllerCommand,
-        //        new InstantCommand(() -> m_robotDrive.stopModules()));
-        return new InstantCommand(
-            ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
-            .andThen(swerveControllerCommand)
-            .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
+
+        return new SequentialCommandGroup(
+          new InstantCommand(()->m_robotDrive.resetOdometry(trajectory.getInitialPose())),
+          swerveControllerCommand,
+          new InstantCommand(()->m_robotDrive.stopModules()));
+
+
   }
 
   public Command trajectory3Command() {
@@ -419,14 +418,12 @@ thetaController.enableContinuousInput(-Math.PI, Math.PI);
             m_robotDrive);
 
     // 5. Add some init and wrap-up, and return everything
-    //return new SequentialCommandGroup(
-    //        new InstantCommand(() -> m_robotDrive.resetOdometry(trajectory.getInitialPose())),
-    //        swerveControllerCommand,
-    //        new InstantCommand(() -> m_robotDrive.stopModules()));
-    return new InstantCommand(
-        ()-> m_robotDrive.resetOdometry(trajectory.getInitialPose()))
-        .andThen(swerveControllerCommand)
-        .andThen(new InstantCommand(() -> m_robotDrive.stopModules()));
+
+    return new SequentialCommandGroup(
+      new InstantCommand(()->m_robotDrive.resetOdometry(trajectory.getInitialPose())),
+      swerveControllerCommand,
+      new InstantCommand(()->m_robotDrive.stopModules()));
+
   }
 /*
   public Command TargetPositionWithVision(){
