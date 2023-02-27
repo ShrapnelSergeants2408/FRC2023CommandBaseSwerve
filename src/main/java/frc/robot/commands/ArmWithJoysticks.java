@@ -36,7 +36,7 @@ public class ArmWithJoysticks extends CommandBase {
   @Override
   public void execute() 
   {
-    double m_armLift = armLift.get();
+    double m_armLift = armLift.get() * 0.2; //TODO:  remove scale factor once arm limits established
     double m_armExtend = armExtend.get();
 
     //double m_armExtentionDistance = armSubsystem.
