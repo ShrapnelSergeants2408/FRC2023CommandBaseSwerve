@@ -269,6 +269,7 @@ public final class Constants {
     public static final double kArmLiftRadPerTick = kArmLiftRadPerRotation / kArmLiftCPR;
     public static final double kArmLiftDegPerRotation = 360 / kArmLiftGearRatio;
     public static final double kArmLiftDegPerTick = kArmLiftDegPerRotation/kArmLiftCPR;
+    public static final double kArmLiftPositionConversionFactor = 3.6; //360 degrees / 100 ticks per revolution
 
     //CAN Address - Arm Motors 40s
     public static final int kArmLiftMotor = 40;

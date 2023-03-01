@@ -40,6 +40,8 @@ public class Arm extends SubsystemBase {
                                           ArmConstants.kIArmLiftMotor,
                                           ArmConstants.kDArmLiftMotor);
     m_ArmLiftEncoder = m_ArmLiftMotor.getEncoder();
+    m_ArmLiftEncoder.setPositionConversionFactor(ArmConstants.kArmLiftPositionConversionFactor);
+
     m_ArmLiftMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);  
 
     m_ArmExtensionMotor = new VictorSPX(ArmConstants.kArmExtensionMotor);
