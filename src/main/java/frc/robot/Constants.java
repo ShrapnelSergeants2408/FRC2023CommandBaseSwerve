@@ -64,7 +64,7 @@ public final class Constants {
     public static final boolean kRearRightDriveEncoderReversed = false;
 
     //TODO: find offset values
-    public static final double kFrontLeftTurningEncoderOffset = 0.696093;
+    public static final double kFrontLeftTurningEncoderOffset = 0.708692;
     public static final double kRearLeftTurningEncoderOffset = 0.587064;
     public static final double kFrontRightTurningEncoderOffset = 0.679514;
     public static final double kRearRightTurningEncoderOffset = 0.167231;
@@ -137,7 +137,8 @@ public final class Constants {
     public static final double kTurningGearRatio = 48.0/40.0; //reverse?
 
     public static final double kDriveGearRatio = 6.67;
-    public static final int kDriveCPR = (int)(42 * kDriveGearRatio);
+    //public static final int kDriveCPR = (int)(42 * kDriveGearRatio);
+    public static final int kDriveCPR = 42; //required value for NEO hall effect encoder; alter value using conversion factor
 
     public static final double kWheelDiameterInches = 4.0;
 
@@ -151,14 +152,14 @@ public final class Constants {
      // PID values TODO: do we need to send different values to each module?
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 0;
-    public static final double kPModuleDriveController = .02;
+    public static final double kPModuleTurningController = 0; //.2
+    public static final double kPModuleDriveController = .28;  //.37
 
-    public static final double kIModuleTurningController = 0;
-    public static final double kIModuleDriveController = 0;
+    public static final double kIModuleTurningController = 0; //.1
+    public static final double kIModuleDriveController = .5;
 
     public static final double kDModuleTurningController = 0;
-    public static final double kDModuleDriveController = 0;
+    public static final double kDModuleDriveController = 0.5;
 
 
   }
@@ -182,7 +183,7 @@ public final class Constants {
     public static final int kO_Joystick_Right_Y_Speed_Limit = 1;
 
     //deadband  0.03 adjust?
-    public static final double kJoystick_Deadband = 0.03;
+    public static final double kJoystick_Deadband = 0.06;
 
 
 	//Joystick button/axis maps
@@ -310,13 +311,13 @@ public final class Constants {
     public static final double kAVoltSecondSquaredPerRadArmLiftMotor = 0;
     public static final double kMaxVelocityRadPerSecondArmLiftMotor = 0;
     public static final double kMaxAccelerationRadPerSecondSquaredArmLiftMotor = 0;
-    public static final double kArmLiftMotorOffsetRads = 0;
-    public static final double kArmLiftMotorSpeed = 0.5; //TODO:  adjust constant arm speed
-    //need max/min encoder limits
-    public static final double kArmLiftMaxHeightDeg = 75;
-    public static final double kArmLiftMaxHeight = kArmLiftMaxHeightDeg / kArmLiftDegPerRotation;
-    public static final double kArmLiftMaxHeightRad = 1.309;
-    public static final double kArmLiftMinHeight = 0; 
+    //public static final double kArmLiftMotorOffsetRads = 0;
+    public static final double kArmLiftMotorSpeed = 0.3; //TODO:  adjust constant arm speed
+
+
+    //arm encoder soft limits
+    public static final double kArmLiftMinHeightDeg = 0; 
+    public static final double kArmLiftMaxHeightDeg = 90;
 
 
     //ArmExtension PID

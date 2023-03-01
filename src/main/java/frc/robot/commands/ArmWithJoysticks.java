@@ -36,7 +36,7 @@ public class ArmWithJoysticks extends CommandBase {
   @Override
   public void execute() 
   {
-    double m_armLift = armLift.get() * 0.2; //TODO:  remove scale factor once arm limits established
+    double m_armLift = armLift.get() * ArmConstants.kArmLiftMotorSpeed; 
     double m_armExtend = armExtend.get();
 
     //double m_armExtentionDistance = armSubsystem.
@@ -46,9 +46,9 @@ public class ArmWithJoysticks extends CommandBase {
     m_armExtend = Math.abs(m_armExtend) > OIConstants.kJoystick_Deadband ? m_armExtend : 0;
 
     //Apply soft limits
-    if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeight) &&
+    if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeightDeg) &&
         (m_armLift > 0) ||
-        (m_armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeight) &&
+        (m_armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeightDeg) &&
         (m_armLift <0))
         {
           m_armLift = 0;

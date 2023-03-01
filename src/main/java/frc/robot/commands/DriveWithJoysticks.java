@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+//import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +20,7 @@ public class DriveWithJoysticks extends CommandBase {
   private final Drivetrain driveTrain;
   private final Supplier<Double> xSpeedFunction, ySpeedFunction, turningSpeedFunction;
   private final boolean fieldOriented;
-  private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
+  //private final SlewRateLimiter xLimiter, yLimiter, turnLimiter;
 
 
   /** Creates a new DriveWithJoysticks. */
@@ -36,9 +36,9 @@ public class DriveWithJoysticks extends CommandBase {
     this.turningSpeedFunction = turningSpeedFunction;
     this.fieldOriented = fieldOriented;
     
-    this.xLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
-    this.yLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
-    this.turnLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
+    //this.xLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
+    //this.yLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
+    //this.turnLimiter = new SlewRateLimiter(OIConstants.kSlewRateLimit);
     
 
     addRequirements(driveTrain);
@@ -52,9 +52,9 @@ public class DriveWithJoysticks extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double m_xSpeed = xSpeedFunction.get();
-    double m_ySpeed = ySpeedFunction.get();
-    double m_turningSpeed = turningSpeedFunction.get();
+    double m_xSpeed = xSpeedFunction.get()* PhysicalConstants.kMaxSpeedMetersPerSecond;
+    double m_ySpeed = ySpeedFunction.get()* PhysicalConstants.kMaxSpeedMetersPerSecond;
+    double m_turningSpeed = turningSpeedFunction.get() * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond;
 
     //apply deadband
     m_xSpeed = Math.abs(m_xSpeed) > OIConstants.kJoystick_Deadband ? m_xSpeed : 0;
@@ -62,13 +62,13 @@ public class DriveWithJoysticks extends CommandBase {
     m_turningSpeed = Math.abs(m_turningSpeed) > OIConstants.kJoystick_Deadband ? m_turningSpeed : 0;
 
     //apply slew rate limiter
-    m_xSpeed = xLimiter.calculate(m_xSpeed) * PhysicalConstants.kMaxSpeedMetersPerSecond;
-    m_ySpeed = yLimiter.calculate(m_ySpeed) * PhysicalConstants.kMaxSpeedMetersPerSecond;
-    m_turningSpeed = turnLimiter.calculate(m_turningSpeed) * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond;
+    //m_xSpeed = xLimiter.calculate(m_xSpeed) * PhysicalConstants.kMaxSpeedMetersPerSecond;
+    //m_ySpeed = yLimiter.calculate(m_ySpeed) * PhysicalConstants.kMaxSpeedMetersPerSecond;
+    //m_turningSpeed = turnLimiter.calculate(m_turningSpeed) * PhysicalConstants.kMaxAngularSpeedRadiansPerSecond;
 
     //set chassis speeds
     ChassisSpeeds chassisSpeeds;
-    if(fieldOriented){
+    if(!fieldOriented){ //TODO: remove !
       //relative to field
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
         m_xSpeed,//  *PhysicalConstants.kMaxSpeedMetersPerSecond,
