@@ -85,8 +85,8 @@ public class SwerveModule {
     m_driveEncoder = m_driveMotor.getEncoder(Type.kHallSensor,ModuleConstants.kDriveCPR);
 
 
-    m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); //TODO: update
-    m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); //TODO: update
+    m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 
+    m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); 
 
     m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Rad); //set in radians
     //m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Deg); //set in degrees
@@ -120,7 +120,7 @@ public class SwerveModule {
   }
 
   public double getDriveVelocity() {
-    return m_driveEncoder.getVelocity(); //TODO: update
+    return m_driveEncoder.getVelocity();
   }
 
 

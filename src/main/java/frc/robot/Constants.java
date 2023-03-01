@@ -147,11 +147,11 @@ public final class Constants {
     public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
     public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
 
-
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
+    //velocity
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     
-     // PID values TODO: do we need to send different values to each module?
+
 
     //TODO: update P values
     public static final double kPModuleTurningController = 0; //.2
