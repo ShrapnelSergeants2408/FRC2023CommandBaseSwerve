@@ -33,7 +33,7 @@ public class SwerveModule {
   private final RelativeEncoder m_driveEncoder;
 
   private final AnalogEncoder m_turningEncoder;
-  private final double m_turningEncoderOffsetRad;
+  private final double m_turningEncoderOffset;
   private final boolean m_turningEncoderReversed; 
 
   //TODO: update ki, kd values for drivePID and turningPID controllers
@@ -63,7 +63,7 @@ public class SwerveModule {
       boolean turningEncoderReversed) 
   {
 
-    m_turningEncoderOffsetRad = turningEncoderOffset;
+    m_turningEncoderOffset = turningEncoderOffset;
     m_turningEncoderReversed = turningEncoderReversed;
     m_turningEncoder = new AnalogEncoder(turningEncoderChannel);
 
@@ -73,6 +73,8 @@ public class SwerveModule {
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new VictorSPX(turningMotorChannel);
 
+    m_turningMotor.configFactoryDefault(); //maybe remove?
+
     m_driveMotor.setInverted(driveMotorReversed);
     m_turningMotor.setInverted(turningMotorReversed);
 
@@ -80,23 +82,24 @@ public class SwerveModule {
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
 
     //encoder setup
-    //m_driveEncoder = m_driveMotor.getEncoder(); 
     m_driveEncoder = m_driveMotor.getEncoder(Type.kHallSensor,ModuleConstants.kDriveCPR);
-    //m_turningEncoder.getAbsolutePosition();
 
-    m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 
-    m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); 
 
-    m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Rad); 
-    //example sets VelocityConversion but code does not use this value
-   
-    // Limit the PID Controller's input range between -pi and pi and set the input
+    m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); //TODO: update
+    m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); //TODO: update
+
+    m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Rad); //set in radians
+    //m_turningEncoder.setDistancePerRotation(ModuleConstants.kTurningEncoderRot2Deg); //set in degrees
+ 
+
+    // Limit the PID Controller's input range between -180 and 180 (-pi and pi) and set the input
     // to be continuous.
     m_turningPIDController = new PIDController(
         ModuleConstants.kPModuleTurningController,
         ModuleConstants.kIModuleTurningController,
         ModuleConstants.kDModuleTurningController);
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    //m_turningPIDController.enableContinuousInput(-180,180);
 
     m_drivePIDController = new PIDController(
         ModuleConstants.kPModuleDriveController,
@@ -107,28 +110,30 @@ public class SwerveModule {
     //sendTelemetry(driveMotorChannel);
   }
 
-  /*  
-   *  These next 5 may not be necessary.  Added following the example from
-   *  FRC0toAutonomous.
-   */
 
   public double getDrivePosition() {
     return m_driveEncoder.getPosition();
   }
 
   public double getTurnPosition() {
-    return m_turningEncoder.get(); //should this be getAbsolutePosition()
+    return m_turningEncoder.getDistance(); 
   }
 
   public double getDriveVelocity() {
-    return m_driveEncoder.getVelocity();
+    return m_driveEncoder.getVelocity(); //TODO: update
   }
 
 
   public double getAbsoluteEncoderRad() {
     double angle = m_turningEncoder.getAbsolutePosition();
-    angle *= 2.0 * Math.PI; //TODO: should this include gear ratio
-    angle -= m_turningEncoderOffsetRad; //adjust for wheel offset
+    //account for 1/6pi rad wraparound
+    if (m_turningEncoder.getDistance() > ModuleConstants.kTurningEncoderRot2Rad)
+    {
+      angle += 1; //absolute position should be 0-1 so this will account for the rollover
+    }
+ 
+    angle -= m_turningEncoderOffset; //adjust for wheel offset
+    angle *= 2.0 * Math.PI;  //conver to radians
     return angle*(m_turningEncoderReversed ? -1.0:1.0);
   }
 
@@ -137,7 +142,7 @@ public class SwerveModule {
   public void resetEncoders() {
     m_driveEncoder.setPosition(0.0);
     //m_turningEncoder.setPosition(getAbsoluteEncoderRad());
-    m_turningEncoder.setPositionOffset(m_turningEncoderOffsetRad);
+    m_turningEncoder.setPositionOffset(m_turningEncoderOffset);
     m_turningEncoder.reset();
 
   }
@@ -149,13 +154,13 @@ public class SwerveModule {
    *
    * @return The current state of the module.
    */
-  /* 
+   
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-        //(m_driveEncoder.getVelocity()), new Rotation2d(getTurnPosition())); //may need to divide velocity by 60
+
         (m_driveEncoder.getVelocity()), new Rotation2d(getAbsoluteEncoderRad())); //may need to divide velocity by 60
   }
-*/
+
 
 
 
@@ -193,7 +198,7 @@ public class SwerveModule {
 
     SmartDashboard.putString("Swerve["+ m_turningEncoder.getChannel()+"] state", state.toString());
     SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive output", driveOutput);
-    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn angle", getAbsoluteEncoderRad()*(180/Math.PI));    
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn angle", getAbsoluteEncoderRad()*180/Math.PI);    
   }
   
 
@@ -207,7 +212,9 @@ public class SwerveModule {
     return new SwerveModulePosition(
         //m_driveEncoder.getDistance(), new Rotation2d(m_turningEncoder.getDistance()));
 
-        m_driveEncoder.getPosition(), new Rotation2d(m_turningEncoder.getDistance()));
+        m_driveEncoder.getPosition(), new Rotation2d(m_turningEncoder.getDistance()*Math.PI/180));
+        
+
   }
 
 

@@ -143,7 +143,9 @@ public final class Constants {
     public static final double kWheelDiameterInches = 4.0;
 
     public static final double kDriveEncoderRot2Meter = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))/kDriveGearRatio; 
+    
     public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
+    public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
 
 
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
