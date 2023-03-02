@@ -105,19 +105,17 @@ public class RobotContainer {
         () -> m_driverController.getLeftX(),
         () -> m_driverController.getRightX(), 
         m_robotDrive.getFieldRelative())
-
-
-
     );
-
 
     // Operator left stick Y raises/lowers arm
     // Operator right stick Y extends/retracts arm
     //  TODO: after testing (and recoding) change default to ArmToHeight
-    m_robotArm.setDefaultCommand(new ArmWithJoysticks(
+    m_robotArm.setDefaultCommand(
+      new ArmWithJoysticks(
         m_robotArm,
         () -> m_operatorController.getLeftY(),
-        () -> m_operatorController.getRightY()));
+        () -> m_operatorController.getRightY())
+    );
 
     /*
     m_robotGripper.setDefaultCommand(

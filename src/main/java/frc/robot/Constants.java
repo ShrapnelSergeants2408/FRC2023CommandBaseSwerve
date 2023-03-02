@@ -266,13 +266,14 @@ public final class Constants {
   public static final class ArmConstants {  
 
     //Arm Conversions
-    public static final double kArmLiftGearRatio = 100.0/1.0;
-    public static final double kArmLiftRadPerRotation = 2 * Math.PI / kArmLiftGearRatio;
-    public static final double kArmLiftCPR = 42.0 * kArmLiftGearRatio;
-    public static final double kArmLiftRadPerTick = kArmLiftRadPerRotation / kArmLiftCPR;
-    public static final double kArmLiftDegPerRotation = 360 / kArmLiftGearRatio;
-    public static final double kArmLiftDegPerTick = kArmLiftDegPerRotation/kArmLiftCPR;
+    //public static final double kArmLiftGearRatio = 100.0/1.0;
+    //public static final double kWristGearRatio = 27.0/1.0 //TODO: is this correct?
+    //public static final double kArmLiftCPR = 42.0 * kArmLiftGearRatio;
+    //public static final double kArmLiftRadPerTick = kArmLiftRadPerRotation / kArmLiftCPR;
+    //public static final double kArmLiftDegPerRotation = 360 / kArmLiftGearRatio;
+    //public static final double kArmLiftDegPerTick = kArmLiftDegPerRotation/kArmLiftCPR;
     public static final double kArmLiftPositionConversionFactor = 3.6; //360 degrees / 100 ticks per revolution
+    public static final double kWristPositionConversionFactor = 13.3; //360 degrees / 27 ticks per revolution
 
     //CAN Address - Arm Motors 40s
     public static final int kArmLiftMotor = 40;
@@ -280,12 +281,15 @@ public final class Constants {
 
     public static final boolean kArmLiftMotorInverted = false;
     public static final boolean kArmExtensionMotorInverted = false;
+    public static final boolean kWristMotorInverted = false;
 
     //CAN Address - Gripper Motor 50s
     public static final int kWristMotor = 50;
+
+
     public static final int kGripper = 51;  //TODO: if using motor for gripper
 
-    public static final boolean kWristMotorInverted = false;
+
     public static final boolean kGripperMotorInverted = false;
 
 
@@ -300,7 +304,7 @@ public final class Constants {
 
     public static final int kArmExtensionRangefinderPort=0;
 
-      //TODO: tune values;  offload ArmLift PID to SparkMax?
+      //TODO: tune values;  
     //ArmLift PID
     public static final double kPArmLiftMotor = 0.1;
     public static final double kIArmLiftMotor = 0.0;
@@ -330,10 +334,12 @@ public final class Constants {
     public static final double kDArmExtensionMotor = 0.0;
     public static final double kMaxOutputArmExtensionMotor = 1.0;
     public static final double kMinOutputArmExtensionMotor = -1.0;
-    public static final double kArmExtensionSpeed = 0.5; //TODO: adjust constant extension speed
+    public static final double kArmExtensionMotorSpeed = 0.3; //TODO: adjust constant extension speed
     //max/min rangefinder limits
     public static final double kArmExtensionMinDistance = 30;
     public static final double kArmExtensionMaxDistance = 50;
+
+
 
     //WristMotor PID
     public static final double kPWristMotor = 0.1;

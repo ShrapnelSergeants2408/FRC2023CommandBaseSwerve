@@ -27,6 +27,10 @@ public class Arm extends SubsystemBase {
   private final PIDController m_ArmExtensionMotorPID;
   private final AnalogInput m_ArmExtensionRangefinder;
 
+  private final CANSparkMax m_WristMotor;
+  private final PIDController m_WristMotorPID;
+  private final RelativeEncoder m_WristEncoder;
+
   private double m_ArmExtensionDistance;
   private double m_ArmLiftPosition;
   private double m_ArmExtensionVoltageScaleFactor;
@@ -34,23 +38,38 @@ public class Arm extends SubsystemBase {
 
   
   public Arm() {
+    //arm lift
     m_ArmLiftMotor = new CANSparkMax(ArmConstants.kArmLiftMotor, MotorType.kBrushless);
-    m_ArmLiftMotor.restoreFactoryDefaults();  //set initial arm position
+    m_ArmLiftMotor.restoreFactoryDefaults();
+    m_ArmLiftMotor.setInverted(ArmConstants.kArmLiftMotorInverted); 
     m_ArmLiftMotorPID = new PIDController(ArmConstants.kPArmLiftMotor,
                                           ArmConstants.kIArmLiftMotor,
                                           ArmConstants.kDArmLiftMotor);
     m_ArmLiftEncoder = m_ArmLiftMotor.getEncoder();
     m_ArmLiftEncoder.setPositionConversionFactor(ArmConstants.kArmLiftPositionConversionFactor);
+    //arm angles relative to starting position
+    m_ArmLiftEncoder.setPosition(0.0); //initialize 0 position
+ 
 
-    m_ArmLiftMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);  
-
+    //arm extension
     m_ArmExtensionMotor = new VictorSPX(ArmConstants.kArmExtensionMotor);
+    m_ArmExtensionMotor.configFactoryDefault();
     m_ArmExtensionMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);
     m_ArmExtensionMotorPID = new PIDController(ArmConstants.kPArmExtensionMotor,
                                                ArmConstants.kIArmExtensionMotor, 
                                                ArmConstants.kDArmExtensionMotor);
     m_ArmExtensionRangefinder = new AnalogInput(getChannelFromPin(PinType.AnalogIn,ArmConstants.kArmExtensionRangefinderPort));
+  
+    //wrist
+    m_WristMotor = new CANSparkMax(ArmConstants.kWristMotor, MotorType.kBrushless);
+    m_WristMotor.restoreFactoryDefaults();  
+    m_WristMotorPID = new PIDController(ArmConstants.kPWristMotor,
+                                          ArmConstants.kIWristMotor,
+                                          ArmConstants.kDWristMotor);
+    m_WristEncoder = m_WristMotor.getEncoder();
+    m_WristEncoder.setPositionConversionFactor(ArmConstants.kWristPositionConversionFactor);
 
+    m_WristMotor.setInverted(ArmConstants.kArmExtensionMotorInverted); 
     SmartDashboard.putNumber("P Gain Arm Lift", ArmConstants.kPArmLiftMotor);
     SmartDashboard.putNumber("I Gain Arm Lift", ArmConstants.kIArmLiftMotor);
     SmartDashboard.putNumber("D Gain Arm Lift", ArmConstants.kDArmLiftMotor);
