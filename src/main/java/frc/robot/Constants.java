@@ -152,7 +152,7 @@ public final class Constants {
     public static final double kDriveEncoderRPM2MeterPerSec = 4.0; //calculated 4.5 ; adjusted 
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad * (75)/ 60; //6.5 radians per sec
     
-    public static final double kDriveMaxSpeed = kDriveEncoderRPM2MeterPerSec;
+
 
     //TODO: update P values
     public static final double kPModuleTurningController = 0;

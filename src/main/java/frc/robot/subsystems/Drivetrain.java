@@ -336,13 +336,13 @@ public void resetOdometry(Pose2d pose) {
  */
 
 
-/* 
+ 
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
       fieldRelative
-        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed*100, ySpeed*100, rot*100, m_gyro.getRotation2d())
-          : new ChassisSpeeds(xSpeed*100, ySpeed*100, rot*100)
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
+          : new ChassisSpeeds(xSpeed, ySpeed, rot)
     );
     
   SwerveDriveKinematics.desaturateWheelSpeeds(
@@ -355,7 +355,7 @@ public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelativ
   m_rearLeft.setDesiredState(swerveModuleStates[2]);
   m_rearRight.setDesiredState(swerveModuleStates[3]);
   }
-  */
+  
 
   
 /**
