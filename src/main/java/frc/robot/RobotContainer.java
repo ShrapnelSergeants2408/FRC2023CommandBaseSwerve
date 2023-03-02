@@ -60,7 +60,7 @@ import org.photonvision.PhotonUtils;
 public class RobotContainer {
   // The robot's subsystems
   private final Drivetrain m_robotDrive = new Drivetrain();
-//  private final Arm m_robotArm = new Arm();
+  private final Arm m_robotArm = new Arm();
 //  private final Wrist m_robotWrist = new Wrist();
 //  private final Gripper m_robotGripper = new Gripper();
 
@@ -110,7 +110,7 @@ public class RobotContainer {
 
     );
 
-/*
+
     // Operator left stick Y raises/lowers arm
     // Operator right stick Y extends/retracts arm
     //  TODO: after testing (and recoding) change default to ArmToHeight
@@ -118,7 +118,7 @@ public class RobotContainer {
         m_robotArm,
         () -> m_operatorController.getLeftY(),
         () -> m_operatorController.getRightY()));
-*/
+
     /*
     m_robotGripper.setDefaultCommand(
         // default to gripper closed

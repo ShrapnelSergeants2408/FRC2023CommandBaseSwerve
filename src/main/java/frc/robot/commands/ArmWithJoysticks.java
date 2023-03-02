@@ -42,6 +42,10 @@ public class ArmWithJoysticks extends CommandBase {
     double m_armExtend = MathUtil.applyDeadband(armExtend.get(), OIConstants.kJoystick_Deadband);
     
     //double m_armExtentionDistance = armSubsystem.
+    
+    //scale for safety TODO: modify once tested
+    m_armLift = m_armLift * 0.3;
+    m_armExtend = m_armExtend * .3;
 
     //Apply soft limits
     if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeightDeg) &&
