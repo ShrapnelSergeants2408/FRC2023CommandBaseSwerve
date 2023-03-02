@@ -12,7 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.ModuleConstants;
-
+import frc.robot.Constants.PhysicalConstants;
 import edu.wpi.first.wpilibj.AnalogEncoder;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -38,7 +38,7 @@ public class SwerveModule {
 
   //TODO: update ki, kd values for drivePID and turningPID controllers
 
-  private final PIDController m_drivePIDController; 
+  //private final PIDController m_drivePIDController; 
   private final PIDController m_turningPIDController;
 
   /**
@@ -101,10 +101,10 @@ public class SwerveModule {
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
     //m_turningPIDController.enableContinuousInput(-180,180);
 
-    m_drivePIDController = new PIDController(
-        ModuleConstants.kPModuleDriveController,
-        ModuleConstants.kIModuleDriveController,
-        ModuleConstants.kDModuleDriveController);
+  //  m_drivePIDController = new PIDController(
+  //      ModuleConstants.kPModuleDriveController,
+  //      ModuleConstants.kIModuleDriveController,
+  //      ModuleConstants.kDModuleDriveController);
 
     resetEncoders();
     //sendTelemetry(driveMotorChannel);
@@ -184,15 +184,18 @@ public class SwerveModule {
     }
 
     // Calculate the drive output from the drive PID controller.
-    final double driveOutput =
-        m_drivePIDController.calculate((m_driveEncoder.getVelocity()), state.speedMetersPerSecond); //may need to divide velocity by 60
-
+    //final double driveOutput =
+    //    m_drivePIDController.calculate((m_driveEncoder.getVelocity()), state.speedMetersPerSecond); //may need to divide velocity by 60
+    final double driveOutput = desiredState.speedMetersPerSecond/PhysicalConstants.kMaxSpeedMetersPerSecond;
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
         //m_turningPIDController.calculate(m_turningEncoder.getDistance(), state.angle.getRadians());
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
 
+    //m_driveMotor.set(driveOutput);
     m_driveMotor.set(driveOutput);
+
+
     //m_turningMotor.set(turnOutput);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput,turnOutput);
 

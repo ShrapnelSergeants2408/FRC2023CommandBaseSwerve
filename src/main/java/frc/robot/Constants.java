@@ -148,20 +148,21 @@ public final class Constants {
     public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
 
     //velocity
-    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
+    //public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
+    public static final double kDriveEncoderRPM2MeterPerSec = 4.0; //calculated 4.5 ; adjusted 
+    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad * (75)/ 60; //6.5 radians per sec
     
-
+    public static final double kDriveMaxSpeed = kDriveEncoderRPM2MeterPerSec;
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 0; //.2
-    public static final double kPModuleDriveController = .28;  //.37
+    public static final double kPModuleTurningController = 0;
+    public static final double kPModuleDriveController = 1;  
 
-    public static final double kIModuleTurningController = 0; //.1
-    public static final double kIModuleDriveController = .5;
+    public static final double kIModuleTurningController = 0;
+    public static final double kIModuleDriveController = 0;
 
     public static final double kDModuleTurningController = 0;
-    public static final double kDModuleDriveController = 0.5;
+    public static final double kDModuleDriveController = 0;
 
 
   }
@@ -172,7 +173,7 @@ public final class Constants {
 
     
     //slew rate 3 --> 1/3 sec from 0 to 1
-    public static final double kSlewRateLimit = 1.0; // adjust?
+    //public static final double kSlewRateLimit = 1.0; // adjust?
 
     public static final int kD_Joystick_Left_X_Speed_Limit = 1;
     public static final int kD_Joystick_Left_Y_Speed_Limit = 1;
@@ -240,9 +241,9 @@ public final class Constants {
 
     //TODO: do these values need to be changed?
     //Controller PID
-    public static final double kPXController = 0.5;
-    public static final double kPYController = 0.5;
-    public static final double kPThetaController = 0.5;
+    public static final double kPXController = 0.1;
+    public static final double kPYController = 0.1;
+    public static final double kPThetaController = 0.1;
 
     public static final double kIXController = 0;
     public static final double kIYController = 0;
