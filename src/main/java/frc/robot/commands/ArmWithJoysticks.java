@@ -48,9 +48,9 @@ public class ArmWithJoysticks extends CommandBase {
     m_armExtend = m_armExtend * ArmConstants.kArmExtensionMotorSpeed;
 
     //Apply soft limits
-    if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeightDeg) &&
+    if ((m_armSubsystem.getArmLiftAngle()>= ArmConstants.kArmLiftMaxHeightDeg) &&
         (m_armLift > 0) ||
-        (m_armSubsystem.getArmLiftMeasurement()<= ArmConstants.kArmLiftMinHeightDeg) &&
+        (m_armSubsystem.getArmLiftAngle()<= ArmConstants.kArmLiftMinHeightDeg) &&
         (m_armLift <0))
         {
           m_armLift = 0;

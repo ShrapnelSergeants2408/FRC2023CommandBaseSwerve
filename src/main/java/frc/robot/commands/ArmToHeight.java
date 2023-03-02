@@ -45,7 +45,7 @@ public class ArmToHeight extends CommandBase {
   @Override
   public void execute() {
 
-    double armLiftSpeed = m_ArmLiftMotorPIDController.calculate(m_armSubsystem.getArmLiftMeasurement());
+    double armLiftSpeed = m_ArmLiftMotorPIDController.calculate(m_armSubsystem.getArmLiftAngle());
     double armExtensionSpeed = m_ArmExtensionMotorPIDController.calculate(m_armSubsystem.getArmExtensionMeasurement());
 
     m_armSubsystem.armMovement(armLiftSpeed, armExtensionSpeed);

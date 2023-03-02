@@ -32,7 +32,7 @@ public class Arm extends SubsystemBase {
   private final RelativeEncoder m_WristEncoder;
 
   private double m_ArmExtensionDistance;
-  private double m_ArmLiftPosition;
+  private double m_ArmLiftAngle;
   private double m_ArmExtensionVoltageScaleFactor;
 
 
@@ -48,6 +48,7 @@ public class Arm extends SubsystemBase {
     m_ArmLiftEncoder = m_ArmLiftMotor.getEncoder();
     m_ArmLiftEncoder.setPositionConversionFactor(ArmConstants.kArmLiftPositionConversionFactor);
     //arm angles relative to starting position
+    //start with arm in down position
     m_ArmLiftEncoder.setPosition(0.0); //initialize 0 position
  
 
@@ -69,7 +70,12 @@ public class Arm extends SubsystemBase {
     m_WristEncoder = m_WristMotor.getEncoder();
     m_WristEncoder.setPositionConversionFactor(ArmConstants.kWristPositionConversionFactor);
 
-    m_WristMotor.setInverted(ArmConstants.kArmExtensionMotorInverted); 
+    m_WristMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);
+    //wrist position relative to starting position
+    //start with wrist perpendicular to floor
+    m_WristEncoder.setPosition(0.0); //initialize 0 position
+    
+    /*
     SmartDashboard.putNumber("P Gain Arm Lift", ArmConstants.kPArmLiftMotor);
     SmartDashboard.putNumber("I Gain Arm Lift", ArmConstants.kIArmLiftMotor);
     SmartDashboard.putNumber("D Gain Arm Lift", ArmConstants.kDArmLiftMotor);
@@ -85,17 +91,19 @@ public class Arm extends SubsystemBase {
     //SmartDashboard.putNumber("Feed Forward Arm Extension", ArmConstants.kFFArmExtensionMotor);
     SmartDashboard.putNumber("Min Output Arm Extension", ArmConstants.kMinOutputArmExtensionMotor);
     SmartDashboard.putNumber("Max Output Arm Extension", ArmConstants.kMaxOutputArmExtensionMotor);
+
+    */
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_ArmLiftPosition = m_ArmLiftEncoder.getPosition();
+    m_ArmLiftAngle = m_ArmLiftEncoder.getPosition();
 
     m_ArmExtensionVoltageScaleFactor = RobotController.getVoltage5V(); //compensate for supply volage differences
     m_ArmExtensionDistance = m_ArmExtensionRangefinder.getValue()*m_ArmExtensionVoltageScaleFactor*0.0492;
 
-    SmartDashboard.putNumber("Arm Lift Position ", m_ArmLiftPosition);
+    SmartDashboard.putNumber("Arm Lift Angle ", m_ArmLiftAngle);
     SmartDashboard.putNumber("Arm Extension",m_ArmExtensionDistance);
 
   }
@@ -113,8 +121,8 @@ public class Arm extends SubsystemBase {
     m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput, armExtend);
   }
 
-  public double getArmLiftMeasurement(){
-    return m_ArmLiftPosition;
+  public double getArmLiftAngle(){
+    return m_ArmLiftAngle;
   }
   
   public double getArmExtensionMeasurement(){
