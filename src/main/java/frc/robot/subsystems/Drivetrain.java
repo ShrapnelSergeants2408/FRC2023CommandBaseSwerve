@@ -419,10 +419,10 @@ public void stopModules() {
 }
 
 public void wheelsIn() {
-  m_frontLeft.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(45)));
-  m_rearLeft.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(135)));
-  m_frontRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-45)));
-  m_rearRight.setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-135)));
+  m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+  m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(135)));
+  m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+  m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-135)));
   this.stopModules();
 
 }

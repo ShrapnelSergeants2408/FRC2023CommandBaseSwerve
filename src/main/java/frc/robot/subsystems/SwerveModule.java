@@ -203,10 +203,13 @@ public class SwerveModule {
 
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
-        //m_driveEncoder.getDistance(), new Rotation2d(m_turningEncoder.getDistance()));
+      //m_driveEncoder.getDistance(), new Rotation2d(m_turningEncoder.getDistance()));
+      //m_driveEncoder.getPosition(), new Rotation2d(m_turningEncoder.getDistance()*Math.PI/180));
+      m_driveEncoder.getPosition(),
+      new Rotation2d(getAbsoluteEncoderRad())
+    );
 
-        m_driveEncoder.getPosition(), new Rotation2d(m_turningEncoder.getDistance()*Math.PI/180));
-        
+
 
   }
 
