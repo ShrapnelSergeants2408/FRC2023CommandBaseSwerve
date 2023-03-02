@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Constants.ModuleConstants;
@@ -83,8 +83,6 @@ public class SwerveModule {
 
     //encoder setup
     m_driveEncoder = m_driveMotor.getEncoder(Type.kHallSensor,ModuleConstants.kDriveCPR);
-
-
     m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 
     m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); 
 
@@ -133,7 +131,7 @@ public class SwerveModule {
     }
  
     angle -= m_turningEncoderOffset; //adjust for wheel offset
-    angle *= 2.0 * Math.PI;  //conver to radians
+    angle *= 2.0 * Math.PI;  //convert to radians
     return angle*(m_turningEncoderReversed ? -1.0:1.0);
   }
 
@@ -147,8 +145,6 @@ public class SwerveModule {
 
   }
 
-
-
   /**
    * Returns the current state of the module.
    *
@@ -157,13 +153,9 @@ public class SwerveModule {
    
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-
-        (m_driveEncoder.getVelocity()), new Rotation2d(getAbsoluteEncoderRad())); //may need to divide velocity by 60
+      (m_driveEncoder.getVelocity()), new Rotation2d(getTurnPosition())); 
+      //(m_driveEncoder.getVelocity()), new Rotation2d(getAbsoluteEncoderRad())); 
   }
-
-
-
-
 
   /**
    * Sets the desired state for the module.
@@ -174,22 +166,20 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        //SwerveModuleState.optimize(desiredState,getState().angle);
-        SwerveModuleState.optimize(desiredState,getPosition().angle);
+        SwerveModuleState.optimize(desiredState,getState().angle);
+        //SwerveModuleState.optimize(desiredState,getPosition().angle);
 
     //don't reset wheels to 0 if not in motion
-    if (Math.abs(state.speedMetersPerSecond)< 0.001) {
+    if (Math.abs(state.speedMetersPerSecond)< 0.01) { //TODO: tune to robot values  is there sensor drift at 0
       stop();
       return;
     }
 
     // Calculate the drive output from the drive PID controller.
-    //final double driveOutput =
-    //    m_drivePIDController.calculate((m_driveEncoder.getVelocity()), state.speedMetersPerSecond); //may need to divide velocity by 60
-    final double driveOutput = desiredState.speedMetersPerSecond/PhysicalConstants.kMaxSpeedMetersPerSecond;
+        final double driveOutput = desiredState.speedMetersPerSecond/PhysicalConstants.kMaxSpeedMetersPerSecond;
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
-        //m_turningPIDController.calculate(m_turningEncoder.getDistance(), state.angle.getRadians());
+
         m_turningPIDController.calculate(getTurnPosition(), state.angle.getRadians());
 
     //m_driveMotor.set(driveOutput);
@@ -199,9 +189,9 @@ public class SwerveModule {
     //m_turningMotor.set(turnOutput);
     m_turningMotor.set(VictorSPXControlMode.PercentOutput,turnOutput);
 
-    SmartDashboard.putString("Swerve["+ m_turningEncoder.getChannel()+"] state", state.toString());
-    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive output", driveOutput);
-    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] turn angle", getAbsoluteEncoderRad()*180/Math.PI);    
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] drive velocity", driveOutput);
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] current turn angle", Units.radiansToDegrees(getTurnPosition())); 
+    SmartDashboard.putNumber("Swerve["+ m_turningEncoder.getChannel()+"] desired turn angle", state.angle.getDegrees());    
   }
   
 

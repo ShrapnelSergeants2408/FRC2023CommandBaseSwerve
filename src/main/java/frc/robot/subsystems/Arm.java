@@ -125,7 +125,7 @@ public class Arm extends SubsystemBase {
     return m_ArmLiftAngle;
   }
   
-  public double getArmExtensionMeasurement(){
+  public double getArmExtensionDistance(){
     return m_ArmExtensionDistance;
   }
 
@@ -138,8 +138,9 @@ public class Arm extends SubsystemBase {
   }
 
   public void stopArm() {
-    m_ArmLiftMotor.set(0);
-    m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput,0);
+    m_ArmLiftMotor.set(0.0);
+    m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput,0.0);
+    m_WristMotor.set(0.0);
   }
 
 

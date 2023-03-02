@@ -106,9 +106,8 @@ public class Drivetrain extends SubsystemBase {
 
   private Pose2d targetPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
   private Pose2d defaultPose = new Pose2d(0.0, 0.0, new Rotation2d(0.0));
-
-//+
-  // Odometry class for tracking robot pose
+/* 
+//+  // Odometry class for tracking robot pose TODO: do i need both, or just estimator?
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           PhysicalConstants.kDriveKinematics,
@@ -119,13 +118,14 @@ public class Drivetrain extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           });
-
+*/
 //-          
   /*
   * Here we use SwerveDrivePoseEstimator so that we can fuse odometry
   * readings. 
   */
-  private final SwerveDrivePoseEstimator m_poseEstimator =
+  //private final SwerveDrivePoseEstimator m_poseEstimator =
+  private final SwerveDrivePoseEstimator m_odometry =
       new SwerveDrivePoseEstimator(PhysicalConstants.kDriveKinematics, 
                                    m_gyro.getRotation2d(), 
                                    new SwerveModulePosition[] {
@@ -277,10 +277,13 @@ public void periodic() {
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
   SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
 
-  SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
-  SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
+  //SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
+  //SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
+  SmartDashboard.putNumber("Robot X", m_odometry.getEstimatedPosition().getX());
+  SmartDashboard.putNumber("Robot Y", m_odometry.getEstimatedPosition().getY());
   SmartDashboard.putNumber("Robot Rotation",
-    m_odometry.getPoseMeters().getRotation().getDegrees());
+    //m_odometry.getPoseMeters().getRotation().getDegrees());
+    m_odometry.getEstimatedPosition().getRotation().getDegrees());
   
   SmartDashboard.putString("Target Location", targetPose.getTranslation().toString());
 
@@ -299,7 +302,8 @@ public boolean getFieldRelative(){
  * @return The pose.
  */
 public Pose2d getPose() {
-  return m_odometry.getPoseMeters();
+  //return m_odometry.getPoseMeters();
+  return m_odometry.getEstimatedPosition();
 }
 
 
@@ -334,7 +338,7 @@ public void resetOdometry(Pose2d pose) {
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
-      fieldRelative
+      !fieldRelative //TODO: remove !
         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
           : new ChassisSpeeds(xSpeed, ySpeed, rot)
     );
@@ -425,6 +429,7 @@ public void wheelsIn() {
 
 /** Updates the field-relative position. */
 public void updateOdometry() {
+  /* 
   m_odometry.update(m_gyro.getRotation2d(),
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(),
@@ -434,10 +439,11 @@ public void updateOdometry() {
 
   SmartDashboard.putNumber("Robot Heading", getHeading());
   SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+*/
+ 
 
-/* 
-
-  m_poseEstimator.update(
+  //m_poseEstimator.update(
+  m_odometry.update(
     m_gyro.getRotation2d(), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(),
@@ -447,11 +453,13 @@ public void updateOdometry() {
   });
 
   Optional<EstimatedRobotPose> result =
-    getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+    //getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
+    getEstimatedGlobalPose(m_odometry.getEstimatedPosition());
 
     if (result.isPresent()) {
       EstimatedRobotPose camPose = result.get();
-      m_poseEstimator.addVisionMeasurement(
+      //m_poseEstimator.addVisionMeasurement(
+      m_odometry.addVisionMeasurement(
           camPose.estimatedPose.toPose2d(), 
           camPose.timestampSeconds);
           //m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
@@ -464,7 +472,7 @@ public void updateOdometry() {
     //m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
     //m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
-    */
+    
   }
 
     

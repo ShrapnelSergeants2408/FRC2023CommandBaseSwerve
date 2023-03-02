@@ -155,10 +155,10 @@ public final class Constants {
 
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 0;
+    public static final double kPModuleTurningController = 1.5;
     public static final double kPModuleDriveController = 1;  
 
-    public static final double kIModuleTurningController = 0;
+    public static final double kIModuleTurningController = 0.5;
     public static final double kIModuleDriveController = 0;
 
     public static final double kDModuleTurningController = 0;
