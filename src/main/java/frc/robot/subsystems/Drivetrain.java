@@ -265,8 +265,6 @@ public void periodic() {
                                          new Rotation2d(FieldConstants.kAprilTag8[4])
                                          );
           break;
-
-
         
       } 
     }
@@ -325,7 +323,6 @@ public void resetOdometry(Pose2d pose) {
 }
 
 
-
 /**
  * Method to drive the robot using joystick info.
  *
@@ -333,10 +330,7 @@ public void resetOdometry(Pose2d pose) {
  * @param ySpeed Speed of the robot in the y direction (sideways).
  * @param rot Angular rate of the robot.
  * @param fieldRelative Whether the provided x and y speeds are relative to the field.
- */
-
-
- 
+ */ 
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(

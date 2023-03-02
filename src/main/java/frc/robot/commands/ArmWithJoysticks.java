@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OIConstants;
@@ -36,14 +37,11 @@ public class ArmWithJoysticks extends CommandBase {
   @Override
   public void execute() 
   {
-    double m_armLift = armLift.get() * ArmConstants.kArmLiftMotorSpeed; 
-    double m_armExtend = armExtend.get();
-
+    //get values and apply deadband
+    double m_armLift = MathUtil.applyDeadband(armLift.get(), OIConstants.kJoystick_Deadband);
+    double m_armExtend = MathUtil.applyDeadband(armExtend.get(), OIConstants.kJoystick_Deadband);
+    
     //double m_armExtentionDistance = armSubsystem.
-
-    //apply deadband
-    m_armLift = Math.abs(m_armLift) > OIConstants.kJoystick_Deadband ? m_armLift : 0;
-    m_armExtend = Math.abs(m_armExtend) > OIConstants.kJoystick_Deadband ? m_armExtend : 0;
 
     //Apply soft limits
     if ((m_armSubsystem.getArmLiftMeasurement()>= ArmConstants.kArmLiftMaxHeightDeg) &&
@@ -53,7 +51,7 @@ public class ArmWithJoysticks extends CommandBase {
         {
           m_armLift = 0;
         }
-
+/* TODO: activate when sonar set up
     if ((m_armSubsystem.getArmExtensionMeasurement()>= ArmConstants.kArmExtensionMaxDistance) &&
         (m_armExtend > 0) ||
         (m_armSubsystem.getArmExtensionMeasurement()<= ArmConstants.kArmExtensionMinDistance) &&
@@ -61,7 +59,7 @@ public class ArmWithJoysticks extends CommandBase {
         {
           m_armExtend = 0;
         }
-
+*/
         
     m_armSubsystem.armMovement(m_armLift, m_armExtend);
   }
