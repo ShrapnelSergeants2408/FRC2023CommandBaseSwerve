@@ -47,9 +47,11 @@ public class Drivetrain extends SubsystemBase {
    * @param turningMotorChannel The channel of the turning motor VictorSPX
    * @param driveMotorReversed Is the drive motor reversed
    * @param turningMotorReversed Is the turning motor reversed
-   * @param turningEncoderChannel ANA port of MA3 turning encoder
+   * @param turningEncoderChannelA DIO port of PG71 turning encoder
+   * @param turningEncoderChannelB DIO port of PG71 turning encoder
    * @param turningEncoderOffset calculated value for offset
    * @param turningEncoderReversed is the turning encoder reversed
+   * @param absoluteEncoderChannel ANA port of the MA# absolute encoder
    */
 //+
   private final SwerveModule m_frontLeft =
@@ -58,9 +60,11 @@ public class Drivetrain extends SubsystemBase {
           kFrontLeftTurningMotorPort,
           kFrontLeftDriveMotorReversed,
           kFrontLeftTurningMotorReversed,
-          kFrontLeftTurningEncoderPorts,
-          kFrontLeftTurningEncoderOffset,
-          kFrontLeftTurningEncoderReversed
+          kFrontLeftTurningEncoderPortA,
+          kFrontLeftTurningEncoderPortB,
+          kFrontLeftAbsoluteEncoderOffset,
+          kFrontLeftTurningEncoderReversed,
+          kFrontLeftAbsoluteEncoderPort
           );
 //+
   private final SwerveModule m_rearLeft =
@@ -69,9 +73,11 @@ public class Drivetrain extends SubsystemBase {
           kRearLeftTurningMotorPort,
           kRearLeftDriveMotorReversed,
           kRearLeftTurningMotorReversed,
-          kRearLeftTurningEncoderPorts,
-          kRearLeftTurningEncoderOffset,
-          kRearLeftTurningEncoderReversed
+          kRearLeftTurningEncoderPortA,
+          kRearLeftTurningEncoderPortB,
+          kRearLeftAbsoluteEncoderOffset,
+          kRearLeftTurningEncoderReversed,
+          kRearLeftAbsoluteEncoderPort
           );
 //+
   private final SwerveModule m_frontRight =
@@ -80,9 +86,11 @@ public class Drivetrain extends SubsystemBase {
           kFrontRightTurningMotorPort,
           kFrontRightDriveMotorReversed,
           kFrontRightTurningMotorReversed,
-          kFrontRightTurningEncoderPorts,
-          kFrontRightTurningEncoderOffset,
-          kFrontRightTurningEncoderReversed
+          kFrontRightTurningEncoderPortA,
+          kFrontRightTurningEncoderPortB,
+          kFrontRightAbsoluteEncoderOffset,
+          kFrontRightTurningEncoderReversed,
+          kFrontRightAbsoluteEncoderPort
           );
 //+
   private final SwerveModule m_rearRight =
@@ -91,9 +99,11 @@ public class Drivetrain extends SubsystemBase {
           kRearRightTurningMotorPort,
           kRearRightDriveMotorReversed,
           kRearRightTurningMotorReversed,
-          kRearRightTurningEncoderPorts,
-          kRearRightTurningEncoderOffset,
-          kRearRightTurningEncoderReversed
+          kRearRightTurningEncoderPortA,
+          kRearRightTurningEncoderPortB,
+          kRearRightAbsoluteEncoderOffset,
+          kRearRightTurningEncoderReversed,
+          kRearRightAbsoluteEncoderPort
           );
 //+
   // The navX MXP gyro sensor
@@ -133,7 +143,7 @@ public class Drivetrain extends SubsystemBase {
                                       m_frontRight.getPosition(),
                                       m_rearLeft.getPosition(),
                                       m_rearRight.getPosition()}, 
-                                    getPose());
+                                    new Pose2d());
 
 
 
@@ -176,6 +186,7 @@ public class Drivetrain extends SubsystemBase {
 
         }
     }).start();
+
 
   }
 
@@ -281,9 +292,9 @@ public void periodic() {
   //SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
   SmartDashboard.putNumber("Robot X", m_odometry.getEstimatedPosition().getX());
   SmartDashboard.putNumber("Robot Y", m_odometry.getEstimatedPosition().getY());
-  SmartDashboard.putNumber("Robot Rotation",
+  //SmartDashboard.putNumber("Robot Rotation",
     //m_odometry.getPoseMeters().getRotation().getDegrees());
-    m_odometry.getEstimatedPosition().getRotation().getDegrees());
+  //  m_odometry.getEstimatedPosition().getRotation().getDegrees());
   
   SmartDashboard.putString("Target Location", targetPose.getTranslation().toString());
 
@@ -338,7 +349,7 @@ public void resetOdometry(Pose2d pose) {
 public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
   var swerveModuleStates =
     PhysicalConstants.kDriveKinematics.toSwerveModuleStates(
-      !fieldRelative //TODO: remove !
+      fieldRelative 
         ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d())
           : new ChassisSpeeds(xSpeed, ySpeed, rot)
     );

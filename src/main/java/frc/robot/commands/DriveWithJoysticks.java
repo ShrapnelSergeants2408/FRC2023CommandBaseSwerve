@@ -57,7 +57,8 @@ public class DriveWithJoysticks extends CommandBase {
       m_xSpeed*PhysicalConstants.kMaxSpeedMetersPerSecond,
       m_ySpeed*PhysicalConstants.kMaxSpeedMetersPerSecond,
       m_turningSpeed*PhysicalConstants.kMaxAngularSpeedRadiansPerSecond,
-      fieldOriented
+      //fieldOriented
+      false
     );
 
     SmartDashboard.putBoolean("Field Relative", fieldOriented);

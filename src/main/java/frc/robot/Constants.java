@@ -46,10 +46,23 @@ public final class Constants {
     public static final boolean kRearRightTurningMotorReversed = false;
 
     //MA3 encoders for steering (Analog 0 - 3) //TODO: double check ports
-    public static final int kFrontLeftTurningEncoderPorts = 0;
-    public static final int kRearLeftTurningEncoderPorts = 1;
-    public static final int kFrontRightTurningEncoderPorts = 2;
-    public static final int kRearRightTurningEncoderPorts = 3;
+    public static final int kFrontLeftAbsoluteEncoderPort = 0;
+    public static final int kRearLeftAbsoluteEncoderPort = 1;
+    public static final int kFrontRightAbsoluteEncoderPort = 2;
+    public static final int kRearRightAbsoluteEncoderPort = 3;
+
+    //PG71 hall effect encoders for steering (DIO 0-7)
+    public static final int kFrontLeftTurningEncoderPortA = 0;
+    public static final int kFrontLeftTurningEncoderPortB = 1;
+    public static final int kRearLeftTurningEncoderPortA = 2;
+    public static final int kRearLeftTurningEncoderPortB = 3;
+    public static final int kFrontRightTurningEncoderPortA = 4;
+    public static final int kFrontRightTurningEncoderPortB = 5;
+    public static final int kRearRightTurningEncoderPortA = 6;
+    public static final int kRearRightTurningEncoderPortB = 7;
+    
+
+
 
     //TODO:  verify if any of these values need to be changed
     public static final boolean kFrontLeftTurningEncoderReversed = false;
@@ -64,10 +77,10 @@ public final class Constants {
     public static final boolean kRearRightDriveEncoderReversed = false;
 
     //TODO: find offset values
-    public static final double kFrontLeftTurningEncoderOffset = 0.708692;
-    public static final double kRearLeftTurningEncoderOffset = 0.587064;
-    public static final double kFrontRightTurningEncoderOffset = 0.679514;
-    public static final double kRearRightTurningEncoderOffset = 0.167231;
+    public static final double kFrontLeftAbsoluteEncoderOffset = (3.48/5)* 2 * Math.PI; // old raw value 0.708692;
+    public static final double kRearLeftAbsoluteEncoderOffset = (2.79/5) * 2 * Math.PI; // old raw value 0.587064;
+    public static final double kFrontRightAbsoluteEncoderOffset = (3.36/5)* 2 * Math.PI; // old raw value0.679514;
+    public static final double kRearRightAbsoluteEncoderOffset = (1.06/5) * 2 * Math.PI; //0.167231; update with new value
 
     //Gyro
     public static final boolean kGyroReversed = true;
@@ -146,6 +159,8 @@ public final class Constants {
     
     public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
     public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
+
+    public static final double kTurningEncoderDistancePerPulse = (2*Math.PI)/(7.0*71.16); //2pi rad / 7 cpr*71.16 gear ratio
 
     //velocity
     //public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
