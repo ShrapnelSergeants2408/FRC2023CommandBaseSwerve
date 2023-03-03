@@ -23,6 +23,7 @@ import java.util.Optional;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
@@ -108,6 +109,8 @@ public class Drivetrain extends SubsystemBase {
 //+
   // The navX MXP gyro sensor
   private final AHRS m_gyro = new AHRS();
+  private double gyro2FieldOffset = 0;
+  private double gyro2FODOffset = 0;
 
 //-
   //vision stuff
@@ -181,7 +184,7 @@ public class Drivetrain extends SubsystemBase {
     new Thread(() -> {
       try {
         Thread.sleep(1000);
-        zeroHeading();
+        resetGyroToZero();
       } catch (Exception e) {
 
         }
@@ -190,7 +193,19 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  //reverse gyro when on red alliance side, otherwise driving will be reversed
+  public double resetGyroToZero() {
+    m_gyro.reset();
+    if (DriverStation.getAlliance() == Alliance.Red){
+        gyro2FieldOffset = 0.0;
+        gyro2FODOffset = Math.PI;
+    } else {
+        gyro2FieldOffset = Math.PI;  
+        gyro2FODOffset = 0.0; 
+    }
 
+    return getHeading();
+}
 
 
 @Override
@@ -313,7 +328,6 @@ public boolean getFieldRelative(){
  * @return The pose.
  */
 public Pose2d getPose() {
-  //return m_odometry.getPoseMeters();
   return m_odometry.getEstimatedPosition();
 }
 
@@ -401,12 +415,33 @@ public void zeroHeading() {
  * @return the robot's heading in degrees, from -180 to 180
  */
 public double getHeading() {
-  return Math.IEEEremainder(m_gyro.getAngle(),360);
+  return Math.IEEEremainder(Math.toRadians(-m_gyro.getAngle()) + gyro2FieldOffset, Math.PI * 2);
+  //return Math.IEEEremainder(m_gyro.getAngle(),360);
 }
 
-public Rotation2d getRotation2d(){
-  return Rotation2d.fromDegrees(getHeading());
+public double getFODHeading() {
+  return Math.IEEEremainder(Math.toRadians(-m_gyro.getAngle()) + gyro2FODOffset, Math.PI * 2);
 }
+
+/*
+public boolean isNotRotating() {
+  SmartDashboard.putNumber("Rotate rate", m_gyro.getRate());
+
+  return (Math.abs(m_gyro.getRate()) < OIConstants.kNotRotating);
+}
+*/
+
+
+public Rotation2d getRotation2d(){
+  return Rotation2d.fromRadians(getHeading());
+  //return Rotation2d.fromDegrees(getHeading());
+}
+
+
+public Rotation2d getFCDRotation2d() {
+  return Rotation2d.fromRadians(getFODHeading());
+}
+
 
 public Pose2d getTargetPose(){
   return targetPose;
@@ -464,26 +499,17 @@ public void updateOdometry() {
   });
 
   Optional<EstimatedRobotPose> result =
-    //getEstimatedGlobalPose(m_poseEstimator.getEstimatedPosition());
     getEstimatedGlobalPose(m_odometry.getEstimatedPosition());
 
     if (result.isPresent()) {
       EstimatedRobotPose camPose = result.get();
-      //m_poseEstimator.addVisionMeasurement(
       m_odometry.addVisionMeasurement(
           camPose.estimatedPose.toPose2d(), 
           camPose.timestampSeconds);
-          //m_fieldSim.getObject("Cam Est Pos").setPose(camPose.estimatedPose.toPose2d());
-    } else {
-      // move it way off the screen to make it disappear
-      //m_fieldSim.getObject("Cam Est Pos").setPose(new Pose2d(-100, -100, new Rotation2d()));
-    }
-      
-    // do i need the simulations?
-    //m_fieldSim.getObject("Actual Pos").setPose(m_drivetrainSimulator.getPose());
-    //m_fieldSim.setRobotPose(m_poseEstimator.getEstimatedPosition());
-
-    
+    } 
+    SmartDashboard.putNumber("Robot Heading", (getHeading()));
+    SmartDashboard.putNumber("Robot FCD Heading", (getFODHeading()));
+    SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
   }
 
     
