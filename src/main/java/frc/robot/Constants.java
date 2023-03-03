@@ -52,14 +52,14 @@ public final class Constants {
     public static final int kRearRightAbsoluteEncoderPort = 3;
 
     //PG71 hall effect encoders for steering (DIO 0-7)
-    public static final int kFrontLeftTurningEncoderPortA = 0;
-    public static final int kFrontLeftTurningEncoderPortB = 1;
-    public static final int kRearLeftTurningEncoderPortA = 2;
-    public static final int kRearLeftTurningEncoderPortB = 3;
-    public static final int kFrontRightTurningEncoderPortA = 4;
-    public static final int kFrontRightTurningEncoderPortB = 5;
-    public static final int kRearRightTurningEncoderPortA = 6;
-    public static final int kRearRightTurningEncoderPortB = 7;
+    public static final int kFrontLeftTurningEncoderPortA = 1;
+    public static final int kFrontLeftTurningEncoderPortB = 0;
+    public static final int kRearLeftTurningEncoderPortA = 3;
+    public static final int kRearLeftTurningEncoderPortB = 2;
+    public static final int kFrontRightTurningEncoderPortA = 5;
+    public static final int kFrontRightTurningEncoderPortB = 4;
+    public static final int kRearRightTurningEncoderPortA = 7;
+    public static final int kRearRightTurningEncoderPortB = 6;
     
 
 
@@ -170,13 +170,13 @@ public final class Constants {
 
 
     //TODO: update P values
-    public static final double kPModuleTurningController = 1.5;
+    public static final double kPModuleTurningController = 1.75;
     public static final double kPModuleDriveController = 1;  
 
-    public static final double kIModuleTurningController = 0.5;
+    public static final double kIModuleTurningController = 0.0;
     public static final double kIModuleDriveController = 0;
 
-    public static final double kDModuleTurningController = 0;
+    public static final double kDModuleTurningController = .2;
     public static final double kDModuleDriveController = 0;
 
 

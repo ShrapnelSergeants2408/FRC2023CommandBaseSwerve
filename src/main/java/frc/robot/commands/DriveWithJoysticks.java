@@ -49,7 +49,7 @@ public class DriveWithJoysticks extends CommandBase {
   public void execute() {
     //Get joystick values and deadband
     double m_xSpeed = MathUtil.applyDeadband(xSpeedFunction.get(), OIConstants.kJoystick_Deadband);
-    double m_ySpeed = MathUtil.applyDeadband(ySpeedFunction.get(), OIConstants.kJoystick_Deadband);
+    double m_ySpeed = -MathUtil.applyDeadband(ySpeedFunction.get(), OIConstants.kJoystick_Deadband);
     double m_turningSpeed = MathUtil.applyDeadband(turningSpeedFunction.get(), OIConstants.kJoystick_Deadband);
 
     //Drive
