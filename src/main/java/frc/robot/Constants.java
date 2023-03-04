@@ -147,7 +147,7 @@ public final class Constants {
     public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
     public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final double kTurningGearRatio = 48.0/40.0; //reverse?
+    public static final double kTurningGearRatio = 40.0/48.0; //reverse?
 
     public static final double kDriveGearRatio = 6.67;
     //public static final int kDriveCPR = (int)(42 * kDriveGearRatio);
