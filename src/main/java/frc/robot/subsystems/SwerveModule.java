@@ -144,9 +144,7 @@ public class SwerveModule {
 
 
   public double getAbsoluteEncoderRad() {
-    /*
-      how do we account for 40/48 gearing for absolute encoder?
-    */
+
     double angle = m_absoluteEncoder.getVoltage()/RobotController.getVoltage5V();
     angle *= 2.0 * Math.PI;  //convert to radians
     angle -= m_absoluteEncoderOffset; //adjust for wheel offset
@@ -161,6 +159,7 @@ public class SwerveModule {
     m_driveEncoder.setPosition(0.0);
     //m_turningEncoder.setPosition(getAbsoluteEncoderRad());
     m_turningEncoder.reset();
+    //m_turningEncoder.get
 
   }
 

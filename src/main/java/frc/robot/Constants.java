@@ -154,18 +154,16 @@ public final class Constants {
     public static final int kDriveCPR = 42; //required value for NEO hall effect encoder; alter value using conversion factor
 
     public static final double kWheelDiameterInches = 4.0;
-
     public static final double kDriveEncoderRot2Meter = (Math.PI * Units.inchesToMeters(kWheelDiameterInches))/kDriveGearRatio; 
     
     public static final double kTurningEncoderRot2Rad = 2 * Math.PI/kTurningGearRatio;
-    public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
-
+    //public static final double kTurningEncoderRot2Deg = 360/kTurningGearRatio;
     public static final double kTurningEncoderDistancePerPulse = (2*Math.PI)/(7.0*71.16); //2pi rad / 7 cpr*71.16 gear ratio
 
     //velocity
-    //public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
-    public static final double kDriveEncoderRPM2MeterPerSec = 4.0; //calculated 4.5 ; adjusted 
-    public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad * (75)/ 60; //6.5 radians per sec
+    public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter * (5676 / kDriveGearRatio) / 60; //meters per rev * motor rpm / gearing / sec
+    //public static final double kDriveEncoderRPM2MeterPerSec = 4.0; //calculated 4.5 ; adjusted 
+    //public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad * (75)/ 60; //6.5 radians per sec
     
 
 
