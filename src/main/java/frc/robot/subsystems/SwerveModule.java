@@ -185,12 +185,14 @@ public class SwerveModule {
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState,getState().angle);
 
-    //reset wheels to 0 if not in motion
+
+    /*    removed so wheels WILL reset to 0
+    //don't reset wheels to 0 if not in motion
     if (Math.abs(state.speedMetersPerSecond)< 0.001) { //TODO: tune to robot values  is there sensor drift at 0
       stop();
       return;
     }
-
+*/
     // Drive output from joysticks.  joystick converted to m/s divided by max m/s
     final double driveOutput = desiredState.speedMetersPerSecond/PhysicalConstants.kMaxSpeedMetersPerSecond;
     
