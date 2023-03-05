@@ -293,6 +293,7 @@ public void periodic() {
           break;
         
       } 
+
     }
 //+
   // Update the odometry in the periodic block
@@ -303,15 +304,14 @@ public void periodic() {
   SmartDashboard.putNumber("Gyro Angle",m_gyro.getAngle());
   SmartDashboard.putNumber("Gyro Rate",m_gyro.getRate());
 
-  //SmartDashboard.putNumber("Robot X", m_odometry.getPoseMeters().getX());
-  //SmartDashboard.putNumber("Robot Y", m_odometry.getPoseMeters().getY());
   SmartDashboard.putNumber("Robot X", m_odometry.getEstimatedPosition().getX());
   SmartDashboard.putNumber("Robot Y", m_odometry.getEstimatedPosition().getY());
-  //SmartDashboard.putNumber("Robot Rotation",
-    //m_odometry.getPoseMeters().getRotation().getDegrees());
-  //  m_odometry.getEstimatedPosition().getRotation().getDegrees());
   
   SmartDashboard.putString("Target Location", targetPose.getTranslation().toString());
+
+
+
+
 
 }
 

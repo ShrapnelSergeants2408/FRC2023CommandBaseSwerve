@@ -43,6 +43,9 @@ public class SwerveModule {
   private final boolean m_turningEncoderReversed; 
   private final int m_absoluteEncoderChannel;
 
+  private final double m_absoluteEncoderStartRad;
+  //private double m_turningEncoderValue;
+
   //TODO: update ki, kd values for drivePID and turningPID controllers
 
   //private final PIDController m_drivePIDController; 
@@ -100,6 +103,10 @@ public class SwerveModule {
 
     m_turningEncoder.setDistancePerPulse(ModuleConstants.kTurningEncoderDistancePerPulse);
  
+    //get initial position from MA3 encoder
+    //m_absoluteEncoderStartRad = m_absoluteEncoder.getVoltage()/RobotController.getCurrent5V() * 2 * Math.PI;
+    m_absoluteEncoderStartRad = getAbsoluteEncoderRad();
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] absolute start", m_absoluteEncoderStartRad);
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous
@@ -125,7 +132,7 @@ public class SwerveModule {
       getDrivePosition(),
       //new Rotation2d(getAbsoluteEncoderRad())
       new Rotation2d(getTurnPosition())
-      /* I think we should only use absolute encoder to initialize wheels to 0 */
+
     );
 
   }
@@ -134,7 +141,8 @@ public class SwerveModule {
   }
 
   public double getTurnPosition() {
-    return m_turningEncoder.getDistance(); 
+    //use initial absolute encoder value.  add to turningEncoder returned value
+    return (m_turningEncoder.getDistance() + m_absoluteEncoderStartRad); 
 
   }
 
@@ -157,10 +165,8 @@ public class SwerveModule {
   public void resetEncoders() {
     stop();
     m_driveEncoder.setPosition(0.0);
-    //m_turningEncoder.setPosition(getAbsoluteEncoderRad());
-    m_turningEncoder.reset();
-    //m_turningEncoder.get
 
+    m_turningEncoder.reset();
   }
 
   /**
@@ -183,7 +189,7 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState,getState().angle);
+        SwerveModuleState.optimize(desiredState ,getState().angle);
 
 
     /*    removed so wheels WILL reset to 0
@@ -206,17 +212,17 @@ public class SwerveModule {
 
     SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] drive velocity", driveOutput);
     SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] current turn angle", Units.radiansToDegrees(getTurnPosition())); 
-    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] desired turn angle", state.angle.getDegrees());    
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] desired turn angle", state.angle.getDegrees()); 
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] turn encoder out", m_turningEncoder.getDistance());
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] turn encoder adjusted", getTurnPosition()); 
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] current absolute value", m_absoluteEncoder.getVoltage()/RobotController.getVoltage5V());   
+       
   }
   
-
-
-
 
   public void stop() {
     m_driveMotor.set(0);
 
-    //set wheels forward
     m_turningMotor.set(VictorSPXControlMode.PercentOutput,
                         m_turningPIDController.calculate(getTurnPosition(), 0.0)
                       );

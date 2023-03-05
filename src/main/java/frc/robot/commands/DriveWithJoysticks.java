@@ -52,19 +52,20 @@ public class DriveWithJoysticks extends CommandBase {
     double m_ySpeed = -MathUtil.applyDeadband(ySpeedFunction.get(), OIConstants.kJoystick_Deadband);
     double m_turningSpeed = MathUtil.applyDeadband(turningSpeedFunction.get(), OIConstants.kJoystick_Deadband);
 
-    //Drive
+    //Drive  --Chassis speeds from 0toAutonomous are handled in Drivetrain.  
+    //Here we are just sending the velocities to the drivetrain
     driveTrain.drive(
       m_xSpeed*PhysicalConstants.kMaxSpeedMetersPerSecond,
       m_ySpeed*PhysicalConstants.kMaxSpeedMetersPerSecond,
       m_turningSpeed*PhysicalConstants.kMaxAngularSpeedRadiansPerSecond,
       //fieldOriented
-      false
+      false //change this to true for competition
     );
 
     SmartDashboard.putBoolean("Field Relative", fieldOriented);
-    SmartDashboard.putNumber("Joystick 1 X", m_xSpeed );
-    SmartDashboard.putNumber("Joystick 1 Y", m_ySpeed );
-    SmartDashboard.putNumber("Joystick 2 X", m_turningSpeed );
+    SmartDashboard.putNumber("Joystick 1 X m/s", m_xSpeed );
+    SmartDashboard.putNumber("Joystick 1 Y m/s", m_ySpeed );
+    SmartDashboard.putNumber("Joystick 2 X rad/s", m_turningSpeed );
   } 
 
 

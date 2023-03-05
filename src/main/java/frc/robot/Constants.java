@@ -174,7 +174,7 @@ public final class Constants {
     public static final double kIModuleTurningController = 0.0;
     public static final double kIModuleDriveController = 0;
 
-    public static final double kDModuleTurningController = .2;
+    public static final double kDModuleTurningController = 0;
     public static final double kDModuleDriveController = 0;
 
 
