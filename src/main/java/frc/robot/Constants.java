@@ -339,7 +339,9 @@ public final class Constants {
     //arm encoder soft limits
     public static final double kArmLiftMinHeightDeg = 0; 
     public static final double kArmLiftMaxHeightDeg = 90;
-
+    //max/min wrist angles
+    public static final double kWristMinAngleDeg = -90;
+    public static final double kWristMaxAngleDeg = 0;
 
     //ArmExtension PID
     public static final double kPArmExtensionMotor = 0.1;
@@ -351,6 +353,7 @@ public final class Constants {
     //max/min rangefinder limits
     public static final double kArmExtensionMinDistance = 30;
     public static final double kArmExtensionMaxDistance = 50;
+  
 
 
 
@@ -360,7 +363,7 @@ public final class Constants {
     public static final double kDWristMotor = 0.0;
     public static final double kMaxOutputWristMotor = 1.0;
     public static final double kMinOutputWristMotor = -1.0;
-    public static final double kWristMotorSpeed = 0.5; //TODO: adjust constant extension speed
+    public static final double kWristMotorSpeed = 0.3; //TODO: adjust constant extension speed
     //need max/min rangefinder limits
     public static final double kWristMotorMinDistance = 0;
     public static final double kWristMotorMaxDistance = 90;
@@ -379,13 +382,13 @@ public final class Constants {
     // scoring positions as double[] xxx = {lift angle, extension distance, wrist angle}
     // lift angle in degrees on rotated axis - stowed = 0, high cone = 100?
     // extension in inches beginning at 12 - stowed = 12, high cone = 32?
-    public static double[] kArmStowed = {0,12};
-    public static double[] kGroundPickup = {15, 14};
-    public static double[] kDriveHeight = {30, 14};
-    public static double[] kMidCube = {60, 25};
-    public static double[] kMidCone = {65, 25};
-    public static double[] kHighCube = {90, 32};
-    public static double[] kHighCone = {110, 32};
+    public static double[] kArmStowed = {0,12, 0};
+    public static double[] kGroundPickup = {15, 14, 0};
+    public static double[] kDriveHeight = {30, 14, 0};
+    public static double[] kMidCube = {60, 25, 0};
+    public static double[] kMidCone = {65, 25, 0};
+    public static double[] kHighCube = {90, 32, 0};
+    public static double[] kHighCone = {110, 32, 0};
 
     //Field positions - (x, y, z, rotation) (inches, inches, inches, degrees)
     //Red alliance Outer, Coop, Inner

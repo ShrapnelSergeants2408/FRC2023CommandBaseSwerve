@@ -113,8 +113,9 @@ public class RobotContainer {
     m_robotArm.setDefaultCommand(
       new ArmWithJoysticks(
         m_robotArm,
-        () -> m_operatorController.getLeftY(),
-        () -> m_operatorController.getRightY())
+        () -> m_operatorController.getLeftY(), //arm lift
+        () -> m_operatorController.getRightY(), //arm extend
+        () -> m_operatorController.getRightX())  //wrist
     );
 
     /*

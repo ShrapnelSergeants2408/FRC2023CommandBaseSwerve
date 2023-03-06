@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OIConstants;
@@ -14,17 +15,19 @@ import frc.robot.subsystems.Arm;
 
 public class ArmWithJoysticks extends CommandBase {
   private final Arm m_armSubsystem;
-  private final Supplier<Double> armLift, armExtend;
+  private final Supplier<Double> armLift, armExtend, wristAngle;
 
   /** Creates a new ArmWithJoysticks. */
   public ArmWithJoysticks(
     Arm armSubsystem, 
     Supplier<Double> armLift, 
-    Supplier<Double> armExtend)  
+    Supplier<Double> armExtend,
+    Supplier<Double> wristAngle)  
   {
     m_armSubsystem = armSubsystem;
     this.armLift = armLift;
     this.armExtend = armExtend;
+    this.wristAngle = wristAngle;
 
     addRequirements(armSubsystem);
   }
@@ -40,12 +43,32 @@ public class ArmWithJoysticks extends CommandBase {
     //get values and apply deadband
     double m_armLift = MathUtil.applyDeadband(armLift.get(), OIConstants.kJoystick_Deadband);
     double m_armExtend = MathUtil.applyDeadband(armExtend.get(), OIConstants.kJoystick_Deadband);
+    double m_wristAngle = MathUtil.applyDeadband(wristAngle.get(), OIConstants.kJoystick_Deadband);
     
     //double m_armExtentionDistance = armSubsystem.
     
     //scale for safety TODO: modify once tested
+    if (m_armLift > 0.0) {
+      m_armLift = 1.0;}
+    else if (m_armLift < 0){
+      m_armLift = -1;}
+
+    if (m_armExtend > 0.0) {
+      m_armExtend = 1.0;}
+    else if (m_armExtend < 0){
+      m_armExtend = -1;}
+    
+    if (m_wristAngle > 0.0) {
+      m_wristAngle = 1.0;}
+    else if (m_wristAngle < 0){
+      m_wristAngle = -1;}
+    
+    
+    
     m_armLift = m_armLift * ArmConstants.kArmLiftMotorSpeed;
     m_armExtend = m_armExtend * ArmConstants.kArmExtensionMotorSpeed;
+    m_wristAngle = m_wristAngle * ArmConstants.kWristMotorSpeed;
+
 
     //Apply soft limits
     if ((m_armSubsystem.getArmLiftAngle()>= ArmConstants.kArmLiftMaxHeightDeg) &&
@@ -64,8 +87,22 @@ public class ArmWithJoysticks extends CommandBase {
           m_armExtend = 0;
         }
 */
-        
-    m_armSubsystem.armMovement(m_armLift, m_armExtend);
+    if ((m_armSubsystem.getWristAngle()>= ArmConstants.kWristMaxAngleDeg) &&
+        (m_wristAngle > 0) ||
+        (m_armSubsystem.getArmLiftAngle()<= ArmConstants.kWristMinAngleDeg) &&
+        (m_wristAngle <0))
+        {
+          m_armLift = 0;
+        }
+
+    SmartDashboard.putNumber("Arm Lift input", m_armLift);
+    SmartDashboard.putNumber("Arm Extend input", m_armExtend);
+    SmartDashboard.putNumber("Wrist input", m_wristAngle);
+
+    SmartDashboard.putNumber("Arm Lift encoder", m_armSubsystem.getArmLiftAngle());
+    SmartDashboard.putNumber("Arm Extend input", m_armSubsystem.getArmExtensionDistance());
+    SmartDashboard.putNumber("Wrist encoder", m_armSubsystem.getWristAngle());
+    m_armSubsystem.armMovement(m_armLift, m_armExtend, m_wristAngle);
   }
 
   // Called once the command ends or is interrupted.
