@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.PIDController;
+//import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,20 +20,21 @@ import frc.robot.Constants.ArmConstants;;
 public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
   private final CANSparkMax m_ArmLiftMotor;
-  private final PIDController m_ArmLiftMotorPID;
+  //private final PIDController m_ArmLiftMotorPID;
   private final RelativeEncoder m_ArmLiftEncoder;
 
   private final VictorSPX m_ArmExtensionMotor;
-  private final PIDController m_ArmExtensionMotorPID;
+  //private final PIDController m_ArmExtensionMotorPID;
   private final AnalogInput m_ArmExtensionRangefinder;
 
   private final CANSparkMax m_WristMotor;
-  private final PIDController m_WristMotorPID;
+  //private final PIDController m_WristMotorPID;
   private final RelativeEncoder m_WristEncoder;
 
   private double m_ArmExtensionDistance;
   private double m_ArmLiftAngle;
   private double m_ArmExtensionVoltageScaleFactor;
+  private double m_WristAngle;
 
 
   
@@ -42,9 +43,9 @@ public class Arm extends SubsystemBase {
     m_ArmLiftMotor = new CANSparkMax(ArmConstants.kArmLiftMotor, MotorType.kBrushless);
     m_ArmLiftMotor.restoreFactoryDefaults();
     m_ArmLiftMotor.setInverted(ArmConstants.kArmLiftMotorInverted); 
-    m_ArmLiftMotorPID = new PIDController(ArmConstants.kPArmLiftMotor,
-                                          ArmConstants.kIArmLiftMotor,
-                                          ArmConstants.kDArmLiftMotor);
+    //m_ArmLiftMotorPID = new PIDController(ArmConstants.kPArmLiftMotor,
+    //                                      ArmConstants.kIArmLiftMotor,
+    //                                      ArmConstants.kDArmLiftMotor);
     m_ArmLiftEncoder = m_ArmLiftMotor.getEncoder();
     m_ArmLiftEncoder.setPositionConversionFactor(ArmConstants.kArmLiftPositionConversionFactor);
     //arm angles relative to starting position
@@ -56,17 +57,17 @@ public class Arm extends SubsystemBase {
     m_ArmExtensionMotor = new VictorSPX(ArmConstants.kArmExtensionMotor);
     m_ArmExtensionMotor.configFactoryDefault();
     m_ArmExtensionMotor.setInverted(ArmConstants.kArmExtensionMotorInverted);
-    m_ArmExtensionMotorPID = new PIDController(ArmConstants.kPArmExtensionMotor,
-                                               ArmConstants.kIArmExtensionMotor, 
-                                               ArmConstants.kDArmExtensionMotor);
+    //m_ArmExtensionMotorPID = new PIDController(ArmConstants.kPArmExtensionMotor,
+    //                                           ArmConstants.kIArmExtensionMotor, 
+    //                                           ArmConstants.kDArmExtensionMotor);
     m_ArmExtensionRangefinder = new AnalogInput(getChannelFromPin(PinType.AnalogIn,ArmConstants.kArmExtensionRangefinderPort));
   
     //wrist
     m_WristMotor = new CANSparkMax(ArmConstants.kWristMotor, MotorType.kBrushless);
     m_WristMotor.restoreFactoryDefaults();  
-    m_WristMotorPID = new PIDController(ArmConstants.kPWristMotor,
-                                          ArmConstants.kIWristMotor,
-                                          ArmConstants.kDWristMotor);
+    //m_WristMotorPID = new PIDController(ArmConstants.kPWristMotor,
+    //                                      ArmConstants.kIWristMotor,
+    //                                      ArmConstants.kDWristMotor);
     m_WristEncoder = m_WristMotor.getEncoder();
     m_WristEncoder.setPositionConversionFactor(ArmConstants.kWristPositionConversionFactor);
 
@@ -103,11 +104,15 @@ public class Arm extends SubsystemBase {
     m_ArmExtensionVoltageScaleFactor = RobotController.getVoltage5V(); //compensate for supply volage differences
     m_ArmExtensionDistance = m_ArmExtensionRangefinder.getValue()*m_ArmExtensionVoltageScaleFactor*0.0492;
 
+    m_WristAngle = m_WristEncoder.getPosition();
+
     SmartDashboard.putNumber("Arm Lift Angle ", m_ArmLiftAngle);
     SmartDashboard.putNumber("Arm Extension",m_ArmExtensionDistance);
+    SmartDashboard.putNumber("Wrist Angle", m_WristAngle);
 
   }
 
+  /* 
   public PIDController setArmLiftPID(){
     return m_ArmLiftMotorPID;
   }
@@ -116,9 +121,14 @@ public class Arm extends SubsystemBase {
     return m_ArmExtensionMotorPID;
   }
 
-  public void armMovement(double armLift, double armExtend){
+  public PIDController setWristPID(){
+    return m_WristMotorPID;
+  }
+*/
+  public void armMovement(double armLift, double armExtend, double wristLevel){
     m_ArmLiftMotor.set(armLift);
     m_ArmExtensionMotor.set(VictorSPXControlMode.PercentOutput, armExtend);
+    m_WristMotor.set(wristLevel);
   }
 
   public double getArmLiftAngle(){
@@ -129,11 +139,19 @@ public class Arm extends SubsystemBase {
     return m_ArmExtensionDistance;
   }
 
+  public double getWristAngle(){
+    return m_WristAngle;
+  }
+
   public void useArmLiftOutput(){
     //do something PID here
   }
 
   public void useArmExtensionOutput(){
+    //do something PID here
+  }
+
+  public void useWristOutput(){
     //do something PID here
   }
 

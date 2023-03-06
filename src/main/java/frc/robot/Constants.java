@@ -376,7 +376,7 @@ public final class Constants {
     //Measurements in partial arm rotations (Lift) and inches (Extension)
     //Heights based on field drawing heights + 8 inches with arm in extended position
     //TODO: after testing need to adjust heights
-    // scoring positions as double[] xxx = {lift angle, extension distance}
+    // scoring positions as double[] xxx = {lift angle, extension distance, wrist angle}
     // lift angle in degrees on rotated axis - stowed = 0, high cone = 100?
     // extension in inches beginning at 12 - stowed = 12, high cone = 32?
     public static double[] kArmStowed = {0,12};

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 public class ArmToHeight extends CommandBase {
@@ -15,21 +16,38 @@ public class ArmToHeight extends CommandBase {
   
   private final PIDController m_ArmLiftMotorPIDController;
   private final PIDController m_ArmExtensionMotorPIDController;
+  private final PIDController m_WristPIDController;
 
   public ArmToHeight(Arm armSubsystem, 
-                     //PIDController armLiftMotorPID, 
-                    // PIDController armExtensionPID,
                      double armHeightSetpointDegrees,
-                     double armExtensionSetpointInches) {
+                     double armExtensionSetpointInches,
+                     double wristSetpointDegrees) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
 
-    m_ArmLiftMotorPIDController = m_armSubsystem.setArmLiftPID();
+    m_ArmLiftMotorPIDController = new PIDController(
+                ArmConstants.kPArmLiftMotor,
+                ArmConstants.kIArmLiftMotor,
+                ArmConstants.kDArmLiftMotor
+    );
+
     m_ArmLiftMotorPIDController.setSetpoint(armHeightSetpointDegrees);
 
-    m_ArmExtensionMotorPIDController = m_armSubsystem.setArmExtensionPID();
+
+    m_ArmExtensionMotorPIDController = new PIDController(
+                ArmConstants.kPArmExtensionMotor,
+                ArmConstants.kIArmExtensionMotor,
+                ArmConstants.kDArmExtensionMotor
+    );
     m_ArmExtensionMotorPIDController.setSetpoint(armExtensionSetpointInches);
+
+    m_WristPIDController = new PIDController(
+      ArmConstants.kPWristMotor,
+      ArmConstants.kIWristMotor,
+      ArmConstants.kDWristMotor
+);
+    m_WristPIDController.setSetpoint(wristSetpointDegrees);
 
   }
 
@@ -38,6 +56,7 @@ public class ArmToHeight extends CommandBase {
   public void initialize() {
     m_ArmLiftMotorPIDController.reset();
     m_ArmExtensionMotorPIDController.reset();
+    m_WristPIDController.reset();
 
   }
 
@@ -47,14 +66,15 @@ public class ArmToHeight extends CommandBase {
 
     double armLiftSpeed = m_ArmLiftMotorPIDController.calculate(m_armSubsystem.getArmLiftAngle());
     double armExtensionSpeed = m_ArmExtensionMotorPIDController.calculate(m_armSubsystem.getArmExtensionDistance());
+    double wristSpeed = m_WristPIDController.calculate(m_armSubsystem.getWristAngle());
 
-    m_armSubsystem.armMovement(armLiftSpeed, armExtensionSpeed);
+    m_armSubsystem.armMovement(armLiftSpeed, armExtensionSpeed, wristSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_armSubsystem.armMovement(0,0);
+    m_armSubsystem.armMovement(0, 0, 0);
   }
 
   // Returns true when the command should end.
