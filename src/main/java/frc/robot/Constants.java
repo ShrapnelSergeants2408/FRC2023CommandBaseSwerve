@@ -77,10 +77,10 @@ public final class Constants {
     public static final boolean kRearRightDriveEncoderReversed = false;
 
     //TODO: find offset values
-    public static final double kFrontLeftAbsoluteEncoderOffset = (3.48/5)* 2 * Math.PI; // old raw value 0.708692;
-    public static final double kRearLeftAbsoluteEncoderOffset = (2.79/5) * 2 * Math.PI; // old raw value 0.587064;
-    public static final double kFrontRightAbsoluteEncoderOffset = (3.36/5)* 2 * Math.PI; // old raw value0.679514;
-    public static final double kRearRightAbsoluteEncoderOffset = (1.06/5) * 2 * Math.PI; //0.167231; update with new value
+    public static final double kFrontLeftAbsoluteEncoderOffset = (3.48/5);//* 2 * Math.PI; // old raw value 0.708692;
+    public static final double kRearLeftAbsoluteEncoderOffset = (2.79/5);// * 2 * Math.PI; // old raw value 0.587064;
+    public static final double kFrontRightAbsoluteEncoderOffset = (3.36/5);//* 2 * Math.PI; // old raw value0.679514;
+    public static final double kRearRightAbsoluteEncoderOffset = (1.06/5);// * 2 * Math.PI; //0.167231; update with new value
 
     //Gyro
     public static final boolean kGyroReversed = true;

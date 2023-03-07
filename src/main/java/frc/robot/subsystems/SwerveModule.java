@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.Constants.PhysicalConstants;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+//import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 
@@ -35,10 +36,9 @@ public class SwerveModule {
 
   private final RelativeEncoder m_driveEncoder;
 
-
-  //private final AnalogEncoder m_turningEncoder;
   private final Encoder m_turningEncoder;
-  private final AnalogInput m_absoluteEncoder;  //switch to input vs encoder
+  ///private final AnalogInput m_absoluteEncoder; 
+  private final AnalogEncoder m_absoluteEncoder;
   private final double m_absoluteEncoderOffset;
   private final boolean m_turningEncoderReversed; 
   private final int m_absoluteEncoderChannel;
@@ -95,13 +95,16 @@ public class SwerveModule {
     m_turningEncoderReversed = turningEncoderReversed;
 
     m_turningEncoder = new Encoder(turningEncoderChannelA, turningEncoderChannelB) ;
-    m_absoluteEncoder = new AnalogInput(absoluteEncoderChannel);
+    ///m_absoluteEncoder = new AnalogInput(absoluteEncoderChannel);
+    m_absoluteEncoder = new AnalogEncoder(absoluteEncoderChannel);
 
     m_driveEncoder = m_driveMotor.getEncoder(Type.kHallSensor,ModuleConstants.kDriveCPR);
     m_driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter); 
     m_driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec); 
 
-    m_turningEncoder.setDistancePerPulse(ModuleConstants.kTurningEncoderDistancePerPulse);
+    ///m_turningEncoder.setDistancePerPulse(ModuleConstants.kTurningEncoderDistancePerPulse);
+    m_absoluteEncoder.setDistancePerRotation(2*Math.PI);
+    m_absoluteEncoder.setPositionOffset(m_absoluteEncoderOffset);
  
     //get initial position from MA3 encoder
     //m_absoluteEncoderStartRad = m_absoluteEncoder.getVoltage()/RobotController.getCurrent5V() * 2 * Math.PI;
@@ -130,8 +133,8 @@ public class SwerveModule {
    public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
       getDrivePosition(),
-      //new Rotation2d(getAbsoluteEncoderRad())
-      new Rotation2d(getTurnPosition())
+      new Rotation2d(getAbsoluteEncoderRad())
+      ///new Rotation2d(getTurnPosition())
 
     );
 
@@ -142,7 +145,8 @@ public class SwerveModule {
 
   public double getTurnPosition() {
     //use initial absolute encoder value.  add to turningEncoder returned value
-    return (m_turningEncoder.getDistance() + m_absoluteEncoderStartRad); 
+    ///return (m_turningEncoder.getDistance() + m_absoluteEncoderStartRad);
+    return m_absoluteEncoder.getDistance();
 
   }
 
@@ -153,9 +157,10 @@ public class SwerveModule {
 
   public double getAbsoluteEncoderRad() {
 
-    double angle = m_absoluteEncoder.getVoltage()/RobotController.getVoltage5V();
+    ///double angle = m_absoluteEncoder.getVoltage()/RobotController.getVoltage5V();
+    double angle = m_absoluteEncoder.getAbsolutePosition() - m_absoluteEncoder.getPositionOffset();
     angle *= 2.0 * Math.PI;  //convert to radians
-    angle -= m_absoluteEncoderOffset; //adjust for wheel offset
+    ///angle -= m_absoluteEncoderOffset; //adjust for wheel offset
 
     return angle*(m_turningEncoderReversed ? -1.0:1.0);
   }
@@ -167,6 +172,7 @@ public class SwerveModule {
     m_driveEncoder.setPosition(0.0);
 
     m_turningEncoder.reset();
+
   }
 
   /**
@@ -215,7 +221,7 @@ public class SwerveModule {
     SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] desired turn angle", state.angle.getDegrees()); 
     SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] turn encoder out", m_turningEncoder.getDistance());
     SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] turn encoder adjusted", getTurnPosition()); 
-    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] current absolute value", m_absoluteEncoder.getVoltage()/RobotController.getVoltage5V());   
+    SmartDashboard.putNumber("Swerve["+  m_absoluteEncoderChannel +"] current absolute value", m_absoluteEncoder.getAbsolutePosition());   
        
   }
   
